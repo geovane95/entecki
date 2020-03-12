@@ -6,6 +6,8 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="{{url('js/axios.js')}}"></script>
+    <script src="{{url('js/jquery.js')}}"></script>
 @stop
 @section('miolo')
 
@@ -90,93 +92,28 @@
                              <strong>Buscar</strong>
                             <label>
                                 Mês
-                                <select>
-                                    <option>
-                                        Selecionar
-                                    </option>
+                                <select name="month" id="month">
+                                    <option value="0">Selecione</option>
+                                    @foreach($competences as $competence)
+                                        <option value="{{ $competence->month }}">
+                                            {{ $competence->month }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </label>
                             <label>
                                 Ano
-                                <select>
-                                    <option>
-                                        Selecionar
-                                    </option>
+                                <select name="year" id="year">
+                                    <option value="0">Selecione</option>
+                                    @foreach($competences as $competence)
+                                        <option value="{{ $competence->year }}">
+                                            {{ $competence->year }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </label>
                         </form>
                         <div id="accordion">
-                          <div class="card">
-                            <div class="card-header" id="headingOne">
-                              <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#out19" aria-expanded="true" aria-controls="out19">
-                                  Outubro 2019
-                                </button>
-                              </h5>
-                            </div>
-
-                            <div id="out19" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                              <div class="card-body">
-                                    <ul class="list-files">
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.ppt" class="ppt">
-                                                Nonoononononononononno.ppt
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.doc" class="doc">
-                                                Nonoononononononononno.doc
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.xls" class="xls">
-                                                Nonoononononononononno.xls
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.zip" class="zip">
-                                                Nonoononononononononno.zip
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.doc" class="doc">
-                                                Nonoononononononononno.doc
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.xls" class="xls">
-                                                Nonoononononononononno.xls
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.zip" class="zip">
-                                                Nonoononononononononno.zip
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.ppt" class="ppt">
-                                                Nonoononononononononno.ppt
-                                            </a>
-                                        </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
                           <div class="card">
                             <div class="card-header" id="headingTwo">
                               <h5 class="mb-0">
@@ -340,4 +277,38 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+            geraListagemAcordion();
+
+            $("#month").change(function () {
+                geraListagemAcordion();
+            });
+
+            $("#year").change(function () {
+                geraListagemAcordion();
+            });
+        });
+        function geraListagemAcordion(){
+            let month = $("#month").val();
+            let year = $("#year").val();
+
+            url = "{{ route('listacompetencias', [':month',':year']) }}";
+
+            url = url.replace(':month',month);
+
+            url = url.replace(':year',year);
+
+            axios.get(url)
+                .then(response => {
+                console.log(response);
+            })
+                .catch((error) => {
+
+            })
+                .finally(() => {
+
+            });
+        }
+    </script>
 @stop

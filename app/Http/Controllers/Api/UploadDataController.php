@@ -108,6 +108,7 @@ class UploadDataController extends Controller
     public function store(Request $request)
     {
         $file = false;
+        $extension = '';
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             // Define um aleatório para o arquivo baseado no timestamps atual
             $name = uniqid(date('HisYmd'));
@@ -128,8 +129,10 @@ class UploadDataController extends Controller
             'uploadstatus' => 1,
             'uploadtype' => $request->upload_type,
             'competence' => $request->competence,
+            'linecount' => 0,
             'fileName' => $request->file->getClientOriginalName(),
             'file' => $file,
+            'extension' => $extension,
             'folder' => 'uploads/'.$request->competence.'/',
             'construction' => $request->construction ? $request->construction : 0,
         ];

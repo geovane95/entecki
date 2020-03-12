@@ -35,7 +35,7 @@
                         INCC (N-1) = {{ $incc }}
                     </span>
 
-                    <select class="constructions" multiple id="constructions">
+                    <select class="constructions obras" multiple id="constructions">
                         <option>SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
                         @foreach($constructions as $construction)
                         <option value="{{ $construction->id }}" {{ in_array($construction->id,$construtionsselected) ? "selected" : "" }}>

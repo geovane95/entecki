@@ -37,6 +37,7 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::resource('state', 'StateController')->except(['create','edit']);
     Route::resource('upload_data', 'UploadDataController')->except(['create','edit']);
     Route::get('cities/{id}','ConstructionController@cities')->name('citites');
+    Route::get('competences/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('listacompetencias');
     Route::get('email/{competence}/{construction}','EmailController@store')->name('email.store');
     Route::get('email/','EmailController@index')->name('email.index');
     Route::get('construction/client/{id}','ConstructionController@clientIndex')->name('clientIndex');

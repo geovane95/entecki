@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class UploadData extends Model
 {
     protected $fillable = [
-        'user','accessprofile','linecount', 'uploadstatus', 'uploadtype','competence','upload_type','fileName','file','folder','construction',
+        'user','accessprofile','linecount', 'uploadstatus', 'uploadtype','competence','upload_type','fileName','file','folder','construction', 'extension'
 
     ];
 }

@@ -243,7 +243,31 @@ class  ClientSpaceController extends Controller
             ['uploadtype','=',2]
         );
 
-        return view('area-do-cliente.docs_obra', ['documents'=>$documents, 'competence'=>$competence, 'construction'=>$construction, 'actualcomp' => $competenceId, 'actualconst' => $id]);
+        $competences = $this->competence->get()->where('status', '=', 1);
+        return view('area-do-cliente.docs_obra', ['documents'=>$documents, 'competence'=>$competence, 'competences'=>$competences, 'construction'=>$construction, 'actualcomp' => $competenceId, 'actualconst' => $id]);
+    }
+
+    public function documentsByMothYear($constructionId,$month,$year){
+
+        $construction = $this->construction->find($constructionId);
+
+        $competences = $this->competence->get()->where(['year',$year != 0 ? '=' : '<>',$year],['month',$month != 0 ? '=' : '<>',$month]);
+
+        if (!$competences)
+            return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
+
+        $dados = [];
+
+        foreach ($competences as $competence){
+            $documents = $this->upload_data->get()->where(
+                ['construction','=',$construction->id],
+                ['competence','=',$competence->id],
+                ['uploadtype','=',2]
+            );
+            array_push($dados[$competence->id], $documents);
+        }
+        dd($dados);
+        return response()->json(['success' => $dados]);
     }
 
     public function report($id){

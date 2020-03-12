@@ -23,6 +23,7 @@ class CreateUploadDataTable extends Migration
             $table->unsignedBigInteger('competence');
             $table->string('fileName');
             $table->string('file');
+            $table->string('extension');
             $table->string('folder');
             $table->unsignedBigInteger('construction')->nullable();
             $table->timestamps();
