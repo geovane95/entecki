@@ -29,48 +29,30 @@
                         Obra + Taxa
                     </h3>
 
-                    <form class="filtro flex-column d-flex">
+                    <form class="filtro flex-column d-flex" method="get" action="{{ route('client-space.construction-report') }}">
                         <label class="d-flex align-items-center">
                             Mês Referência:
-                            <select>
-                                <option>
-                                    Mar/2019
-                                </option>
-                                <option>
-                                    Mar/2019
-                                </option>
-                                <option>
-                                    Mar/2019
-                                </option>
-                                <option>
-                                    Mar/2019
-                                </option>
+                            <select name="competences" id="competences">
+                                @foreach($competences as $competence)
+                                    <option value="{{ $competence->id }}" {{ $actualComp ? in_array($competence->id,$actualComp) ? "selected" : "" : "" }}>
+                                        {{ $competence->description }}
+                                    </option>
+                                @endforeach
                             </select>
                         </label>
                         <span>
-                            INCC (N-1) = 773,52
+                            INCC (N-1) = {{ $incc }}
                         </span>
 
-
-                        <select class="obras" multiple>
+                        <select class="obras constructions" multiple id="constructions">
                             <option>SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
-
-                            <option>
-                                Obra 1
-                            </option>
-                            <option>
-                                Obra 1
-                            </option>
-                            <option>
-                                Obra 1
-                            </option>
-                            <option>
-                                Obra 1
-                            </option>
-                            <option>
-                                Obra 1
-                            </option>
-                        </select>
+                            @foreach($constructions as $construction)
+                                <option value="{{ $construction->id }}" {{ $actualConst ? in_array($construction->id,$actualConst) ? "selected" : "" : "" }}>
+                                    {{ $construction->name }}
+                                </option>
+                            @endforeach
+                        </select><br/>
+                        <input type="submit" value="Buscar" class="btn col-md-2"/>
                     </form>
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-between align-items-end">
@@ -78,7 +60,7 @@
                         <a  href="javascript:window.print()" class="print">
 
                         </a>
-                        <a href="index.blade.php" class="btn-relatorio">
+                        <a href="{{ route('client-space.construction-report', $construction->id) }}" class="btn-relatorio">
                             RELATÓRIO DE<br>
                             PERFORMANCE DE<br>
                             ENGENHARIA (RPE)
@@ -172,39 +154,33 @@
                                 </th>
                             </tr>
 
-
-
-
-
-
-
-
-
                         </thead>
                         <tbody>
+                            {{ $constLastId = 0 }}
+                            @foreach($reports as $report)
                             <tr>
                                 <td colspan="2">
                                     <table>
                                         <tr>
                                             <td class="text-left">
-                                                BN12
+                                                {{ $report->work_number }}
                                             </td>
                                             <td class="text-left">
-                                                1.0
+                                                {{ $report->FASE }}
                                             </td>
                                             <td class="text-left">
                                                 <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
+                                                    {{ $report->construction_name }}
                                                 </a>
                                             </td>
                                         </tr>
                                     </table>
                                 </td>
                                 <td class="text-right">
-                                    31.536
+                                    {{ number_format($report->AREACONSTRM2, 0, ',', '.') }}
                                 </td>
                                 <td class="text-right">
-                                    642
+                                    {{ number_format($report->NUNITQTD, 0, ',', ' ') }}
                                 </td>
 
                                 <td>
@@ -215,16 +191,16 @@
                                             </td>
                                             <td>
                                                 <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
+                                                    <div class="percent" style="width: {{ number_format($report->FBP, 2, '.', '') }}%;">
                                                         <span>
-                                                            50.8%
+                                                            {{ number_format($report->FBP, 2, ',', '') }}%
                                                         </span>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td rowspan="2" class="delta">
                                                 Δ<br>
-                                                2,26%
+                                                {{ number_format($report->FBD, 2, ',', '') }}%
                                             </td>
                                         </tr>
                                         <tr>
@@ -233,9 +209,9 @@
                                             </td>
                                             <td>
                                                 <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
+                                                    <div class="percent" style="width: {{ number_format($report->FBR, 2, '.', '') }}%;">
                                                         <span>
-                                                            20.8%
+                                                            {{ number_format($report->FBR, 2, ',', '') }}%
                                                         </span>
                                                     </div>
                                                 </div>
@@ -251,16 +227,16 @@
                                             </td>
                                             <td>
                                                 <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
+                                                    <div class="percent" style="width: {{ number_format($report->FOP, 2, '.', '') }}%;">
                                                         <span>
-                                                            50.8%
+                                                            {{ number_format($report->FOP, 2, ',', '') }}%
                                                         </span>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td rowspan="2" class="delta">
                                                 Δ<br>
-                                                2,26%
+                                                {{ number_format($report->FOD, 2, ',', '') }}%
                                             </td>
                                         </tr>
                                         <tr>
@@ -269,9 +245,9 @@
                                             </td>
                                             <td>
                                                 <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
+                                                    <div class="percent" style="width: {{ number_format($report->FOR, 2, '.', '') }}%;">
                                                         <span>
-                                                            20.8%
+                                                            {{ number_format($report->FOR, 2, ',', '') }}%
                                                         </span>
                                                     </div>
                                                 </div>
@@ -288,16 +264,16 @@
                                             </td>
                                             <td>
                                                 <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
+                                                    <div class="percent" style="width: {{ number_format($report->FOBP, 2, '.', '') }}%;">
                                                         <span>
-                                                            50.8%
+                                                            {{ number_format($report->FOBP, 2, ',', '') }}%
                                                         </span>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td rowspan="2" class="delta">
                                                 Δ<br>
-                                                2,26%
+                                                {{ number_format($report->FOBD, 2, ',', '') }}%
                                             </td>
                                         </tr>
                                         <tr>
@@ -306,9 +282,9 @@
                                             </td>
                                             <td>
                                                 <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
+                                                    <div class="percent" style="width: {{ number_format($report->FOBR, 2, '.', '') }}%;">
                                                         <span>
-                                                            20.8%
+                                                            {{ number_format($report->FOBR, 2, ',', '') }}%
                                                         </span>
                                                     </div>
                                                 </div>
@@ -318,929 +294,26 @@
 
                                 </td>
                                 <td>
-                                    <a href="docs_obra.blade.php" class="doc">
+                                    <a href="{{ route('client-space.construction-documents',[$report->competence_id,$report->construction_id]) }}" class="doc">
 
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="detalhe.blade.php" class="det">
+                                    <a href="{{ route('client-space.construction-detail', $report->construction_id) }}" class="det">
 
                                     </a>
                                 </td>
                             </tr>
+                            @if($report->construction_id != $constLastId)
+                                <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
+                                <tr class="linha-cinza">
+                                    <td colspan="17">
 
-                            <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                            <tr class="linha-cinza">
-                                <td colspan="9">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table>
-                                        <tr>
-                                            <td class="text-left">
-                                                BN12
-                                            </td>
-                                            <td class="text-left">
-                                                1.0
-                                            </td>
-                                            <td class="text-left">
-                                                <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="text-right">
-                                    31.536
-                                </td>
-                                <td class="text-right">
-                                    642
-                                </td>
-
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <a href="docs_obra.blade.php" class="doc">
-
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="detalhe.blade.php" class="det">
-
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table>
-                                        <tr>
-                                            <td class="text-left">
-                                                BN12
-                                            </td>
-                                            <td class="text-left">
-                                                1.0
-                                            </td>
-                                            <td class="text-left">
-                                                <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="text-right">
-                                    31.536
-                                </td>
-                                <td class="text-right">
-                                    642
-                                </td>
-
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <a href="docs_obra.blade.php" class="doc">
-
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="detalhe.blade.php" class="det">
-
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="tot">
-                                <td colspan="2">
-                                    <table>
-                                        <tr>
-                                            <td class="text-left">
-                                                BN12
-                                            </td>
-                                            <td class="text-left">
-                                                TOT
-                                            </td>
-                                            <td class="text-left">
-                                                <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="text-right">
-                                    31.536
-                                </td>
-                                <td class="text-right">
-                                    642
-                                </td>
-
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <a href="docs_obra.blade.php" class="doc">
-
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="detalhe.blade.php" class="det">
-
-                                    </a>
-                                </td>
-                            </tr>
-                            <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                            <tr class="linha-cinza">
-                                <td colspan="9">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table>
-                                        <tr>
-                                            <td class="text-left">
-                                                BN12
-                                            </td>
-                                            <td class="text-left">
-                                                1.0
-                                            </td>
-                                            <td class="text-left">
-                                                <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="text-right">
-                                    31.536
-                                </td>
-                                <td class="text-right">
-                                    642
-                                </td>
-
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <a href="docs_obra.blade.php" class="doc">
-
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="detalhe.blade.php" class="det">
-
-                                    </a>
-                                </td>
-                            </tr>
-
-
-                            <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                            <tr class="linha-cinza">
-                                <td colspan="9">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table>
-                                        <tr>
-                                            <td class="text-left">
-                                                BN12
-                                            </td>
-                                            <td class="text-left">
-                                                1.0
-                                            </td>
-                                            <td class="text-left">
-                                                <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="text-right">
-                                    31.536
-                                </td>
-                                <td class="text-right">
-                                    642
-                                </td>
-
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <a href="docs_obra.blade.php" class="doc">
-
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="detalhe.blade.php" class="det">
-
-                                    </a>
-                                </td>
-                            </tr>
-
-
-                            <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                            <tr class="linha-cinza">
-                                <td colspan="9">
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table>
-                                        <tr>
-                                            <td class="text-left">
-                                                BN12
-                                            </td>
-                                            <td class="text-left">
-                                                1.0
-                                            </td>
-                                            <td class="text-left">
-                                                <a href="detalhe.blade.php">
-                                                    VIVA BENX NAÇÕES UNIDAS 1 E 2
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td class="text-right">
-                                    31.536
-                                </td>
-                                <td class="text-right">
-                                    642
-                                </td>
-
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <table class="grafico">
-                                        <tr>
-                                            <td>
-                                                P
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 50.8%;">
-                                                        <span>
-                                                            50.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td rowspan="2" class="delta">
-                                                Δ<br>
-                                                2,26%
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                R
-                                            </td>
-                                            <td>
-                                                <div class="barra">
-                                                    <div class="percent" style="width: 20.8%;">
-                                                        <span>
-                                                            20.8%
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </td>
-                                <td>
-                                    <a href="docs_obra.blade.php" class="doc">
-
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="detalhe.blade.php" class="det">
-
-                                    </a>
-                                </td>
-                            </tr>
-                            <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                            <tr class="linha-cinza">
-                                <td colspan="9">
-
-                                </td>
-                            </tr>
-
-
+                                    </td>
+                                </tr>
+                            @endif
+                            {{ $constLastId = $report->construction_id }}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

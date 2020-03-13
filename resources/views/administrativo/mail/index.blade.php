@@ -28,7 +28,7 @@
         <div class="col-md-12">
     <div class="card">
         <div class="card-header">
-            MÊS REFERÊNCIA <select name="competence" id="competence">
+            MÊS REFERÊNCIA <select name="competence" id="competence" class="form-control col-md-3">
                 @foreach($competences as $competence)
                     <option value="{{ $competence->id }}">{{ $competence->description }}</option>
                 @endforeach

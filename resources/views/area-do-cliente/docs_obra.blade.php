@@ -292,8 +292,11 @@
         function geraListagemAcordion(){
             let month = $("#month").val();
             let year = $("#year").val();
+            let construction = '{{ $actualconst }}';
 
-            url = "{{ route('listacompetencias', [':month',':year']) }}";
+            url = "{{ route('listacompetencias', [':construction',':month',':year']) }}";
+
+            url = url.replace(':construction',construction);
 
             url = url.replace(':month',month);
 

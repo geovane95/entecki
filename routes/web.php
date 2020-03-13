@@ -37,7 +37,6 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::resource('state', 'StateController')->except(['create','edit']);
     Route::resource('upload_data', 'UploadDataController')->except(['create','edit']);
     Route::get('cities/{id}','ConstructionController@cities')->name('citites');
-    Route::get('competences/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('listacompetencias');
     Route::get('email/{competence}/{construction}','EmailController@store')->name('email.store');
     Route::get('email/','EmailController@index')->name('email.index');
     Route::get('construction/client/{id}','ConstructionController@clientIndex')->name('clientIndex');
@@ -57,7 +56,7 @@ Route::get("download/{file}", function ($file) {
 })->name('download');
 
 
-Route::group(['namespace'=>'Api','middleware'=>'auth','prefix'=>'area-do-cliente'], function (){
+Route::group(['namespace'=>'Api'/*,'middleware'=>'auth'*/,'prefix'=>'area-do-cliente'], function (){
     Route::get('/', 'ClientSpaceController@index')->name('client-space.index');
     Route::get('/{competence}/{construction}', 'ClientSpaceController@index')->name('client-space.index.args');
     Route::get('/recuperar-senha', function(){
@@ -68,7 +67,7 @@ Route::group(['namespace'=>'Api','middleware'=>'auth','prefix'=>'area-do-cliente
     })->name('client-space.change-password');
     Route::get('/detalhe/{id}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
     Route::get('/docs-obra/{competence}/{id}', 'ClientSpaceController@documents')->name('client-space.construction-documents');
-    Route::get('/relatorio/{id}', 'ClientSpaceController@report')->name('client-space.construction-report');
+    Route::get('/relatorio', 'ClientSpaceController@report')->name('client-space.construction-report');
     Route::get('/logout', function (){
         \Auth::logout();
         return redirect()->route('login');
@@ -76,4 +75,5 @@ Route::group(['namespace'=>'Api','middleware'=>'auth','prefix'=>'area-do-cliente
     Route::get('/pictures-download/{competence}/{id}', function (){
         return view('area-do-cliente.relatorio');
     })->name('client-space.pictures-download');
+    Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('listacompetencias');
 });

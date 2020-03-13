@@ -35,7 +35,7 @@
                         INCC (N-1) = {{ $incc }}
                     </span>
 
-                    <select class="constructions obras" multiple id="constructions">
+                    <select class="obras constructions" multiple id="constructions">
                         <option>SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
                         @foreach($constructions as $construction)
                         <option value="{{ $construction->id }}" {{ in_array($construction->id,$construtionsselected) ? "selected" : "" }}>
@@ -48,7 +48,7 @@
             <div class="col-md-6 d-flex flex-column justify-content-between align-items-end">
                 <div class="d-flex botoes justify-content-end align-items-center">
                     <a href="javascript:window.print()" class="print"></a>
-                    <a href="{{ route('client-space.construction-report', $construction->id) }}" class="btn-relatorio">
+                    <a href="{{ route('client-space.construction-report') }}" class="btn-relatorio">
                         DESEMPENHO <br>
                         FÍSICO-FINANCEIRO <br>
                         CONSOLIDADO

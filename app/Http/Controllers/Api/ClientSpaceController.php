@@ -17,7 +17,9 @@ use App\Models\UploadStatus;
 use App\Models\UploadType;
 use App\Models\User;
 use App\Models\UsersToConstructions;
+use http\Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Array_;
@@ -247,7 +249,7 @@ class  ClientSpaceController extends Controller
         return view('area-do-cliente.docs_obra', ['documents'=>$documents, 'competence'=>$competence, 'competences'=>$competences, 'construction'=>$construction, 'actualcomp' => $competenceId, 'actualconst' => $id]);
     }
 
-    public function documentsByMothYear($constructionId,$month,$year){
+    public function documentsByMonthYear($constructionId,$year,$month){
 
         $construction = $this->construction->find($constructionId);
 
@@ -259,19 +261,51 @@ class  ClientSpaceController extends Controller
         $dados = [];
 
         foreach ($competences as $competence){
-            $documents = $this->upload_data->get()->where(
+            $documents = $this->upload_data
+                ->whereIn('competence',[1,2,3])
+                ->where(
                 ['construction','=',$construction->id],
-                ['competence','=',$competence->id],
                 ['uploadtype','=',2]
-            );
+            )
+                ->get();
             array_push($dados[$competence->id], $documents);
         }
-        dd($dados);
+
         return response()->json(['success' => $dados]);
     }
 
-    public function report($id){
-        $relatorio = DB::table('constructions')
+    public function report(Request $request){
+
+
+        try {
+            if (auth()->user()) {
+                $user = $this->user->find(auth()->user()->id);
+            } else {
+                redirect()->route('client-space.logout');
+            }
+
+            $where = '';
+            if ($user->access_profile == 2){
+                $where = " where uc.user = " . $user->id;
+            }
+
+            $competences = $this->competence->get()->where('status', '=', 1);
+
+            $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+            $incc = '773,52';
+
+            if ($request->constructions) {
+                $constructionsIdPluck = Arr::pluck($constructions, 'id');
+            }else{
+                $constructionsIdPluck = [$request->constructions];
+            }
+
+            if ($request->competences){
+                $competenceIdPluck = Arr::pluck($competences,'id');
+            }else{
+                $competenceIdPluck = [$request->competences];
+            }
+        $reports = DB::table('constructions')
             ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
             ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
             ->leftJoin('cities', 'cities.id', '=', 'locations.city')
@@ -302,30 +336,35 @@ class  ClientSpaceController extends Controller
                 'data.FASE',
                 'data.AREACONSTRM2',
                 'data.NUNITQTD',
-                'data.CORPRRATUAL',
-                'data.CORRPRATUALFAROL',
-                'data.CORRPRATUALVLR',
-                'data.FXDPRRATUAL',
-                'data.FXDRPRATUALFAROL',
-                'data.FXDRPRATUALVLR',
-                'data.FPRPRFAROL',
-                'data.FPRPR',
-                'data.POTEROBRARPMESFAROL',
-                'data.POTEROBRARPMES',
-                'data.POECOPR',
-                'data.IDQFAROL',
-                'data.IDSFAROL',
-                'data.PORCCONTRATINDIC',
-                'data.ACORCPROOJATUAL',
-                'data.APORCPROOJATUAL',
+                'data.FBP',
+                'data.FBR',
+                'data.FBD',
+                'data.FOP',
+                'data.FOR',
+                'data.FOD',
+                'data.FOBP',
+                'data.FOBR',
+                'data.FOBD',
+                'competences.id as competence_id',
                 'competences.month',
                 'competences.year',
                 'competences.description',
                 'upload_types.name as upload_type_name',
                 'upload_statuses.name as upload_status_name'
             )
-            ->where('constructions.id', '=', $id)
+            ->whereIn('constructions.id', [1,2,3,4,5,6])
+            ->whereIn('competences.id',[1,2,3,4,5,6])
             ->get();
-        return view('area-do-cliente.relatorio', $relatorio);
+        } catch (Exception $e) {
+            dd($e);
+        }
+        return view('area-do-cliente.relatorio', [
+            'reports' => $reports,
+            'competences' => $competences,
+            'constructions' => $constructions,
+            'actualComp' => $request->competences ? $request->competences : 0,
+            'actualConst' => $request->constructions ? $request->constructions : 0,
+            'incc' => $incc
+        ]);
     }
 }
