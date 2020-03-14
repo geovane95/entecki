@@ -258,7 +258,7 @@ header form.search-form button{
 
     border:0;
 
-    border-radius: 0;   
+    border-radius: 0;
 
     padding: 0;
 
@@ -315,7 +315,7 @@ header .cliente .forget{
     background-size: cover;
     background-position:  center;
     padding: 90px 0;
-    
+
     min-height: calc(100vh - 260px);
 }
 .miolo-login form{
@@ -672,7 +672,7 @@ td{
     border:1px solid #dddad4;
     padding:5px;
     font-weight: normal;
-    font-size: 12px;   
+    font-size: 12px;
     color: #000;
 }
 .miolo table tbody tr.linha-cinza td{
@@ -736,7 +736,7 @@ td{
 }
 .miolo table tbody td table.grafico tr:first-child td:first-child,
 .miolo table tbody td table.grafico tr:first-child td:nth-child(2){
-    padding-bottom: 3px;    
+    padding-bottom: 3px;
 }
 .miolo table tbody td table.grafico td{
     border:0;
@@ -953,7 +953,7 @@ td{
 }
 
 .miolo.detalhe table.info.barras-percent{
-    border-bottom:1px solid #002953;    
+    border-bottom:1px solid #002953;
 }
 .miolo.detalhe table.ind {
     margin: 0;
@@ -1142,7 +1142,7 @@ rect[fill="#888888"]{
     background: #002953;
     text-decoration: none;
 }
- 
+
 .mt30{
     margin-top: 30px;
 }
@@ -1199,13 +1199,22 @@ ul.list-files li a:before{
 ul.list-files li a.doc:before{
     background-image: url(../images/doc.svg);
 }
+ul.list-files li a.docx:before{
+    background-image: url(../images/doc.svg);
+}
 ul.list-files li a.ppt:before{
+    background-image: url(../images/ppt.svg);
+}
+ul.list-files li a.pptx:before{
     background-image: url(../images/ppt.svg);
 }
 ul.list-files li a.pdf:before{
     background-image: url(../images/pdf.svg);
 }
 ul.list-files li a.xls:before{
+    background-image: url(../images/xls.svg);
+}
+ul.list-files li a.xlsx:before{
     background-image: url(../images/xls.svg);
 }
 ul.list-files li a.zip:before{

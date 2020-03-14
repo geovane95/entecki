@@ -344,7 +344,7 @@
                                 {{ $constructiontable->APORCPROOJATUAL }}
                             </td>
                             <td>
-                                <a data-id="{{$constructiontable->competence_id}}" id="{{$constructiontable->construction_id}}" class="doc">
+                                <a href="{{ route('client-space.construction-documents', [$constructiontable->competence_id,$constructiontable->construction_id]) }}" class="doc">
 
                                 </a>
                             </td>
@@ -376,13 +376,13 @@
             $("#competences").change(function(){
                 let id = $("#competences").val();
                 let ids = $("#constructions").val();
-                let url = "{{route('client-space.index', [':id',':ids'])}}";
+                let url = "{{route('client-space.index.args', [':id',':ids'])}}";
                 window.location.href = url.replace(':ids',ids).replace(':id',id);
             });
             $("#constructions").change(function(){
                 let id = $("#competences").val();
                 let ids = $("#constructions").val();
-                let url = "{{route('client-space.index', [':id',':ids'])}}";
+                let url = "{{route('client-space.index.args', [':id',':ids'])}}";
                 window.location.href = url.replace(':ids',ids).replace(':id',id);
             });
             $(".doc").click(function(){

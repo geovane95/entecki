@@ -2,8 +2,11 @@
 
 //redirecionando  para login
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
-    if(\Auth::check())
+    if(Auth::check())
     {
         return redirect()->route('home');
     }else{
@@ -57,7 +60,7 @@ Route::get("download/{file}", function ($file) {
 
 
 Route::group(['namespace'=>'Api'/*,'middleware'=>'auth'*/,'prefix'=>'area-do-cliente'], function (){
-    Route::get('/', 'ClientSpaceController@index')->name('client-space.index');
+    Route::get('/', 'ClientSpaceController@indexWithNoParams')->name('client-space.index');
     Route::get('/{competence}/{construction}', 'ClientSpaceController@index')->name('client-space.index.args');
     Route::get('/recuperar-senha', function(){
         return view('area-do-cliente.esqueceu_a_senha');
@@ -69,7 +72,7 @@ Route::group(['namespace'=>'Api'/*,'middleware'=>'auth'*/,'prefix'=>'area-do-cli
     Route::get('/docs-obra/{competence}/{id}', 'ClientSpaceController@documents')->name('client-space.construction-documents');
     Route::get('/relatorio', 'ClientSpaceController@report')->name('client-space.construction-report');
     Route::get('/logout', function (){
-        \Auth::logout();
+        Auth::logout();
         return redirect()->route('login');
     })->name('client-space.logout');
     Route::get('/pictures-download/{competence}/{id}', function (){

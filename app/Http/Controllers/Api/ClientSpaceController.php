@@ -61,7 +61,7 @@ class  ClientSpaceController extends Controller
         $this->userstoconstructions = $usersToConstructions;
     }
 
-    public function index($competenceId = 0,$constructionId = 0)
+    public function index($competenceId,$constructionId)
     {
         try {
             if (auth()->user()) {
@@ -158,6 +158,7 @@ class  ClientSpaceController extends Controller
         } catch (Exception $e) {
             dd($e);
         }
+
         return view('area-do-cliente.index', [
             'incc' => $incc,
             'constructions' => $constructions,
@@ -167,6 +168,27 @@ class  ClientSpaceController extends Controller
             'competencesselected' => $competenceIdPluck,
             'construtionsselected' => $constructionsIdPluck
         ]);
+    }
+
+    public function indexWithNoParams(){
+        if (auth()->user()) {
+            $user = $this->user->find(auth()->user()->id);
+        } else {
+            redirect()->route('client-space.logout');
+        }
+
+        $where = '';
+        if ($user->access_profile == 2){
+            $where = " where uc.user = " . $user->id;
+        }
+
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where." order by c.id desc limit 1");
+
+        $competence = $this->competence->orderBy('id', 'desc')->limit(1)->get()->where('status','=',1);
+
+        $constructionPluck = Arr::pluck($constructions,'id');
+
+        return $this->index($competence[0]->id,json_encode($constructionPluck));
     }
 
     public function detail($id)
@@ -239,13 +261,14 @@ class  ClientSpaceController extends Controller
     public function documents($competenceId,$id){
         $construction = $this->construction->find($id);
         $competence = $this->competence->find($competenceId);
-        $documents = $this->upload_data->get()->where(
-            ['construction','=',$construction->id],
-            ['competence','=',$competence->id],
-            ['uploadtype','=',2]
-        );
+        $documents = $this->upload_data->where([
+            'construction' => $construction->id,
+            'competence' => $competence->id,
+            'uploadtype' => 2]
+        )->get();
 
         $competences = $this->competence->get()->where('status', '=', 1);
+
         return view('area-do-cliente.docs_obra', ['documents'=>$documents, 'competence'=>$competence, 'competences'=>$competences, 'construction'=>$construction, 'actualcomp' => $competenceId, 'actualconst' => $id]);
     }
 
@@ -263,10 +286,8 @@ class  ClientSpaceController extends Controller
         foreach ($competences as $competence){
             $documents = $this->upload_data
                 ->whereIn('competence',[1,2,3])
-                ->where(
-                ['construction','=',$construction->id],
-                ['uploadtype','=',2]
-            )
+                ->whereIn('construction',$construction->id)
+                ->whereIn('uploadtype',2)
                 ->get();
             array_push($dados[$competence->id], $documents);
         }
