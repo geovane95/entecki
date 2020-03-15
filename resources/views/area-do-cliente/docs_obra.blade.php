@@ -55,18 +55,18 @@
                 <div class="col-md-12 files atual">
                     <h4>
                         {{
-                            str_replace('JAN','JANEIRO ',
-                            str_replace('FEV','FEVEREIRO ',
-                            str_replace('MAR','MARÇO ',
-                            str_replace('ABR','ABRIL ',
-                            str_replace('MAI','MAIO ',
-                            str_replace('JUN','JUNHO ',
-                            str_replace('JUL','JULHO ',
-                            str_replace('AGO','AGOSTO ',
-                            str_replace('SET','SETEMBRO ',
-                            str_replace('OUT','OUTUBRO ',
-                            str_replace('NOV','NOVEMBRO ',
-                            str_replace('DEZ','DEZEMBRO ',
+                            str_replace('JAN','JANEIRO',
+                            str_replace('FEV','FEVEREIRO',
+                            str_replace('MAR','MARÇO',
+                            str_replace('ABR','ABRIL',
+                            str_replace('MAI','MAIO',
+                            str_replace('JUN','JUNHO',
+                            str_replace('JUL','JULHO',
+                            str_replace('AGO','AGOSTO',
+                            str_replace('SET','SETEMBRO',
+                            str_replace('OUT','OUTUBRO',
+                            str_replace('NOV','NOVEMBRO',
+                            str_replace('DEZ','DEZEMBRO',
                             $competence->description))))))))))))
                         }}
                     </h4>
@@ -94,9 +94,9 @@
                                 Mês
                                 <select name="month" id="month">
                                     <option value="0">Selecione</option>
-                                    @foreach($competences as $competence)
-                                        <option value="{{ $competence->month }}">
-                                            {{ $competence->month }}
+                                    @foreach(array_unique($competencesMonth) as $competence)
+                                        <option value="{{ $competence }}">
+                                            {{ $meses[$competence] }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -105,9 +105,9 @@
                                 Ano
                                 <select name="year" id="year">
                                     <option value="0">Selecione</option>
-                                    @foreach($competences as $competence)
-                                        <option value="{{ $competence->year }}">
-                                            {{ $competence->year }}
+                                    @foreach(array_unique($competencesYear) as $competence)
+                                        <option value="{{ $competence }}">
+                                            {{ $competence }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -293,18 +293,104 @@
             let month = $("#month").val();
             let year = $("#year").val();
             let construction = '{{ $actualconst }}';
+            let url = "";
+            if(month != 0 && year != 0) {
+                url = "{{ route('competence.list', [':construction',':month',':year']) }}";
 
-            url = "{{ route('listacompetencias', [':construction',':month',':year']) }}";
+                url = url.replace(':construction', construction);
 
-            url = url.replace(':construction',construction);
+                url = url.replace(':month', month);
 
-            url = url.replace(':month',month);
+                url = url.replace(':year', year);
+            }else if(month != 0 && year == 0){
+                url = "{{ route('competence.list.month', [':construction',':month']) }}";
 
-            url = url.replace(':year',year);
+                url = url.replace(':construction', construction);
 
+                url = url.replace(':month', month);
+            }else if(month == 0 && year != 0){
+                url = "{{ route('competence.list.year', [':construction',':year']) }}";
+
+                url = url.replace(':construction', construction);
+
+                url = url.replace(':year', year);
+            }
             axios.get(url)
                 .then(response => {
-                console.log(response);
+                    let dados = response.data.success;
+                    console.log(dados);
+
+                let template = "<div class=\"card\">\n" +
+                    "                            <div class=\"card-header\" id=\"headingThree\">\n" +
+                    "                              <h5 class=\"mb-0\">\n" +
+                    "                                <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"#dez19\" aria-expanded=\"false\" aria-controls=\"dez19\">\n" +
+                    "                                    Dezembro 2019\n" +
+                    "                                </button>\n" +
+                    "                              </h5>\n" +
+                    "                            </div>\n" +
+                    "                            <div id=\"dez19\" class=\"collapse\" aria-labelledby=\"headingThree\" data-parent=\"#accordion\">\n" +
+                    "                              <div class=\"card-body\">\n" +
+                    "                                    <ul class=\"list-files\">\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.pdf\" class=\"pdf\">\n" +
+                    "                                                Nonoononononononononno.pdf\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.pdf\" class=\"pdf\">\n" +
+                    "                                                Nonoononononononononno.pdf\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.ppt\" class=\"ppt\">\n" +
+                    "                                                Nonoononononononononno.ppt\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.doc\" class=\"doc\">\n" +
+                    "                                                Nonoononononononononno.doc\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.xls\" class=\"xls\">\n" +
+                    "                                                Nonoononononononononno.xls\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.zip\" class=\"zip\">\n" +
+                    "                                                Nonoononononononononno.zip\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.doc\" class=\"doc\">\n" +
+                    "                                                Nonoononononononononno.doc\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.xls\" class=\"xls\">\n" +
+                    "                                                Nonoononononononononno.xls\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.zip\" class=\"zip\">\n" +
+                    "                                                Nonoononononononononno.zip\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.pdf\" class=\"pdf\">\n" +
+                    "                                                Nonoononononononononno.pdf\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                        <li>\n" +
+                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.ppt\" class=\"ppt\">\n" +
+                    "                                                Nonoononononononononno.ppt\n" +
+                    "                                            </a>\n" +
+                    "                                        </li>\n" +
+                    "                                    </ul>\n" +
+                    "                              </div>\n" +
+                    "                            </div>\n" +
+                    "                          </div>\n" +
+                    "                        </div>;"
             })
                 .catch((error) => {
 

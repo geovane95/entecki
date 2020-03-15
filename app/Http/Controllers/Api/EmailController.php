@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendConstructionMail;
 use App\Models\Competence;
+use App\Models\Data;
 use App\Models\User;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
@@ -72,7 +77,28 @@ class EmailController extends Controller
         }
         return view('administrativo.mail.index', ['constructions' => $constructions, 'competences' => $competences, 'cores' => $cores]);
     }
-    public function store($competence, $constructions){
-        dd("Envio de e-mail está em construção.");
+    public function store($data){
+        try {
+            foreach (explode(',',$data) as $dt) {
+                $users = DB::select("
+                    select
+                        email
+                    from
+                        users u
+                            join users_to_constructions uc on uc.user = u.id
+                            join constructions c on c.id = uc.construction
+                            join data d on d.construction = c.id
+                    where
+                        d.id = " . $dt);
+                Mail::to(Arr::pluck($users,'email'))->send(new SendConstructionMail($dt));
+                $dataUp = Data::find($dt);
+                $dataUp->email_sended_at = date("Y-m-d");
+                $dataUp->update();
+                sleep(1);
+            }
+            return response()->json(['success' => true], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Falha ao enviar o e-mail'], 500);
+        }
     }
 }

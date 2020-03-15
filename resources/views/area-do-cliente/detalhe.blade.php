@@ -95,13 +95,13 @@
                             </ul>
                         </div>
 
-                            
+
                         <form class="filtro flex-column d-flex">
                             <label class="d-flex align-items-center">
                                 Mês Referência:
-                                <select>
+                                <select name="competences" id="competences">
                                     @foreach($competences as $competence)
-                                        <option value="{{ $competence->id }}">
+                                        <option value="{{ $competence->id }}" {{-- in_array($competence->id,$competencesselected) ? "selected" : "" --}}>
                                             {{ $competence->description }}
                                         </option>
                                     @endforeach
@@ -120,7 +120,7 @@
                             </h3>
 
                             <h3>
-                                ACUM. CONTR.: 83%
+                                ACUM. CONTR.: {{ $details->ACUMCONTR }}%
                             </h3>
 
                         </div>
@@ -150,32 +150,32 @@
                             <tbody>
                             <tr>
                                 <td>
-                                        <span class="leg verde">
+                                        <span class="leg {{ $cores[strtoupper($details->CUSTOP)]['FAROL'] }}">
 
                                         </span>
                                 </td>
                                 <td>
-                                        <span class="leg vermelho">
+                                        <span class="leg {{ $cores[strtoupper($details->PRAZO)]['FAROL'] }}">
 
                                         </span>
                                 </td>
                                 <td>
-                                        <span class="leg amarelo">
+                                        <span class="leg {{ $cores[strtoupper($details->FLUXOD)]['FAROL'] }}">
 
                                         </span>
                                 </td>
                                 <td>
-                                        <span class="leg verde">
+                                        <span class="leg {{ $cores[strtoupper($details->QUALIDADE)]['FAROL'] }}">
 
                                         </span>
                                 </td>
                                 <td>
-                                        <span class="leg vermelho">
+                                        <span class="leg {{ $cores[strtoupper($details->SEGORG)]['FAROL'] }}">
 
                                         </span>
                                 </td>
                                 <td>
-                                        <span class="leg verde">
+                                        <span class="leg {{ $cores[strtoupper($details->MAMBI)]['FAROL'] }}">
 
                                         </span>
                                 </td>
@@ -206,7 +206,7 @@
                                 Área Terreno:
                             </td>
                             <td class="text-right">
-                                1.342,78 m²
+                                {{ number_format($details->AREATERRENO,2,',','.') }} m²
                             </td>
                             <td class="text-right">
                                 (Proj.Pref.)
@@ -217,7 +217,7 @@
                                 Área Construída:
                             </td>
                             <td class="text-right">
-                                11.122,71 m²
+                                {{ number_format($details->AREACONSTRUIDA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
                                 (Proj.Pref.)
@@ -228,7 +228,7 @@
                                 Área Privativa:
                             </td>
                             <td class="text-right">
-                                6.583,99 m²
+                                {{ number_format($details->AREAPRIVATIVA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
                                 (Col.23)
@@ -239,7 +239,7 @@
                                 Área Equiv. NB:
                             </td>
                             <td class="text-right">
-                                9.878,96 m²
+                                {{ number_format($details->AREAEQUIVNB,2,',','.') }} m²
                             </td>
                             <td class="text-right">
                                 (Col.18)
@@ -250,7 +250,7 @@
                                 Área de Garagem
                             </td>
                             <td class="text-right">
-                                2.750,00 m²
+                                {{ number_format($details->AREADEGARGAGEM,2,',','.') }} m²
                             </td>
                             <td class="text-right">
                                 (Proj.Pref.)
@@ -261,7 +261,7 @@
                                 Eficiê. Proj.:
                             </td>
                             <td class="text-right">
-                                0,59
+                                {{ number_format($details->EFECIEPROJ,2,',','.') }}
                             </td>
                             <td class="text-right">
                                 Relação AP/ AC
@@ -286,7 +286,7 @@
                                 Tipo Empreend.:
                             </td>
                             <td class="text-right">
-                                Residêncial/ Tipo: MP
+                                {{ $details->TIPOEMPREEND }}
                             </td>
                         </tr>
                         <tr>
@@ -294,7 +294,7 @@
                                 Sist. Construtivo:
                             </td>
                             <td class="text-right">
-                                Estrut.Conv.
+                                {{ $details->SISTCONSTRUTIVO }}
                             </td>
                         </tr>
                         <tr>
@@ -302,7 +302,7 @@
                                 Nº de Torre + Pvtos:
                             </td>
                             <td class="text-right">
-                                1 (T+20)
+                                {{ $details->NDETORRESPVTOS }}
                             </td>
                         </tr>
                         <tr>
@@ -310,7 +310,7 @@
                                 Nº Pvtos Gargagem:
                             </td>
                             <td class="text-right">
-                                4 c/ tot. de 110 vagas
+                                {{ $details->NPVTOSGARGAGEM }}
                             </td>
                         </tr>
                         <tr>
@@ -318,7 +318,7 @@
                                 N° Unidades:
                             </td>
                             <td class="text-right">
-                                98
+                                {{ $details->NUNIDADES }}
                             </td>
                         </tr>
                         <tr>
@@ -326,7 +326,7 @@
                                 Área apartamentos:
                             </td>
                             <td class="text-right">
-                                62/ 65/ 77 m2
+                                {{ $details->AREAAPARTAMENTOS }} m2
                             </td>
                         </tr>
                         </tbody>
@@ -338,7 +338,7 @@
                         <thead>
                         <tr>
                             <th colspan="2" class="text-left">
-                                AGENTE FINANCEIRO: ABC BRASIL
+                                AGENTE FINANCEIRO: {{ $details->AGENTEFINANCEIRO }}
                             </th>
                         </tr>
                         </thead>
@@ -346,10 +346,10 @@
                         <tbody>
                         <tr>
                             <td class="text-left">
-                                Data Vistoria: 25 de cada mês / Med.Lib.!
+                                Data Vistoria: {{ $details->DATAVISTORIA }}
                             </td>
                             <td class="text-center">
-                                Valor Financiamento.: 18.000.000 (R$ Io)
+                                Valor Financiamento.: {{ $details->VALORFINANCIAMENTO }}
                             </td>
                         </tr>
                         </tbody>
@@ -361,10 +361,10 @@
                         <thead>
                         <tr>
                             <th colspan="2" class="text-left">
-                                ORC. CONTRATUAL - BASE 08/17 - INCC LO(N-1)
+                                ORC. CONTRATUAL - {{ $details->ORCCONTRATUAL }}- INCC LO(N-1)
                             </th>
                             <th class="text-right">
-                                710,355
+                                {{ $details->ORCCONTRATUALINCC }}
                             </th>
                         </tr>
                         </thead>
@@ -375,10 +375,10 @@
                                 Custo Raso Obra
                             </td>
                             <td class="text-right">
-                                R$ 20.076.734,29
+                                R$ {{ number_format($details->CUSTORASOOBRA,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                28.263 INCC
+                                {{ number_format($details->CUSTORASOOBRAINCC,0,',','.') }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -386,10 +386,10 @@
                                 Taxa Adm.-10,00%
                             </td>
                             <td class="text-right">
-                                R$ 2.007.673,43
+                                R$ {{ number_format($details->TAXAADM,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                2.826 INCC
+                                {{ number_format($details->TAXAADMINCC,0,',','.') }} INCC
                             </td>
                         </tr>
                         <tr class="tot">
@@ -397,10 +397,10 @@
                                 Custo Raso + Taxa
                             </td>
                             <td class="text-right">
-                                R$ 22.084.407,72
+                                R$ {{ number_format($details->CUSTORASOTAXA,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                31.089 INCC
+                                {{ number_format($details->CUSTORASOTAXAINCC,0,',','.') }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -408,10 +408,10 @@
                                 Manutenção-1,50%
                             </td>
                             <td class="text-right">
-                                R$ 301.151,01
+                                R$ {{ number_format($details->MANUTENCAO,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                424 INCC
+                                {{ number_format($details->MANUTENCAOINCC,0,',','.') }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -419,10 +419,10 @@
                                 Custos diversos
                             </td>
                             <td class="text-right">
-                                R$ -
+                                R$ {{ number_format($details->CUSTOSDIVERSOS,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                0 INCC
+                                {{ number_format($details->CUSTOSDIVERSOSINCC,0,',','.') }} INCC
                             </td>
                         </tr>
                         </tbody>
@@ -456,16 +456,16 @@
                                 Início Plan. Obra:
                             </td>
                             <td class="text-center">
-                                Sep-18
+                                {{ $details->INICIOPLANOBRAPREV }}
                             </td>
                             <td class="text-center">
-                                Sep-18
+                                {{ $details->INICIOPLANOBRAREAL }}
                             </td>
                             <td class="text-right">
-                                0
+                                {{ $details->INICIOPLANOBRADESV }}
                             </td>
                             <td>
-                                <span class="leg verde"></span>
+                                <span class="leg {{ $cores[strtoupper($details->INICIOPLANOBRAFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -473,16 +473,16 @@
                                 Térm. Plan. Obra:
                             </td>
                             <td class="text-center">
-                                Jul-20
+                                {{ $details->TERMPLANOBRAPREV }}
                             </td>
                             <td class="text-center">
-                                Jul-20
+                                {{ $details->TERMPLANOBRAREAL }}
                             </td>
                             <td class="text-right">
-                                0
+                                {{ $details->TERMPLANOBRADESV }}
                             </td>
                             <td>
-                                <span class="leg verde"></span>
+                                <span class="leg {{ $cores[strtoupper($details->TERMPLANOBRAFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -490,16 +490,16 @@
                                 Térm. Habite-se:
                             </td>
                             <td class="text-center">
-                                Jul-20
+                                {{ $details->TERMHABITESEPREV }}
                             </td>
                             <td class="text-center">
-                                May-20
+                                {{ $details->TERMHABITESEREAL }}
                             </td>
                             <td class="text-right">
-                                -76
+                                {{ $details->TERMHABITESEDESV }}
                             </td>
                             <td>
-                                <span class="leg verde"></span>
+                                <span class="leg {{ $cores[strtoupper($details->TERMHABITESEFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -507,16 +507,16 @@
                                 Térm. Cliente:
                             </td>
                             <td class="text-center">
-                                Nov-20
+                                {{ $details->TERMCLIENTEPREV }}
                             </td>
                             <td class="text-center">
-                                Aug-20
+                                {{ $details->TERMCLIENTEREAL }}
                             </td>
                             <td class="text-right">
-                                -92
+                                {{ $details->TERMCLIENTEDESV }}
                             </td>
                             <td>
-                                <span class="leg verde"></span>
+                                <span class="leg {{ $cores[strtoupper($details->TERMCLIENTEFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -524,16 +524,16 @@
                                 Prazo Obra-Meses:
                             </td>
                             <td class="text-center">
-                                23
+                                {{ $details->PRAZOBRAMESESPREV }}
                             </td>
                             <td class="text-center">
-                                23
+                                {{ $details->PRAZOOBRAMESESREAL }}
                             </td>
                             <td class="text-right">
-                                0
+                                {{ $details->PRAZOOBRAMESESDESV }}
                             </td>
                             <td>
-                                <span class="leg verde"></span>
+                                <span class="leg {{ $cores[strtoupper($details->PRAZOOBRAMESESFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         </tbody>
@@ -565,30 +565,30 @@
                         <tbody>
                         <tr>
                             <td class="text-center">
-                                R$ (Nominal)
+                                {{ $details->EVOORCID }}
                             </td>
                             <td class="text-center">
-                                23.291.952
+                                {{ $details->EVOORCINIOBRA }}
                             </td>
                             <td class="text-center">
-                                -
+                                {{ $details->EVOORCADTV }}
                             </td>
                             <td class="text-center">
-                                23.291.952
+                                {{ $details->EVOORCREVOBRA }}
                             </td>
                         </tr>
                         <tr>
                             <td class="text-center">
-                                INCC
+                                {{ $details->EVOORCIDINCC }}
                             </td>
                             <td class="text-center">
-                                31.089,25
+                                {{ $details->EVOORCINIOBRAINCC }}
                             </td>
                             <td class="text-center">
-                                -
+                                {{ $details->EVOORCADTVINCC }}
                             </td>
                             <td class="text-center">
-                                31.089,25
+                                {{ $details->EVOORCREVOBRAINCC }}
                             </td>
                         </tr>
                         </tbody>

@@ -268,17 +268,6 @@ class ConstructionController extends Controller
 
     }
 
-
-    public function sendMail($id)
-    {
-        try {
-            Mail::send(new SendConstructionMail(),['constructionId' => $id]);
-            return response()->json(['success' => true], 200);
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Falha ao enviar o e-mail' . $e], 500);
-        }
-    }
-
     public function clientIndex(ConstructionRequest $request, $id)
     {
 

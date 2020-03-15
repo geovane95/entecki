@@ -300,7 +300,7 @@
                                             {{ $constructiontable->FXDPRRATUAL }}
                                         </td>
                                         <td>
-                                                <span class="leg {{$constructiontable->FXDRPRATUALFAROL }}">
+                                                <span class="leg {{ $constructiontable->FXDRPRATUALFAROL }}">
 
                                                 </span>
                                             {{ $constructiontable->FXDRPRATUALVLR }}%
@@ -349,7 +349,7 @@
                                 </a>
                             </td>
                             <td>
-                                <a href="{{-- route('client-space.construction-detail', $constructiontable->construction_id) --}}" class="det">
+                                <a href="{{ route('client-space.construction-detail', $constructiontable->construction_id) }}" class="det">
 
                                 </a>
                             </td>

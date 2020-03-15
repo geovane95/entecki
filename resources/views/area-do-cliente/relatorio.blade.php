@@ -34,7 +34,7 @@
                             Mês Referência:
                             <select name="competences" id="competences">
                                 @foreach($competences as $competence)
-                                    <option value="{{ $competence->id }}" {{ $actualComp ? in_array($competence->id,$actualComp) ? "selected" : "" : "" }}>
+                                    <option value="{{ $competence->id }}" {{ in_array($competence->id,$competencesselected) ? "selected" : "" }}>
                                         {{ $competence->description }}
                                     </option>
                                 @endforeach
@@ -47,12 +47,11 @@
                         <select class="obras constructions" multiple id="constructions">
                             <option>SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
                             @foreach($constructions as $construction)
-                                <option value="{{ $construction->id }}" {{ $actualConst ? in_array($construction->id,$actualConst) ? "selected" : "" : "" }}>
+                                <option value="{{ $construction->id }}" {{ in_array($construction->id,$construtionsselected) ? "selected" : "" }}>
                                     {{ $construction->name }}
                                 </option>
                             @endforeach
-                        </select><br/>
-                        <input type="submit" value="Buscar" class="btn col-md-2"/>
+                        </select>
                     </form>
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-between align-items-end">
@@ -60,7 +59,7 @@
                         <a  href="javascript:window.print()" class="print">
 
                         </a>
-                        <a href="{{ route('client-space.construction-report', $construction->id) }}" class="btn-relatorio">
+                        <a href="{{ route('client-space.construction-report') }}" class="btn-relatorio">
                             RELATÓRIO DE<br>
                             PERFORMANCE DE<br>
                             ENGENHARIA (RPE)
@@ -321,4 +320,18 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function(){
+            $("#competences").change(function(){
+                let id = $("#competences").val();
+                let ids = $("#constructions").val();
+                window.location.href = "./relatorio?competences="+id+"&constructions="+ids;
+            });
+            $("#constructions").change(function(){
+                let id = $("#competences").val();
+                let ids = $("#constructions").val();
+                window.location.href = "./relatorio?competences="+id+"&constructions="+ids;
+            });
+        });
+    </script>
     @stop
