@@ -3,11 +3,6 @@
     <!-- favicon -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/series-label.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="{{url('js/axios.js')}}"></script>
-    <script src="{{url('js/jquery.js')}}"></script>
 @stop
 @section('miolo')
 
@@ -32,7 +27,8 @@
                                 <i></i>
                                 Documentos
                             </a>
-                            <a href="{{ route('client-space.pictures-download', [$actualcomp, $actualconst]) }}" class="pic">
+                            <a href="{{ route('client-space.pictures-download', [$actualcomp, $actualconst]) }}"
+                               class="pic">
                                 <i></i>
                                 Fotos
                             </a>
@@ -49,7 +45,6 @@
                         DOCUMENTOS
                     </h1>
                 </div>
-
 
 
                 <div class="col-md-12 files atual">
@@ -73,23 +68,24 @@
                     <div class="col-md-10 offset-md-1">
                         <ul class="list-files">
                             @foreach($documents as $document)
-                            <li>
-                                <a href="{{ storage_path($document->folder) }}" target="_blank" title="{{ $document->fileName }}" class="{{ $document->extension }}">
-                                    {{ $document->fileName }}
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="{{ storage_path($document->folder) }}" target="_blank"
+                                       title="{{ $document->fileName }}" class="{{ $document->extension }}">
+                                        {{ $document->fileName }}
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-12 files">
                     <h4>
-                       MESES ANTERIORES
+                        MESES ANTERIORES
                     </h4>
 
                     <div class="col-md-10 offset-md-1">
                         <form class="filtro-mes-ano d-flex align-items-center">
-                             <strong>Buscar</strong>
+                            <strong>Buscar</strong>
                             <label>
                                 Mês
                                 <select name="month" id="month">
@@ -114,151 +110,11 @@
                             </label>
                         </form>
                         <div id="accordion">
-                          <div class="card">
-                            <div class="card-header" id="headingTwo">
-                              <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#nov19" aria-expanded="false" aria-controls="nov19">
-                                  Novembro 2019
-                                </button>
-                              </h5>
-                            </div>
-                            <div id="nov19" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                              <div class="card-body">
-                                    <ul class="list-files">
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.ppt" class="ppt">
-                                                Nonoononononononononno.ppt
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.doc" class="doc">
-                                                Nonoononononononononno.doc
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.xls" class="xls">
-                                                Nonoononononononononno.xls
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.zip" class="zip">
-                                                Nonoononononononononno.zip
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.doc" class="doc">
-                                                Nonoononononononononno.doc
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.xls" class="xls">
-                                                Nonoononononononononno.xls
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.zip" class="zip">
-                                                Nonoononononononononno.zip
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.ppt" class="ppt">
-                                                Nonoononononononononno.ppt
-                                            </a>
-                                        </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card">
-                            <div class="card-header" id="headingThree">
-                              <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#dez19" aria-expanded="false" aria-controls="dez19">
-                                    Dezembro 2019
-                                </button>
-                              </h5>
-                            </div>
-                            <div id="dez19" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                              <div class="card-body">
-                                    <ul class="list-files">
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.ppt" class="ppt">
-                                                Nonoononononononononno.ppt
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.doc" class="doc">
-                                                Nonoononononononononno.doc
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.xls" class="xls">
-                                                Nonoononononononononno.xls
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.zip" class="zip">
-                                                Nonoononononononononno.zip
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.doc" class="doc">
-                                                Nonoononononononononno.doc
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.xls" class="xls">
-                                                Nonoononononononononno.xls
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.zip" class="zip">
-                                                Nonoononononononononno.zip
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.pdf" class="pdf">
-                                                Nonoononononononononno.pdf
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" target="_blank" title="Nonoononononononononno.ppt" class="ppt">
-                                                Nonoononononononononno.ppt
-                                            </a>
-                                        </li>
-                                    </ul>
-                              </div>
-                            </div>
-                          </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-
 
 
             <div class="row tabelas-pad">
@@ -267,7 +123,7 @@
                     <a href="docs_obra.blade.php" class="btn-nav">
                         Obra Anterior
                     </a>
-                    <a href="detalhe.blade.php" class="btn-nav">
+                    <a href="{{ back() }}" class="btn-nav">
                         Voltar
                     </a>
                     <a href="docs_obra.blade.php" class="btn-nav">
@@ -289,12 +145,14 @@
                 geraListagemAcordion();
             });
         });
-        function geraListagemAcordion(){
+
+        function geraListagemAcordion() {
             let month = $("#month").val();
             let year = $("#year").val();
             let construction = '{{ $actualconst }}';
             let url = "";
-            if(month != 0 && year != 0) {
+            let first = true;
+            if (month != 0 && year != 0) {
                 url = "{{ route('competence.list', [':construction',':month',':year']) }}";
 
                 url = url.replace(':construction', construction);
@@ -302,102 +160,77 @@
                 url = url.replace(':month', month);
 
                 url = url.replace(':year', year);
-            }else if(month != 0 && year == 0){
-                url = "{{ route('competence.list.month', [':construction',':month']) }}";
+            } else if (month != 0 && year == 0) {
+                url = "{{ route('competence.list.args', [':construction',':month']) }}";
 
                 url = url.replace(':construction', construction);
 
                 url = url.replace(':month', month);
-            }else if(month == 0 && year != 0){
-                url = "{{ route('competence.list.year', [':construction',':year']) }}";
+            } else if (month == 0 && year != 0) {
+                url = "{{ route('competence.list.args', [':construction',':year']) }}";
 
                 url = url.replace(':construction', construction);
 
                 url = url.replace(':year', year);
+            }else{
+                console.log("TESTE")
+                url = "{{ route('competence.list.noargs', ':construction') }}"
+
+                url = url.replace(':construction', construction);
+
+                console.log(url);
             }
             axios.get(url)
                 .then(response => {
-                    let dados = response.data.success;
-                    console.log(dados);
-
-                let template = "<div class=\"card\">\n" +
-                    "                            <div class=\"card-header\" id=\"headingThree\">\n" +
-                    "                              <h5 class=\"mb-0\">\n" +
-                    "                                <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"#dez19\" aria-expanded=\"false\" aria-controls=\"dez19\">\n" +
-                    "                                    Dezembro 2019\n" +
-                    "                                </button>\n" +
-                    "                              </h5>\n" +
-                    "                            </div>\n" +
-                    "                            <div id=\"dez19\" class=\"collapse\" aria-labelledby=\"headingThree\" data-parent=\"#accordion\">\n" +
-                    "                              <div class=\"card-body\">\n" +
-                    "                                    <ul class=\"list-files\">\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.pdf\" class=\"pdf\">\n" +
-                    "                                                Nonoononononononononno.pdf\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.pdf\" class=\"pdf\">\n" +
-                    "                                                Nonoononononononononno.pdf\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.ppt\" class=\"ppt\">\n" +
-                    "                                                Nonoononononononononno.ppt\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.doc\" class=\"doc\">\n" +
-                    "                                                Nonoononononononononno.doc\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.xls\" class=\"xls\">\n" +
-                    "                                                Nonoononononononononno.xls\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.zip\" class=\"zip\">\n" +
-                    "                                                Nonoononononononononno.zip\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.doc\" class=\"doc\">\n" +
-                    "                                                Nonoononononononononno.doc\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.xls\" class=\"xls\">\n" +
-                    "                                                Nonoononononononononno.xls\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.zip\" class=\"zip\">\n" +
-                    "                                                Nonoononononononononno.zip\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.pdf\" class=\"pdf\">\n" +
-                    "                                                Nonoononononononononno.pdf\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                        <li>\n" +
-                    "                                            <a href=\"#\" target=\"_blank\" title=\"Nonoononononononononno.ppt\" class=\"ppt\">\n" +
-                    "                                                Nonoononononononononno.ppt\n" +
-                    "                                            </a>\n" +
-                    "                                        </li>\n" +
-                    "                                    </ul>\n" +
-                    "                              </div>\n" +
-                    "                            </div>\n" +
-                    "                          </div>\n" +
-                    "                        </div>;"
-            })
+                    let dados = response.data;
+                    let arrays = dados.success;
+                    console.log(arrays);
+                    let template = "<div class=\"card\">\n" +
+                        "                            <div class=\"card-header\" id=\"headingThree\">\n" +
+                        "                              <h5 class=\"mb-0\">\n" +
+                        "                                <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"#:descriptionreb\" aria-expanded=\"false\" aria-controls=\":descriptionreb\">\n" +
+                        "                                    :descriptionreplaceb\n" +
+                        "                                </button>\n" +
+                        "                              </h5>\n" +
+                        "                            </div>\n" +
+                        "                            <div id=\":descriptionreb\" class=\"collapse\" aria-labelledby=\"headingThree\" data-parent=\"#accordion\">\n" +
+                        "                              <div class=\"card-body\">\n" +
+                        "                                    <ul class=\"list-files\" id='files_:descriptionreb'>\n" +
+                        "                                    </ul>\n" +
+                        "                              </div>\n" +
+                        "                            </div>\n" +
+                        "                          </div>\n" +
+                        "                        </div>";
+                    let templateli =
+                        "<li>\n" +
+                        "    <a href=\"#\" target=\"_blank\" title=\":filename\" class=\":filetype\">\n" +
+                        "        :filename\n" +
+                        "    </a>\n" +
+                        "</li>\n"
+                    $("#accordion").html("");
+                    for (let i = 0; i < arrays.length; i++) {
+                        let newTemplate = template.replace(/:descriptionreb/g, arrays[i].description.replace('/', ''));
+                        newTemplate = newTemplate.replace(/:descriptionreplaceb/g, arrays[i].description.replace('/', ' '));
+                        $("#accordion").append(newTemplate);
+                        let documents = arrays[i].documents;
+                        for (let j = 0; j < documents.length; j++) {
+                            if(first){
+                                $("#files_" + arrays[i].description.replace('/', '')).addClass('show');
+                                first = false;
+                            }
+                            let document = arrays[i].documents[j];
+                            let newTemplateLi = templateli.replace(/:filename/g, document.fileName);
+                            newTemplateLi = newTemplateLi.replace(/:filetype/g, document.extension);
+                            $("#files_" + arrays[i].description.replace('/', '')).append(newTemplateLi);
+                        }
+                    }
+                })
                 .catch((error) => {
 
-            })
+                })
                 .finally(() => {
 
-            });
+                });
         }
     </script>
 @stop

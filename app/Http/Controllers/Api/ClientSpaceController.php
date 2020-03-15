@@ -290,10 +290,7 @@ class  ClientSpaceController extends Controller
         if (!$competences)
             return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
 
-
-        foreach ($competences as $competence) {
-            $dados[$competence->id] = [];
-        }
+        $dados = [];
 
         foreach ($competences as $competence){
             $documents = $this->upload_data->where([
@@ -301,27 +298,22 @@ class  ClientSpaceController extends Controller
                 'competence' => $competence->id,
                 'uploadtype' => 2])
                 ->get();
-            array_push($dados[$competence->id], $documents);
+            $competence->documents = $documents;
+            array_push($dados, $competence);
         }
         return response()->json(['success' => $dados]);
     }
 
-    public function documentsByYear($constructionId,$year){
-
+    public function documentsByConstruction($constructionId){
+        sleep(2);
         $construction = $this->construction->find($constructionId);
 
-        $competences = $this->competence->where([
-            'year' => intval($year)
-        ])->get();
+        $competences = $this->competence->get();
 
         if (!$competences)
             return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
 
-
         $dados = [];
-        foreach ($competences as $competence) {
-            $dados[$competence->id] = [];
-        }
 
         foreach ($competences as $competence){
             $documents = $this->upload_data->where([
@@ -329,18 +321,27 @@ class  ClientSpaceController extends Controller
                 'competence' => $competence->id,
                 'uploadtype' => 2])
                 ->get();
-            array_push($dados[$competence->id], $documents);
+            $competence->documents = $documents;
+            array_push($dados, $competence);
         }
         return response()->json(['success' => $dados]);
     }
 
-    public function documentsByMonth($constructionId,$month){
+    public function documentsByYearOrMonth($constructionId,$yearmonth){
 
         $construction = $this->construction->find($constructionId);
 
-        $competences = $this->competence->where([
-            'month' => intval($month)
-        ])->get();
+        if ($yearmonth > 0 && $yearmonth <= 12){
+            $competences = $this->competence->where([
+                'month' => intval($yearmonth)
+            ])->get();
+        }elseif ($yearmonth > 1900){
+            $competences = $this->competence->where([
+                'year' => intval($yearmonth)
+            ])->get();
+        }else{
+            return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
+        }
 
         if (!$competences)
             return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
