@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class  ClientSpaceController extends Controller
 {
@@ -78,7 +79,7 @@ class  ClientSpaceController extends Controller
             $where = '';
             $competences = $this->competence->get()->where('status', '=', 1);
 
-            $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
             $incc = '773,52';
 
             if ($constructionId == 0) {
@@ -453,6 +454,40 @@ class  ClientSpaceController extends Controller
             'competencesselected' => $competenceIdPluck,
             'construtionsselected' => $constructionsIdPluck,
             'incc' => $incc
+        ]);
+    }
+
+    public function graficoFisicoAcumulado($id){
+
+    }
+    public function desempenhoFinanceiro($id){
+
+    }
+
+    public function analiseFisicaFinanceira($id){
+
+    }
+
+    public function fluxoFinanceiro($id){
+
+    }
+
+    public function fluxoDesemb($id){
+        $competences = DB::select("select * from competences order by id desc limit 2");
+        $dados = [];
+
+        foreach ($competences as $competence){
+            $fluxoDesemb = new Data();
+            $fluxoDesemb->delta = 2.55;
+            $fluxoDesemb->prevrev = 1134271;
+            $fluxoDesemb->real = 684851;
+
+            $competence->fluxodesemb = $fluxoDesemb;
+
+            array_push($dados, $competence);
+        }
+        return response()->json([
+            $dados
         ]);
     }
 }

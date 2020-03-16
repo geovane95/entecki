@@ -36,7 +36,7 @@
                     </span>
 
                     <select class="obras constructions" multiple id="constructions">
-                        <option>SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
+                        <option value="0">SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
                         @foreach($constructions as $construction)
                         <option value="{{ $construction->id }}" {{ in_array($construction->id,$construtionsselected) ? "selected" : "" }}>
                             {{ $construction->name }}
@@ -383,7 +383,9 @@
                 let id = $("#competences").val();
                 let ids = $("#constructions").val();
                 let url = "{{route('client-space.index.args', [':id',':ids'])}}";
-                window.location.href = url.replace(':ids',ids).replace(':id',id);
+                if(ids != 0) {
+                    window.location.href = url.replace(':ids', ids).replace(':id', id);
+                }
             });
             $(".doc").click(function(){
                 let id = $(this).attr('id');

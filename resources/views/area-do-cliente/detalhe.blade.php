@@ -349,7 +349,7 @@
                                 Data Vistoria: {{ $details->DATAVISTORIA }}
                             </td>
                             <td class="text-center">
-                                Valor Financiamento.: {{ $details->VALORFINANCIAMENTO }}
+                                Valor Financiamento.: {{ number_format($details->VALORFINANCIAMENTO,2,',','.') }}
                             </td>
                         </tr>
                         </tbody>
@@ -361,7 +361,7 @@
                         <thead>
                         <tr>
                             <th colspan="2" class="text-left">
-                                ORC. CONTRATUAL - {{ $details->ORCCONTRATUAL }}- INCC LO(N-1)
+                                ORC. CONTRATUAL - {{ $details->ORCCONTRATUAL }}
                             </th>
                             <th class="text-right">
                                 {{ $details->ORCCONTRATUALINCC }}
@@ -568,13 +568,13 @@
                                 {{ $details->EVOORCID }}
                             </td>
                             <td class="text-center">
-                                {{ $details->EVOORCINIOBRA }}
+                                {{ number_format($details->EVOORCINIOBRA,0,',','.') }}
                             </td>
                             <td class="text-center">
-                                {{ $details->EVOORCADTV }}
+                                {{ number_format($details->EVOORCADTV,0,',','.') }}
                             </td>
                             <td class="text-center">
-                                {{ $details->EVOORCREVOBRA }}
+                                {{ number_format($details->EVOORCREVOBRA,0,',','.') }}
                             </td>
                         </tr>
                         <tr>
@@ -582,13 +582,13 @@
                                 {{ $details->EVOORCIDINCC }}
                             </td>
                             <td class="text-center">
-                                {{ $details->EVOORCINIOBRAINCC }}
+                                {{ number_format($details->EVOORCINIOBRAINCC,2,',','.') }}
                             </td>
                             <td class="text-center">
-                                {{ $details->EVOORCADTVINCC }}
+                                {{ number_format($details->EVOORCADTVINCC,2,',','.') }}
                             </td>
                             <td class="text-center">
-                                {{ $details->EVOORCREVOBRAINCC }}
+                                {{ number_format($details->EVOORCREVOBRAINCC,2,',','.') }}
                             </td>
                         </tr>
                         </tbody>
@@ -602,7 +602,7 @@
                                 ACOMPANHAMENTO FINANCEIRO
                             </th>
                             <th class="text-right" colspan="2">
-                                INCC (N-1) IN: 750,18
+                                INCC (N-1) IN: {{ number_format($details->ACOFINCCIN,2,',','.') }}
                             </th>
                         </tr>
                         <tr>
@@ -623,34 +623,34 @@
                         <tbody>
                         <tr>
                             <td class="text-right">
-                                5.699.893
+                                {{ number_format($details->ACOFACUMTOTAL,0,',','.') }}
                             </td>
                             <td class="text-right">
-                                17.698.905
+                                {{ number_format($details->ACOFSALDOREAL,0,',','.') }}
                             </td>
                             <td class="text-right">
-                                23.398.798
+                                {{ number_format($details->ACOFPROJCUSTO,0,',','.') }}
                             </td>
                             <td class="text-right">
-                                -106.845,8
+                                {{ $details->ACOFVARORCREV }}
                             </td>
                             <td rowspan="2" class="text-center">
-                                -0,46%<br>
-                                <span class="leg verde"></span>
+                                {{ $details->ACOFVARORCREVVALOR }}%<br>
+                                <span class="leg {{ $cores[strtoupper($details->ACOFVARORCREVFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
                             <td class="text-right">
-                                7.638,80
+                                {{ number_format($details->ACOFACUMTOTALINCC,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                23.592,88
+                                {{ number_format($details->ACOFSALDOREALINCC,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                31.231,68
+                                {{ number_format($details->ACOFPROJCUSTOINCC,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                -142,4
+                                {{ $details->ACOFVARORCREVINCC }}
                             </td>
                         </tr>
                         </tbody>
@@ -678,18 +678,18 @@
                         <tbody>
                         <tr>
                             <td class="text-right">
-                                2.106,45
+                                {{ number_format($details->CUSTOM2PROJCONST,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                3.558,54
+                                {{ number_format($details->CUSTOM2PROJPRIVA,2,',','.') }}
                             </td>
                         </tr>
                         <tr>
                             <td class="text-right">
-                                2,81
+                                {{ number_format($details->CUSTOM2PROJCONSTINCC,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                4,74
+                                {{ number_format($details->CUSTOM2PROJPRIVAINCC,2,',','.') }}
                             </td>
                         </tr>
                         </tbody>
@@ -713,9 +713,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 100%;">
+                                    <div class="percent" style="width: {{ $details->PROJEXEC }}%;">
                                             <span>
-                                                 100%
+                                                 {{ $details->PROJEXEC }}%
                                             </span>
                                     </div>
                                 </div>
@@ -727,9 +727,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 100%;">
+                                    <div class="percent" style="width: {{ $details->FUNDACAOTORRE }}%;">
                                             <span>
-                                                 100%
+                                                 {{ $details->FUNDACAOTORRE }}%
                                             </span>
                                     </div>
                                 </div>
@@ -741,9 +741,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 60%;">
+                                    <div class="percent" style="width: {{ $details->ESTRUTURATORRE }}%;">
                                             <span>
-                                                 60%
+                                                 {{ $details->ESTRUTURATORRE }}%
                                             </span>
                                     </div>
                                 </div>
@@ -755,9 +755,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 3%;">
+                                    <div class="percent" style="width: {{ $details->INSTALACOES }}%;">
                                             <span>
-                                                 3%
+                                                 {{ $details->INSTALACOES }}%
                                             </span>
                                     </div>
                                 </div>
@@ -769,9 +769,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 0%;">
+                                    <div class="percent" style="width: {{ $details->ACABAMENTO }}%;">
                                             <span>
-                                                 0%
+                                                 {{ $details->ACABAMENTO }}%
                                             </span>
                                     </div>
                                 </div>
@@ -783,9 +783,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 0%;">
+                                    <div class="percent" style="width: {{ $details->REVFACHADA }}%;">
                                             <span>
-                                                 0%
+                                                 {{ $details->REVFACHADA }}%
                                             </span>
                                     </div>
                                 </div>
@@ -797,9 +797,9 @@
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: 0%;">
+                                    <div class="percent" style="width: {{ $details->AEPAISAGISMO }}%;">
                                             <span>
-                                                 0%
+                                                 {{ $details->AEPAISAGISMO }}%
                                             </span>
                                     </div>
                                 </div>
@@ -1465,7 +1465,7 @@
                         </tr>
                         </thead>
                     </table>
-                    <div class="row">
+                    <div class="row" id="fluxodesemb">
                         <div class="col-md-6">
 
                             <div id="barra5" style="width: 100%; height: 300px;"></div>
@@ -1690,4 +1690,80 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+            fluxodesemb();
+        });
+        function fluxodesemb() {
+            let construction = "{{ $details->construction_id }}";
+            let url = "{{ route('graficos.fluxodesemb',':construction') }}";
+            url = url.replace(':construction',construction);
+            axios.get(url)
+                .then(response => {
+                    let template = '<div class="col-md-6">\n' +
+                        '\n' +
+                        '                            <div id="barra5" style="width: 100%; height: 300px;"></div>\n' +
+                        '\n' +
+                        '                            <script type="text/javascript">\n' +
+                        '                                Highcharts.chart("barra5", {\n' +
+                        '                                    chart: {\n' +
+                        '                                        type: "column"\n' +
+                        '                                    },\n' +
+                        '                                    title: {\n' +
+                        '                                        text: "Δ = :delta%"\n' +
+                        '                                    },\n' +
+                        '                                    xAxis: {\n' +
+                        '                                        crosshair: true,\n' +
+                        '                                        title: {\n' +
+                        '                                            text: ":competencedesc"\n' +
+                        '                                        },\n' +
+                        '                                        labels: {\n' +
+                        '                                            enabled: false\n' +
+                        '                                        }\n' +
+                        '                                    },\n' +
+                        '                                    yAxis: {\n' +
+                        '                                        labels: {\n' +
+                        '                                            enabled: false\n' +
+                        '                                        },\n' +
+                        '                                        title: {\n' +
+                        '                                            enabled: false\n' +
+                        '                                        }\n' +
+                        '                                    },\n' +
+                        '                                    series: [{\n' +
+                        '                                        name: "Prev. Rev. (R$)",\n' +
+                        '                                        data: [:valueprevrev],\n' +
+                        '                                        color: {\n' +
+                        '                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n' +
+                        '                                            stops: [\n' +
+                        '                                                [0, "#002953"],\n' +
+                        '                                                [1, "#6c85af"]\n' +
+                        '                                            ]\n' +
+                        '                                        }\n' +
+                        '\n' +
+                        '                                    }, {\n' +
+                        '                                        name: "Real (R$)",\n' +
+                        '                                        data: [:valuereal],\n' +
+                        '                                        color: {\n' +
+                        '                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n' +
+                        '                                            stops: [\n' +
+                        '                                                [0, "#6f7124"],\n' +
+                        '                                                [1, "#ae9c20"]\n' +
+                        '                                            ]\n' +
+                        '                                        }}]})</script></div>';
+                    let newtemplate = template.replace(':delta',delta);
+                    newtemplate = newtemplate.replace(':competencedesc',competencedesc);
+                    newtemplate = newtemplate.replace(':valueprevrev', valueprevrev);
+                    newtemplate = newtemplate.replace(':valuereal',valuereal);
+
+                    $("#fluxodesemb").append(newtemplate);
+                })
+                .catch((error) => {
+
+                })
+                .finally(() => {
+
+                });
+            $("#fluxodesemb")
+        }
+    </script>
 @stop

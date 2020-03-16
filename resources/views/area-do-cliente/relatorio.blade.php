@@ -330,7 +330,9 @@
             $("#constructions").change(function(){
                 let id = $("#competences").val();
                 let ids = $("#constructions").val();
-                window.location.href = "./relatorio?competences="+id+"&constructions="+ids;
+                if(ids != 0) {
+                    window.location.href = "./relatorio?competences="+id+"&constructions="+ids;
+                }
             });
         });
     </script>

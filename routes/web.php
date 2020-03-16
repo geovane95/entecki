@@ -60,6 +60,7 @@ Route::get("download/{file}", function ($file) {
 
 
 Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-cliente'], function (){
+    Route::get('/detalhes/{id}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
     Route::get('/', 'ClientSpaceController@indexWithNoParams')->name('client-space.index');
     Route::get('/{competence}/{construction}', 'ClientSpaceController@index')->name('client-space.index.args');
     Route::get('/recuperar-senha', function(){
@@ -68,7 +69,6 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     Route::get('/alterar-senha/{id}', function(){
         return view('area-do-cliente.nova_senha');
     })->name('client-space.change-password');
-    Route::get('/detalhes/{id}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
     Route::get('/docs-obra/{competence}/{id}', 'ClientSpaceController@documents')->name('client-space.construction-documents');
     Route::get('/relatorio', 'ClientSpaceController@report')->name('client-space.construction-report');
     Route::get('/logout', function (){
@@ -81,4 +81,5 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('competence.list');
     Route::get('competences/{construction}/{yearmonth}','ClientSpaceController@documentsByYearOrMonth')->name('competence.list.args');
     Route::get('competences/{construction}','ClientSpaceController@documentsByConstruction')->name('competence.list.noargs');
+    Route::get('graficos/fluxodesemb/{id}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');
 });
