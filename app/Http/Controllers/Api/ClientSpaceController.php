@@ -72,24 +72,23 @@ class  ClientSpaceController extends Controller
                 redirect()->route('client-space.logout');
             }
 
-
+            $where = '';
             if ($user->access_profile == 2){
                 $where = " where uc.user = " . $user->id;
             }
-
-            $where = '';
             $competences = $this->competence->get()->where('status', '=', 1);
 
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+
             $incc = '773,52';
 
-            if ($constructionId == 0) {
+            if (!$constructionId) {
                 $constructionsIdPluck = Arr::pluck($constructions, 'id');
             }else{
                 $constructionsIdPluck = [$constructionId];
             }
 
-            if ($competenceId == 0){
+            if (!$competenceId){
                 $competenceIdPluck = Arr::pluck($competences,'id');
             }else{
                 $competenceIdPluck = [$competenceId];
@@ -155,8 +154,8 @@ class  ClientSpaceController extends Controller
                     'upload_types.name as upload_type_name',
                     'upload_statuses.name as upload_status_name'
                 )
-                ->whereIn('constructions.id', $constructionsIdPluck)
-                ->whereIn('competences.id',$competenceIdPluck)
+                ->whereIn('constructions.id',$constructionsIdPluck)
+                ->where('competences.id','=',$competenceIdPluck)
                 ->get();
         } catch (Exception $e) {
             dd($e);
@@ -382,7 +381,8 @@ class  ClientSpaceController extends Controller
 
             $competences = $this->competence->get()->where('status', '=', 1);
 
-            $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+            dd($constructions);
             $incc = '773,52';
 
             if (!$request->constructions) {
@@ -392,7 +392,8 @@ class  ClientSpaceController extends Controller
             }
 
             if (!$request->competences){
-                $competenceIdPluck = Arr::pluck($competences,'id');
+                $compatual = $this->competence->orderBy('id', 'desc')->take(1)->get()->where('status','=',1);
+                $competenceIdPluck = Arr::pluck($compatual,'id');
             }else{
                 $competenceIdPluck = [$request->competences];
             }
