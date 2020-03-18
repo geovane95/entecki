@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ResponsibleRequest;
 use App\Models\AccessProfile;
 use App\Models\Address;
 use App\Models\City;
@@ -65,16 +66,16 @@ class  ClientSpaceController extends Controller
     public function index($competenceId,$constructionId)
     {
         try {
-            /*if (auth()->user()) {
+            if (auth()->user()) {
                 $user = $this->user->find(auth()->user()->id);
             } else {
                 redirect()->route('client-space.logout');
             }
-            */
 
-            /*if ($user->access_profile == 2){
+
+            if ($user->access_profile == 2){
                 $where = " where uc.user = " . $user->id;
-            }*/
+            }
 
             $where = '';
             $competences = $this->competence->get()->where('status', '=', 1);
@@ -193,7 +194,7 @@ class  ClientSpaceController extends Controller
         return $this->index($competence[0]->id,json_encode($constructionPluck));
     }
 
-    public function detail($id)
+    public function detail($id,$competence)
     {
 
         $cores = [
@@ -201,6 +202,9 @@ class  ClientSpaceController extends Controller
             'OK' => ['FAROL' => 'verde', 'ALT' => 'Condições Ideais', 'TITLE' => 'Condições Ideais'],
             'AL' => ['FAROL' => 'amarelo', 'ALT' => 'Condições de Alerta', 'TITLE' => 'Condições de Alerta']
         ];
+
+        $competence = $this->competence->where('id','=',$competence)->get();
+
         $details = DB::table('constructions')
             ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
             ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
@@ -237,14 +241,14 @@ class  ClientSpaceController extends Controller
                 'upload_statuses.name as upload_status_name',
                 'data.*'
             )
-            ->where('constructions.id', '=', $id)
+            ->where(['constructions.id' => $id,'competences.id' => $competence[0]->id])
             ->get();
             $competences = $this->competence->get()->where('status', '=', 1);
         return view('area-do-cliente.detalhe', [
             'details' => $details[0],
             'competences'=>$competences,
             'cores' => $cores,
-            'competencesselected' => 0
+            'competencesselected' => $competence[0]->id
         ]);
     }
 

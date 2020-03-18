@@ -31,7 +31,7 @@
             <div class="row d-flex">
                 <div class="col-md-4 col-lg-3">
                     <figure>
-                        <img src="{{storage_path('public/constructions/'.$details->thumbnail)}}" alt="{{ $details->construction_name }}" title="{{ $details->construction_name }}"/>
+                        <img src="{{asset('images/constructions/'.$details->thumbnail)}}" alt="{{ $details->construction_name }}" title="{{ $details->construction_name }}"/>
                     </figure>
                 </div>
                 <div class="col-md-8 col-lg-9 pl0 d-flex flex-column justify-content-between">
@@ -101,7 +101,7 @@
                                 Mês Referência:
                                 <select name="competences" id="competences">
                                     @foreach($competences as $competence)
-                                        <option value="{{ $competence->id }}" {{-- in_array($competence->id,$competencesselected) ? "selected" : "" --}}>
+                                        <option value="{{ $competence->id }}" {{ $competence->id == $competencesselected ? "selected" : "" }}>
                                             {{ $competence->description }}
                                         </option>
                                     @endforeach
@@ -1692,7 +1692,12 @@
     </section>
     <script>
         $(document).ready(function () {
-            fluxodesemb();
+            $("#competences").change(function(){
+                let id = $("#competences").val();
+                let url = "{{ route('client-space.construction-detail', [$details->construction_id, ':competence']) }}";
+                url = url.replace(':competence',id);
+                window.location.href = url;
+            });
         });
         function fluxodesemb() {
             let construction = "{{ $details->construction_id }}";
@@ -1700,56 +1705,54 @@
             url = url.replace(':construction',construction);
             axios.get(url)
                 .then(response => {
-                    let template = '<div class="col-md-6">\n' +
-                        '\n' +
-                        '                            <div id="barra5" style="width: 100%; height: 300px;"></div>\n' +
-                        '\n' +
-                        '                            <script type="text/javascript">\n' +
-                        '                                Highcharts.chart("barra5", {\n' +
-                        '                                    chart: {\n' +
-                        '                                        type: "column"\n' +
-                        '                                    },\n' +
-                        '                                    title: {\n' +
-                        '                                        text: "Δ = :delta%"\n' +
-                        '                                    },\n' +
-                        '                                    xAxis: {\n' +
-                        '                                        crosshair: true,\n' +
-                        '                                        title: {\n' +
-                        '                                            text: ":competencedesc"\n' +
-                        '                                        },\n' +
-                        '                                        labels: {\n' +
-                        '                                            enabled: false\n' +
-                        '                                        }\n' +
-                        '                                    },\n' +
-                        '                                    yAxis: {\n' +
-                        '                                        labels: {\n' +
-                        '                                            enabled: false\n' +
-                        '                                        },\n' +
-                        '                                        title: {\n' +
-                        '                                            enabled: false\n' +
-                        '                                        }\n' +
-                        '                                    },\n' +
-                        '                                    series: [{\n' +
-                        '                                        name: "Prev. Rev. (R$)",\n' +
-                        '                                        data: [:valueprevrev],\n' +
-                        '                                        color: {\n' +
-                        '                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n' +
-                        '                                            stops: [\n' +
-                        '                                                [0, "#002953"],\n' +
-                        '                                                [1, "#6c85af"]\n' +
-                        '                                            ]\n' +
-                        '                                        }\n' +
-                        '\n' +
-                        '                                    }, {\n' +
-                        '                                        name: "Real (R$)",\n' +
-                        '                                        data: [:valuereal],\n' +
-                        '                                        color: {\n' +
-                        '                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n' +
-                        '                                            stops: [\n' +
-                        '                                                [0, "#6f7124"],\n' +
-                        '                                                [1, "#ae9c20"]\n' +
-                        '                                            ]\n' +
-                        '                                        }}]})</script></div>';
+                    let template =
+                        `                                Highcharts.chart("barra5", {\n` +
+                        `                                    chart: {\n` +
+                        `                                        type: "column"\n` +
+                        `                                    },\n` +
+                        `                                    title: {\n` +
+                        `                                        text: "Δ = :delta%"\n` +
+                        `                                    },\n` +
+                        `                                    xAxis: {\n` +
+                        `                                        crosshair: true,\n` +
+                        `                                        title: {\n` +
+                        `                                            text: ":competencedesc"\n` +
+                        `                                        },\n` +
+                        `                                        labels: {\n` +
+                        `                                            enabled: false\n` +
+                        `                                        }\n` +
+                        `                                    },\n` +
+                        `                                    yAxis: {\n` +
+                        `                                        labels: {\n` +
+                        `                                            enabled: false\n` +
+                        `                                        },\n` +
+                        `                                        title: {\n` +
+                        `                                            enabled: false\n` +
+                        `                                        }\n` +
+                        `                                    },\n` +
+                        `                                    series: [{\n` +
+                        `                                        name: "Prev. Rev. (R$)",\n` +
+                        `                                        data: [:valueprevrev],\n` +
+                        `                                        color: {\n` +
+                        `                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n` +
+                        `                                            stops: [\n` +
+                        `                                                [0, "#002953"],\n` +
+                        `                                                [1, "#6c85af"]\n` +
+                        `                                            ]\n` +
+                        `                                        }\n` +
+                        `\n` +
+                        `                                    }, {\n` +
+                        `                                        name: "Real (R$)",\n` +
+                        `                                        data: [:valuereal],\n` +
+                        `                                        color: {\n` +
+                        `                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n` +
+                        `                                            stops: [\n` +
+                        `                                                [0, "#6f7124"],\n` +
+                        `                                                [1, "#ae9c20"]\n` +
+                        `                                            ]}\n` +
+                        `                                    }\n` +
+                        `                                ]\n` +
+                        `})`;
                     let newtemplate = template.replace(':delta',delta);
                     newtemplate = newtemplate.replace(':competencedesc',competencedesc);
                     newtemplate = newtemplate.replace(':valueprevrev', valueprevrev);

@@ -60,7 +60,7 @@ Route::get("download/{file}", function ($file) {
 
 
 Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-cliente'], function (){
-    Route::get('/detalhes/{id}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
+    Route::get('/detalhes/{id}/{competence}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
     Route::get('/', 'ClientSpaceController@indexWithNoParams')->name('client-space.index');
     Route::get('/{competence}/{construction}', 'ClientSpaceController@index')->name('client-space.index.args');
     Route::get('/recuperar-senha', function(){

@@ -133,7 +133,7 @@ class ConstructionController extends Controller
                 // Define finalmente o nome
                 $nameFile = "{$name}.{$extension}";
                 // Faz o upload:
-                $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile);
+                $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile, 'images');
             }
             $datForm = [
                 'name' => $request->name,

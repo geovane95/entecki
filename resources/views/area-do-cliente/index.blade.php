@@ -252,7 +252,7 @@
 
                     </thead>
                     <tbody>
-                    {{ $constLastId = 0 }}
+                    <span style="display: none;">{{ $constLastId = 0 }}</span>
                     @foreach($constructionstable as $constructiontable)
                         <tr>
                             <td colspan="2">
@@ -265,7 +265,7 @@
                                             {{ $constructiontable->FASE }}
                                         </td>
                                         <td class="text-left">
-                                            <a href="{{ route('client-space.construction-detail', $constructiontable->construction_id) }}">
+                                            <a href="{{ route('client-space.construction-detail', [$constructiontable->construction_id, $constructiontable->competence_id]) }}">
                                                 {{ $constructiontable->construction_name }}
                                             </a>
                                         </td>
@@ -349,7 +349,7 @@
                                 </a>
                             </td>
                             <td>
-                                <a href="{{ route('client-space.construction-detail', $constructiontable->construction_id) }}" class="det">
+                                <a href="{{ route('client-space.construction-detail', [$constructiontable->construction_id, $constructiontable->competence_id]) }}" class="det">
 
                                 </a>
                             </td>

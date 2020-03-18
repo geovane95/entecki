@@ -298,7 +298,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ route('client-space.construction-detail', $report->construction_id) }}" class="det">
+                                    <a href="{{ route('client-space.construction-detail', [$report->construction_id,$report->competence_id]) }}" class="det">
 
                                     </a>
                                 </td>
