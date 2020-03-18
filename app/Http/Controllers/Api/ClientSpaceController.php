@@ -160,6 +160,7 @@ class  ClientSpaceController extends Controller
         } catch (Exception $e) {
             dd($e);
         }
+        dd($constructionstable);
 
         return view('area-do-cliente.index', [
             'incc' => $incc,
@@ -382,7 +383,7 @@ class  ClientSpaceController extends Controller
             $competences = $this->competence->get()->where('status', '=', 1);
 
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
-            dd($constructions);
+
             $incc = '773,52';
 
             if (!$request->constructions) {

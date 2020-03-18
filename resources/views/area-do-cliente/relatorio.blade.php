@@ -69,9 +69,6 @@
                 </div>
             </div>
 
-
-
-
             <div class="row d-flex">
                 <div class="col-12">
                     <table border="0" colspan="0" rowspan="0" class="main-table">
@@ -155,7 +152,7 @@
 
                         </thead>
                         <tbody>
-                            {{ $constLastId = 0 }}
+                            <span style="display:none;">{{ $constLastId = 0 }}</span>
                             @foreach($reports as $report)
                             <tr>
                                 <td colspan="2">
