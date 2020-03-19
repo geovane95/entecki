@@ -55,7 +55,7 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
 
 
 Route::get("download/{file}", function ($file) {
-    return response()->download(storage_path("app/public/".$file));
+    return response()->download(url("storage/".$file));
 })->name('download');
 
 
@@ -80,6 +80,5 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     })->name('client-space.pictures-download');
     Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('competence.list');
     Route::get('competences/{construction}/{yearmonth}','ClientSpaceController@documentsByYearOrMonth')->name('competence.list.args');
-    Route::get('competences/{construction}','ClientSpaceController@documentsByConstruction')->name('competence.list.noargs');
     Route::get('graficos/fluxodesemb/{id}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');
 });

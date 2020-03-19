@@ -173,13 +173,13 @@
 
                 url = url.replace(':year', year);
             }else{
-                console.log("TESTE")
-                url = "{{ route('competence.list.noargs', ':construction') }}"
+                url = "{{ route('competence.list.args', [':construction',2020]) }}";
 
                 url = url.replace(':construction', construction);
 
-                console.log(url);
+                url = url.replace(':year', year);
             }
+            console.log(url);
             axios.get(url)
                 .then(response => {
                     let dados = response.data;

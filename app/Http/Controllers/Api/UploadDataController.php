@@ -76,7 +76,7 @@ class UploadDataController extends Controller
                     return $ust->name;
                 })
                 ->addColumn('action', function ($data){
-                    $button = '<a href="'.route("download",$data->file).'" class="btn btn-info">Download</a>';
+                    $button = '<a href="'.url('storage/'.$data->file).'" class="btn btn-info">Download</a>';
 
                     return $button;
                 })

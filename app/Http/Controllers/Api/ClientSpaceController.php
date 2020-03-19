@@ -85,7 +85,7 @@ class  ClientSpaceController extends Controller
             if (!$constructionId) {
                 $constructionsIdPluck = Arr::pluck($constructions, 'id');
             }else{
-                $constructionsIdPluck = [$constructionId];
+                $constructionsIdPluck = explode(',',$constructionId);
             }
 
             if (!$competenceId){
@@ -100,7 +100,7 @@ class  ClientSpaceController extends Controller
                 'AL' => ['FAROL' => 'amarelo', 'ALT' => 'Condições de Alerta', 'TITLE' => 'Condições de Alerta']
             ];
 
-            $constructionstable = DB::table('constructions')
+            $query = DB::table('constructions')
                 ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
                 ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
                 ->leftJoin('cities', 'cities.id', '=', 'locations.city')
@@ -154,13 +154,13 @@ class  ClientSpaceController extends Controller
                     'upload_types.name as upload_type_name',
                     'upload_statuses.name as upload_status_name'
                 )
-                ->whereIn('constructions.id',$constructionsIdPluck)
-                ->where('competences.id','=',$competenceIdPluck)
-                ->get();
+                ->where('competences.id','=',$competenceIdPluck);
+            $query->whereIn('constructions.id', $constructionsIdPluck);
+
+            $constructionstable = $query->get();
         } catch (Exception $e) {
             dd($e);
         }
-        dd($constructionstable);
 
         return view('area-do-cliente.index', [
             'incc' => $incc,
@@ -185,13 +185,13 @@ class  ClientSpaceController extends Controller
             $where = " where uc.user = " . $user->id;
         }
 
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where." order by c.id desc limit 1");
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
 
         $competence = $this->competence->orderBy('id', 'desc')->limit(1)->get()->where('status','=',1);
 
         $constructionPluck = Arr::pluck($constructions,'id');
 
-        return $this->index($competence[0]->id,json_encode($constructionPluck));
+    return $this->index($competence[0]->id,str_replace('[','',str_replace(']','',json_encode($constructionPluck))));
     }
 
     public function detail($id,$competence)
@@ -309,29 +309,6 @@ class  ClientSpaceController extends Controller
         return response()->json(['success' => $dados]);
     }
 
-    public function documentsByConstruction($constructionId){
-        sleep(2);
-        $construction = $this->construction->find($constructionId);
-
-        $competences = $this->competence->get();
-
-        if (!$competences)
-            return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
-
-        $dados = [];
-
-        foreach ($competences as $competence){
-            $documents = $this->upload_data->where([
-                'construction' => $construction->id,
-                'competence' => $competence->id,
-                'uploadtype' => 2])
-                ->get();
-            $competence->documents = $documents;
-            array_push($dados, $competence);
-        }
-        return response()->json(['success' => $dados]);
-    }
-
     public function documentsByYearOrMonth($constructionId,$yearmonth){
 
         $construction = $this->construction->find($constructionId);
@@ -389,7 +366,7 @@ class  ClientSpaceController extends Controller
             if (!$request->constructions) {
                 $constructionsIdPluck = Arr::pluck($constructions, 'id');
             }else{
-                $constructionsIdPluck = [$request->constructions];
+                $constructionsIdPluck = explode(',',$request->constructions);
             }
 
             if (!$request->competences){
