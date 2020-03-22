@@ -16,13 +16,16 @@ class UploadTypeSeeder extends Seeder
             'name'=> 'Informações de Obra',
             'status'=>1
         ]);
-
         UploadType::create([
             'name' => 'Documentos de Obra',
             'status' => 1
         ]);
         UploadType::create([
             'name' => 'Arquivo de Fotos',
+            'status' => 1
+        ]);
+        UploadType::create([
+            'name' => 'Relatório de Obra',
             'status' => 1
         ]);
     }

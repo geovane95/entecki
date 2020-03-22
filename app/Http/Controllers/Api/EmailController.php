@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
-    public function index(){
+    public function index($competenceId){
         try {
             if (auth()->user()) {
                 $user = User::find(auth()->user()->id);
@@ -29,10 +29,9 @@ class EmailController extends Controller
                 $where = " where uc.user = " . $user->id;
             }
 
-            $competences = Competence::get()->where('status', '=', 1);
-
             $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
-            $incc = '773,52';
+
+            $competences = Competence::get();
 
             $constructionsIdPluck = Arr::pluck($constructions, 'id');
 
@@ -70,13 +69,20 @@ class EmailController extends Controller
                     'data.ACUMCONTR',
                     'data.email_sended_at'
                 )
-                ->whereIn('constructions.id', [1, 2, 3, 4, 5, 6])
+                ->whereIn('constructions.id', $constructionsIdPluck)
+                ->where('competences.id','=',$competenceId)
                 ->get();
         } catch (Exception $e) {
             dd($e);
         }
         return view('administrativo.mail.index', ['constructions' => $constructions, 'competences' => $competences, 'cores' => $cores]);
     }
+    public function indexWithoutArgs(){
+        $compenteceId = Competence::take(1)->orderBy('id','desc')->get();
+
+        $this->index($compenteceId);
+    }
+
     public function store($data){
         try {
             foreach (explode(',',$data) as $dt) {

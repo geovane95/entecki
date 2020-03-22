@@ -32,7 +32,7 @@
                                 <i></i>
                                 Fotos
                             </a>
-                            <a href="{{ route('client-space.construction-report', $actualconst) }}" class="rel">
+                            <a href="{{ route('client-space.report-download', [$actualcomp, $actualconst]) }}" class="rel">
                                 <i></i>
                                 Relatório
                             </a>
@@ -120,15 +120,19 @@
             <div class="row tabelas-pad">
 
                 <div class="col-md-12 d-flex justify-content-center align-items-center nav-btns">
-                    <a href="docs_obra.blade.php" class="btn-nav">
-                        Obra Anterior
+                    @if($previousConstruction && $previousConstruction != 0)
+                        <a href="{{ route('client-space.construction-documents', [$actualcomp,$previousConstruction]) }}" class="btn-nav">
+                            Obra Anterior
+                        </a>
+                    @endif
+                    <a href="{{ route('client-space.index') }}" class="btn-nav">
+                        Página Inicial
                     </a>
-                    <a href="{{ back() }}" class="btn-nav">
-                        Voltar
-                    </a>
-                    <a href="docs_obra.blade.php" class="btn-nav">
-                        Obra Anterior
-                    </a>
+                    @if($nextConstruction && $nextConstruction != 0)
+                        <a href="{{ route('client-space.construction-documents', [$actualcomp,$nextConstruction]) }}" class="btn-nav">
+                            Obra Posterior
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

@@ -41,7 +41,8 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::resource('upload_data', 'UploadDataController')->except(['create','edit']);
     Route::get('cities/{id}','ConstructionController@cities')->name('citites');
     //Route::get('email/{competence}/{construction}','EmailController@store')->name('email.store');
-    Route::get('email/','EmailController@index')->name('email.index');
+    Route::get('email/{competence}','EmailController@index')->name('email.index.args');
+    Route::get('email/','EmailController@indexWithoutArgs')->name('email.index');
     Route::get('construction/client/{id}','ConstructionController@clientIndex')->name('clientIndex');
     Route::get('construction/client','ConstructionController@clientIndex')->name('clientIndex');
 
@@ -75,9 +76,8 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
         Auth::logout();
         return redirect()->route('login');
     })->name('client-space.logout');
-    Route::get('/pictures-download/{competence}/{id}', function (){
-        return view('area-do-cliente.relatorio');
-    })->name('client-space.pictures-download');
+    Route::get('/fotos/{competence}/{id}', 'ClientSpaceController@downloadPictures')->name('client-space.pictures-download');
+    Route::get('/relatorio/{competence}/{id}', 'ClientSpaceController@downloadReport')->name('client-space.report-download');
     Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('competence.list');
     Route::get('competences/{construction}/{yearmonth}','ClientSpaceController@documentsByYearOrMonth')->name('competence.list.args');
     Route::get('graficos/fluxodesemb/{id}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');

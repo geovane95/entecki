@@ -119,7 +119,7 @@ class UploadDataController extends Controller
             // Define finalmente o nome
             $nameFile = "{$name}.{$extension}";
             // Faz o upload:
-            $file = $request->file->storeAs('uploads/'.$request->competence, $nameFile);
+            $file = $request->file->storeAs('storage/uploads/'.$request->competence, $nameFile);
         }
 
         $u = $this->user->find(auth()->user()->id);

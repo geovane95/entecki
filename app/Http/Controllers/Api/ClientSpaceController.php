@@ -203,6 +203,35 @@ class  ClientSpaceController extends Controller
             'AL' => ['FAROL' => 'amarelo', 'ALT' => 'Condições de Alerta', 'TITLE' => 'Condições de Alerta']
         ];
 
+        if (auth()->user()) {
+            $user = $this->user->find(auth()->user()->id);
+        } else {
+            redirect()->route('client-space.logout');
+        }
+
+        $where = '';
+        if ($user->access_profile == 2){
+            $where = " where uc.user = " . $user->id;
+        }
+
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
+
+        $nextContruction = 0;
+        $previousConstruction = 0;
+        $findOk = false;
+        foreach ($constructions as $construction){
+            if (!$findOk){
+                if ($construction->id != $id){
+                    $previousConstruction = $construction->id;
+                }else{
+                    $findOk = true;
+                }
+            }else{
+                $nextContruction = $construction->id;
+                break;
+            }
+        }
+
         $competence = $this->competence->where('id','=',$competence)->get();
 
         $details = DB::table('constructions')
@@ -248,7 +277,9 @@ class  ClientSpaceController extends Controller
             'details' => $details[0],
             'competences'=>$competences,
             'cores' => $cores,
-            'competencesselected' => $competence[0]->id
+            'competencesselected' => $competence[0]->id,
+            'nextConstruction' => $nextContruction,
+            'previousConstruction' => $previousConstruction
         ]);
     }
 
@@ -265,6 +296,35 @@ class  ClientSpaceController extends Controller
         $competencesYear = Arr::pluck($competences,'year');
         $competencesMonth = Arr::pluck($competences,'month');
 
+        if (auth()->user()) {
+            $user = $this->user->find(auth()->user()->id);
+        } else {
+            redirect()->route('client-space.logout');
+        }
+
+        $where = '';
+        if ($user->access_profile == 2){
+            $where = " where uc.user = " . $user->id;
+        }
+
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
+
+        $nextContruction = 0;
+        $previousConstruction = 0;
+        $findOk = false;
+        foreach ($constructions as $construction){
+            if (!$findOk){
+                if ($construction->id != $id){
+                    $previousConstruction = $construction->id;
+                }else{
+                    $findOk = true;
+                }
+            }else{
+                $nextContruction = $construction->id;
+                break;
+            }
+        }
+
         $meses = [
             1 => 'JANEIRO',
             2 => 'FEVEREIRO',
@@ -280,7 +340,18 @@ class  ClientSpaceController extends Controller
             12 => 'DEZEMBRO'
         ];
 
-        return view('area-do-cliente.docs_obra', ['documents'=>$documents, 'competence'=>$competence, 'competencesYear'=>$competencesYear, 'competencesMonth'=>$competencesMonth, 'construction'=>$construction, 'actualcomp' => $competenceId, 'actualconst' => $id, 'meses' => $meses]);
+        return view('area-do-cliente.docs_obra', [
+            'documents'=>$documents,
+            'competence'=>$competence,
+            'competencesYear'=>$competencesYear,
+            'competencesMonth'=>$competencesMonth,
+            'construction'=>$construction,
+            'actualcomp' => $competenceId,
+            'actualconst' => $id,
+            'meses' => $meses,
+            'nextConstruction' => $nextContruction,
+            'previousConstruction' => $previousConstruction
+        ]);
     }
 
     public function documentsByMonthYear($constructionId,$month,$year){
@@ -438,6 +509,34 @@ class  ClientSpaceController extends Controller
             'construtionsselected' => $constructionsIdPluck,
             'incc' => $incc
         ]);
+    }
+
+    public function downloadPictures($competenceId,$constructionId){
+        $data = $this->upload_data->where([
+            'competence' => $competenceId,
+            'construction' => $constructionId,
+            'uploadtype' => 3
+        ])->get();
+
+        if ($data && !empty($data)){
+            return response()->download(url($data[0]->file));
+        }else{
+            return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
+        }
+    }
+
+    public function downloadReports($competenceId,$constructionId){
+        $data = $this->upload_data->where([
+            'competence' => $competenceId,
+            'construction' => $constructionId,
+            'uploadtype' => 4
+        ])->get();
+
+        if ($data){
+            return response()->download(url('storage/'.$data->file));
+        }else{
+            return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
+        }
     }
 
     public function graficoFisicoAcumulado($id){

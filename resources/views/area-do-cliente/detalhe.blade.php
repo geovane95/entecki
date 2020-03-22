@@ -54,7 +54,7 @@
                                 <i></i>
                                 Fotos
                             </a>
-                            <a href="{{ route('client-space.construction-report', $details->construction_id) }}" class="rel">
+                            <a href="{{ route('client-space.report-download', [$details->competence_id, $details->construction_id]) }}" class="rel">
                                 <i></i>
                                 Relatório
                             </a>
@@ -1677,15 +1677,19 @@
 
 
                 <div class="col-md-12 d-flex justify-content-center align-items-center nav-btns">
-                    <a href="detalhe.blade.php" class="btn-nav">
+                    @if($previousConstruction && $previousConstruction != 0)
+                    <a href="{{ route('client-space.construction-detail', [$previousConstruction,$details->competence_id]) }}" class="btn-nav">
                         Obra Anterior
                     </a>
-                    <a href="index.blade.php" class="btn-nav">
+                    @endif
+                    <a href="{{ route('client-space.index') }}" class="btn-nav">
                         Página Inicial
                     </a>
-                    <a href="detalhe.blade.php" class="btn-nav">
-                        Obra Anterior
+                    @if($nextConstruction && $nextConstruction != 0)
+                    <a href="{{ route('client-space.construction-detail', [$nextConstruction,$details->competence_id]) }}" class="btn-nav">
+                        Obra Posterior
                     </a>
+                    @endif
                 </div>
             </div>
         </div>

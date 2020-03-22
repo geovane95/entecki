@@ -165,7 +165,7 @@
                                                 {{ $report->FASE }}
                                             </td>
                                             <td class="text-left">
-                                                <a href="detalhe.blade.php">
+                                                <a href="{{ route('client-space.construction-detail', [$report->construction_id, $report->competence_id]) }}">
                                                     {{ $report->construction_name }}
                                                 </a>
                                             </td>
