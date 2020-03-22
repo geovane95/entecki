@@ -37,7 +37,7 @@
                     <th>Nome</th>
                     <th>Construtora</th>
                     <th>Responsável</th>
-                    <th>Regime</th>
+                    <th>Usuários</th>
                     <th>Status</th>
                     <th>Ação</th>
                 </tr>
@@ -61,25 +61,24 @@
 
 @section('js')
     <script>
-
         $(document).ready(function () {
 
 
-                $('#state').on('change',function(e){
-                    var id = $(this).children(":selected").attr("id");
+            $('#state').on('change',function(e){
+                var id = $(this).children(":selected").attr("id");
 
-                      axios.get(`state/${id}`)
-                      .then(response =>{
-                            var data  = response.data;
+                axios.get(`state/${id}`)
+                    .then(response =>{
+                        var data  = response.data;
 
-                            $.each(data, function (indexInArray, valueOfElement) {
-                                    console.log(valueOfElement);
-                                $('#city').html(`
+                        $.each(data, function (indexInArray, valueOfElement) {
+                            console.log(valueOfElement);
+                            $('#city').html(`
                                     <option value="${valueOfElement.id}">${valueOfElement.name}</option>
                                 `)
-                            });
-                      })
-                });
+                        });
+                    })
+            });
 
             // Listando usuarios
             $("#table_construction").DataTable({
@@ -107,7 +106,26 @@
                     {data: 'name', name: 'name'},
                     {data: 'company', name: 'company'},
                     {data: 'responsible-name', name: 'responsible'},
-                    {data: 'contract_regime', name: 'contract_regime'},
+                    {data: null, "render": async function ( row, data, index ) {
+                        let url = "{{ route('client.construction.list', ':id') }}";
+                        url = url.replace(':id', row.id);
+                        let retorno = "";
+                        primeiro = true;
+                        await axios.get(url)
+                            .then(response => {
+                                let data = response.data;
+                                $.each(data, function (index, value) {
+                                    if(primeiro) {
+                                        primeiro = false;
+                                    }else{
+                                        retorno += '\n';
+                                    }
+                                    retorno += value.username;
+                                });
+                            });
+                            return retorno;
+                        }
+                    },
                     {data: 'status', name: 'status', orderable: false, width: '20%'},
                     {data: 'action', name: 'action'},
                 ]
@@ -146,77 +164,87 @@
                 }
             }
 
-                var idObra = '';
-                $('body').on('click','.cliente',function(e){
-                        e.preventDefault();
-                        let id = $(this).attr('id');
-                        $('#formModalClientsToConstruction').modal('show');
-                        $('#constructionId').val(id);
-                        $('#table_client_to_construction tbody').html('');
-                        axios.get(`construction/${id}/client`)
+            var idObra = '';
+            $('body').on('click','.cliente',function(e){
+                e.preventDefault();
+                let id = $(this).attr('id');
+                let url = "{{ route('client.construction.list', ':id') }}";
+                url = url.replace(':id',id);
+                $('#formModalUsersToConstruction').modal('show');
+                $('#constructionId').val(id);
+                $('#table_users_to_construction tbody').html('');
+                axios.get(url)
+                    .then(response =>{
+                        var data = response.data;
+                        $.each(data, function (index, value) {
+                            $('#table_users_to_construction tbody').append(`
+                                        <tr>
+                                            <td>${value.username}</td>
+                                            <td><button id="${value.userid}" class="btn btn-danger delete-user">Deletar</button></td>
+                                        </tr>
+                                    `)
+                        });
+                    });
+                axios.get("{{ route('users.list') }}")
+                    .then(response =>{
+                        var data = response.data;
+                        $('select#user').html('');
+                        $.each(data, function (index,value) {
+                            $('select#user').append(`<option id="${value.id}" value="${value.id}">${value.name}</option>`);
+                        });
+                    });
+
+                $('#user_form').on('submit',function(e){
+                    e.preventDefault();
+                    let userId = $('#user').children(":selected").attr('id');
+                    let constructionId = $('#constructionId').val();
+
+                    let url = "{{ route('client.construction.add', [':id',':user']) }}";
+                    url = url.replace(':user', userId);
+                    url = url.replace(':id', constructionId);
+                    axios.get(url)
                         .then(response =>{
                             var data = response.data;
                             $.each(data, function (index, value) {
-                                    $('#table_client_to_construction tbody').html(`
-                                        <tr>
+
+                                $('#table_users_to_construction tbody').append(`
+                                   <tr>
                                             <td>${value.username}</td>
-                                            <td><button id="delete-modal" data-id="${value.userid}" class="btn btn-danger">Deletar</button></td>
-                                        </tr>
-                                    `)
+                                            <td><button id="${value.userid}" class="btn btn-danger delete-user">Deletar</button></td>
+                                   </tr>
+                               `)
                             });
 
-                            idObra = id;
-
-                        });
-                        $('#client_form').on('submit',function(e){
-                            e.preventDefault();
-                            let clientId = $('#clientS').children(":selected").attr('id');
-                            let constructionId = $('#constructionId').val();
-
-                            let url = "{{ route('client.construction.add', [':id',':client']) }}";
-                            url = url.replace(':client', clientId);
-                            url = url.replace(':id', constructionId);
-                            $('#table_client_to_construction tbody').html('');
-                            axios.get(`construction/${id}/client/add?${$(this).serialize()}`)
-                            .then(response =>{
-                                var data = response.data;
-                                $.each(data, function (index, value) {
-
-                               $('#table_client_to_construction tbody').html(`
-                                   <tr>
-                                       <td>${value.name}</td>
-                                       <td><button id="delete-modal" data-id="${data.id}" class="btn btn-danger">Deletar</button></td>
-                                   </tr>
-                               `)
-                       });
-
                         });
 
 
-                    });
-
-                    $(document).on('click','#delete-modal',function(e){
-                        e.preventDefault();
-                        let constructionid = $('#constructionId').val();
-                        let userid  = $(this).attr('id');
-
-                        $('#table_client_to_construction tbody').html('')
-                            axios.get(`construction/${idObra}/client/remove?client=${id}`)
-                            .then(response =>{
-                                var data = response.data;
-                                $.each(data, function (index, value) {
-
-                               $('#table_client_to_construction tbody').html(`
-                                   <tr>
-                                       <td>${value.name}</td>
-                                       <td><button id="delete-modal" data-id="${data.id}" class="btn btn-danger">Deletar</button></td>
-                                   </tr>
-                               `)
-                       });
-
-                        });
-                    });
                 });
+
+                $(document).on('click','.delete-user',function(e){
+                    e.preventDefault();
+                    let constructionid = $('#constructionId').val();
+                    let userid  = $(this).attr('id');
+                    let url = "{{ route('client.construction.remove', [':id',':userid']) }}";
+
+                    url = url.replace(':id', constructionid);
+                    url = url.replace(':userid', userid);
+                    $('#table_users_to_construction tbody').html('');
+                    axios.get(url)
+                        .then(response =>{
+                            var data = response.data;
+                            $.each(data, function (index, value) {
+
+                                $('#table_users_to_construction tbody').append(`
+                                   <tr>
+                                            <td>${value.username}</td>
+                                            <td><button id="${value.userid}" class="btn btn-danger delete-user">Deletar</button></td>
+                                   </tr>
+                               `)
+                            });
+
+                        });
+                });
+            });
 
             //cadastrando uma obra
             $('#create_construction_record').on('click', function (e) {

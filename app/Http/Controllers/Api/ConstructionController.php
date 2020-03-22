@@ -81,7 +81,7 @@ class ConstructionController extends Controller
 
                     $button .= "<a
                     name='cliente'
-                    class='cliente btn btn-warning btn-sm ml-2' id='{$data->id}'>Cliente</a>";
+                    class='cliente btn btn-warning btn-sm ml-2' id='{$data->id}'>Usuários</a>";
 
                     return $button;
                 })->rawColumns(['action'])
@@ -280,7 +280,7 @@ class ConstructionController extends Controller
         return view('administrativo.construction.clients.index', ['construction' => $construction, 'clients' => $clients]);
     }
 
-    public function clients($id)
+    public function users($id)
     {
         $users = DB::table('constructions')
             ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
@@ -298,33 +298,53 @@ class ConstructionController extends Controller
         return response()->json($users);
     }
 
-    public function  addClient($client,$id)
+    public function  addUser($id,$user)
     {
         UsersToConstructions::create([
             'construction' => $id,
-            'user'=>$client
+            'user'=>$user
         ]);
 
-        $construction = Construction::find($id);
+        $users = DB::table('constructions')
+            ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
+            ->join('users','users.id','=','users_to_constructions.user')
+            ->select(
+                'constructions.id',
+                'users.name as username',
+                'users.id as userid'
+            )
+            ->where([
+                'constructions.id' => $id,
+                'users.id' => $user
+            ])
+            ->get();
 
-        $usertoconstruction =  $this->usersToConstructions->get()->where([
-            ['user','=',$client],
-            ['construction','=',$id]
-        ]);
-
-        dd($usertoconstruction);
-            return response()->json($clients);
+        return response()->json($users);
     }
-    public function  removeClient(Request $request,$id)
+    public function  removeUser($constructionId, $userId)
     {
-        $usertoconstruction = $this->usersToConstructions->get()->where([
-            ['user','=',$request->client],
-            ['construction','=',$id]
-        ]);
+        $usertoconstruction = $this->usersToConstructions->where([
+            'user' => $userId,
+            'construction' => $constructionId
+        ])->get();
 
-        $usertoconstruction->delete();
+        if ($usertoconstruction) {
+            $usertoconstruction = $usertoconstruction[0];
 
-        redirect(route('client.construction', $id));
+            $usertoconstruction->delete();
+        }
 
+        $users = DB::table('constructions')
+            ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
+            ->join('users','users.id','=','users_to_constructions.user')
+            ->select(
+                'constructions.id',
+                'users.name as username',
+                'users.id as userid'
+            )
+            ->where('constructions.id','=',$constructionId)
+            ->get();
+
+        return response()->json($users);
     }
 }

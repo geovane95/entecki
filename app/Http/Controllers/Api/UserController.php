@@ -208,5 +208,11 @@ class UserController extends Controller
         return response()->json(['success'=>'success'],204);
     }
 
+    public function list(){
+        $data = $this->user->with('profile')->get();
+
+        return response()->json($data);
+    }
+
 
 }

@@ -30,7 +30,7 @@
         <div class="card-header">
             MÊS REFERÊNCIA <select name="competence" id="competence" class="form-control col-md-3">
                 @foreach($competences as $competence)
-                    <option value="{{ $competence->id }}">{{ $competence->description }}</option>
+                    <option value="{{ $competence->id }}" {{ $competence->id == $competenceSelected ? "selected" : ""}}>{{ $competence->description }}</option>
                 @endforeach
             </select>
             <hr/>
@@ -119,12 +119,20 @@
             });
 
             $("#enviar").click(function () {
-                ids = $(".chkdata:checked").map(function(){return $(this).attr('id').replace('id_','')});
+                let ids = $(".chkdata:checked").map(function(){return $(this).attr('id').replace('id_','')});
                 competence = $("#competence").val();
-                url = "{{ route('email.store', [':competence',':constructions']) }}";
+                let url = "{{ route('email.store', [':competence',':constructions']) }}";
                 url = url.replace(":competence",competence);
                 url = url.replace(":constructions", Object.values(ids));
                 console.log(url);
+                window.location.href = url;
+            });
+
+            $("#competence").change(function () {
+                let id = $(this).val();
+                let url = "{{ route('email.index.args', ':id') }}";
+                url = url.replace(':id', id);
+
                 window.location.href = url;
             });
         });

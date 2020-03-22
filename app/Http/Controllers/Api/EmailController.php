@@ -75,12 +75,17 @@ class EmailController extends Controller
         } catch (Exception $e) {
             dd($e);
         }
-        return view('administrativo.mail.index', ['constructions' => $constructions, 'competences' => $competences, 'cores' => $cores]);
+        return view('administrativo.mail.index', [
+            'constructions' => $constructions,
+            'competences' => $competences,
+            'cores' => $cores,
+            'competenceSelected' => $competenceId
+        ]);
     }
     public function indexWithoutArgs(){
-        $compenteceId = Competence::take(1)->orderBy('id','desc')->get();
+        $compentece = Competence::take(1)->orderBy('id','desc')->get();
 
-        $this->index($compenteceId);
+        return $this->index($compentece[0]->id);
     }
 
     public function store($data){

@@ -29,6 +29,7 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
 
     Route::get('', 'HomeController@index')->name('home');
     Route::resource('user','UserController')->except(['create']);
+    Route::get('users','UserController@list')->name('users.list');
     Route::resource('competence','CompetenceController')->except(['create','edit']);
     Route::resource('user_to_construction','UsersToConstructionsController')->except(['create','edit']);
     Route::resource('access_profile','AccessProfileController')->except(['create','edit']);
@@ -48,9 +49,9 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
 
     // Route::get('construction/client','ConstructionController@clientIndex')->name('clientIndex');
     Route::get('state/{id}','StateController@stateCity')->name('city.state');
-    Route::get('construction/{id}/client','ConstructionController@clients')->name('client.construction.list');
-    Route::get('construction/{id}/client/add/{client}','ConstructionController@addClient')->name('client.construction.add');
-    Route::get('construction/{id}/client/remove','ConstructionController@removeClient')->name('client.construction.remove');
+    Route::get('construction/{id}/user','ConstructionController@users')->name('client.construction.list');
+    Route::get('construction/{id}/user/add/{user}','ConstructionController@addUser')->name('client.construction.add');
+    Route::get('construction/{id}/user/remove/{user}','ConstructionController@removeUser')->name('client.construction.remove');
 
 });
 
