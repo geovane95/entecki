@@ -124,7 +124,7 @@
                 let url = "{{ route('email.store', [':competence',':constructions']) }}";
                 url = url.replace(":competence",competence);
                 url = url.replace(":constructions", Object.values(ids));
-                console.log(url);
+                url = url.replace(/,\d+\,\[object Object]/gm,"");
                 window.location.href = url;
             });
 

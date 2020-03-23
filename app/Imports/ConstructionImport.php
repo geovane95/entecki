@@ -6,8 +6,9 @@ use App\Models\Data;
 use http\Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ConstructionImport implements ToCollection
+class ConstructionImport implements ToCollection, WithHeadingRow
 {
     private $competence, $upload_data;
     public function __construct($competence, $upload_data)
@@ -21,6 +22,125 @@ class ConstructionImport implements ToCollection
         $contador = 0;
         foreach ($rows as $row) {
             try {
+                Data::create([
+                    'construction' => $row['obra_id'],
+                    'uploaddata' => $this->upload_data->id,
+                    'CUSTOP' => $row['custop'],
+                    'PRAZO' => $row['prazo'],
+                    'FLUXOD' => $row['fluxod'],
+                    'QUALIDADE' => $row['qualidade'],
+                    'SEGORG' => $row['segorg'],
+                    'MAMBI' => $row['mambi'],
+                    'ACUMCONTR' => $row['acumcontr'],
+                    'FASE'=>$row['fase'],
+                    'AREACONSTRM2' => $row['areaconstrm2'],
+                    'NUNITQTD' => $row['nunitqtd'],
+                    'CORPRRATUAL' => $row['corprratual'],
+                    'CORRPRATUALFAROL' => $row['corrpratualfarol'],
+                    'CORRPRATUALVLR' => $row['corrpratualvlr'],
+                    'FXDPRRATUAL' => $row['fxdprratual'],
+                    'FXDRPRATUALFAROL' => $row['fxdrpratualfarol'],
+                    'FXDRPRATUALVLR' => $row['fxdrpratualvlr'],
+                    'FPRPRFAROL' => $row['fprprfarol'],
+                    'FPRPR' => $row['fprpr'],
+                    'POTEROBRARPMESFAROL' => $row['poterobrarpmesfarol'],
+                    'POTEROBRARPMES' => $row['poterobrarpmes'],
+                    'POECOPR' => $row['poecopr'],
+                    'IDQFAROL' => $row['idqfarol'],
+                    'IDSFAROL' => $row['idsfarol'],
+                    'PORCCONTRATINDIC' => $row['porccontratindic'],
+                    'ACORCPROOJATUAL' => $row['acorcproojatual'],
+                    'APORCPROOJATUAL' => $row['aporcproojatual'],
+                    'FBP' => $row['fbp'],
+                    'FBR' => $row['fbr'],
+                    'FBD' => $row['fbd'],
+                    'FOP' => $row['fop'],
+                    'FOR' => $row['for'],
+                    'FOD' => $row['fod'],
+                    'FOBP' => $row['fobp'],
+                    'FOBR' => $row['fobr'],
+                    'FOBD' => $row['fobd'],
+                    'AREATERRENO' => $row['areaterreno'],
+                    'AREACONSTRUIDA' => $row['areaconstruida'],
+                    'AREAPRIVATIVA' => $row['areaprivativa'],
+                    'AREAEQUIVNB' => $row['areaequivnb'],
+                    'AREADEGARGAGEM' => $row['areadegargagem'],
+                    'EFECIEPROJ' => $row['efecieproj'],
+                    'TIPOEMPREEND' => $row['tipoempreend'],
+                    'SISTCONSTRUTIVO' => $row['sistconstrutivo'],
+                    'NDETORRESPVTOS' => $row['ndetorrespvtos'],
+                    'NPVTOSGARGAGEM' => $row['npvtosgargagem'],
+                    'NUNIDADES' => $row['nunidades'],
+                    'AREAAPARTAMENTOS' => $row['areaapartamentos'],
+                    'AGENTEFINANCEIRO' => $row['agentefinanceiro'],
+                    'DATAVISTORIA' => $row['datavistoria'],
+                    'VALORFINANCIAMENTO' => $row['valorfinanciamento'],
+                    'ORCCONTRATUAL' => $row['orccontratual'],
+                    'CUSTORASOOBRA' => $row['custorasoobra'],
+                    'TAXAADM' => $row['taxaadm'],
+                    'CUSTORASOTAXA' => $row['custorasotaxa'],
+                    'MANUTENCAO' => $row['manutencao'],
+                    'CUSTOSDIVERSOS' => $row['custosdiversos'],
+                    'ORCCONTRATUALINCC' => $row['orccontratualincc'],
+                    'CUSTORASOOBRAINCC' => $row['custorasoobraincc'],
+                    'TAXAADMINCC' => $row['taxaadmincc'],
+                    'CUSTORASOTAXAINCC' => $row['custorasotaxaincc'],
+                    'MANUTENCAOINCC' => $row['manutencaoincc'],
+                    'CUSTOSDIVERSOSINCC' => $row['custosdiversosincc'],
+                    'INICIOPLANOBRAPREV' => $row['inicioplanobraprev'],
+                    'TERMPLANOBRAPREV' => $row['termplanobraprev'],
+                    'TERMHABITESEPREV' => $row['termhabiteseprev'],
+                    'TERMCLIENTEPREV' => $row['termclienteprev'],
+                    'PRAZOBRAMESESPREV' => $row['prazobramesesprev'],
+                    'INICIOPLANOBRAREAL' => $row['inicioplanobrareal'],
+                    'TERMPLANOBRAREAL' => $row['termplanobrareal'],
+                    'TERMHABITESEREAL' => $row['termhabitesereal'],
+                    'TERMCLIENTEREAL' => $row['termclientereal'],
+                    'PRAZOOBRAMESESREAL' => $row['prazoobramesesreal'],
+                    'INICIOPLANOBRADESV' => $row['inicioplanobradesv'],
+                    'TERMPLANOBRADESV' => $row['termplanobradesv'],
+                    'TERMHABITESEDESV' => $row['termhabitesedesv'],
+                    'TERMCLIENTEDESV' => $row['termclientedesv'],
+                    'PRAZOOBRAMESESDESV' => $row['prazoobramesesdesv'],
+                    'INICIOPLANOBRAFAROL' => $row['inicioplanobrafarol'],
+                    'TERMPLANOBRAFAROL' => $row['termplanobrafarol'],
+                    'TERMHABITESEFAROL' => $row['termhabitesefarol'],
+                    'TERMCLIENTEFAROL' => $row['termclientefarol'],
+                    'PRAZOOBRAMESESFAROL' => $row['prazoobramesesfarol'],
+                    'EVOORCID' => $row['evoorcid'],
+                    'EVOORCINIOBRA' => $row['evoorciniobra'],
+                    'EVOORCADTV' => $row['evoorcadtv'],
+                    'EVOORCREVOBRA' => $row['evoorcrevobra'],
+                    'EVOORCIDINCC' => $row['evoorcidincc'],
+                    'EVOORCINIOBRAINCC' => $row['evoorciniobraincc'],
+                    'EVOORCADTVINCC' => $row['evoorcadtvincc'],
+                    'EVOORCREVOBRAINCC' => $row['evoorcrevobraincc'],
+                    'ACOFACUMTOTAL' => $row['acofacumtotal'],
+                    'ACOFSALDOREAL' => $row['acofsaldoreal'],
+                    'ACOFPROJCUSTO' => $row['acofprojcusto'],
+                    'ACOFVARORCREV' => $row['acofvarorcrev'],
+                    'ACOFACUMTOTALINCC' => $row['acofacumtotalincc'],
+                    'ACOFSALDOREALINCC' => $row['acofsaldorealincc'],
+                    'ACOFPROJCUSTOINCC' => $row['acofprojcustoincc'],
+                    'ACOFVARORCREVINCC' => $row['acofvarorcrevincc'],
+                    'ACOFVARORCREVVALOR' => $row['acofvarorcrevvalor'],
+                    'ACOFVARORCREVFAROL' => $row['acofvarorcrevfarol'],
+                    'ACOFINCCIN' => $row['acofinccin'],
+                    'CUSTOM2PROJCONST' => $row['custom2projconst'],
+                    'CUSTOM2PROJPRIVA' => $row['custom2projpriva'],
+                    'CUSTOM2PROJCONSTINCC' => $row['custom2projconstincc'],
+                    'CUSTOM2PROJPRIVAINCC' => $row['custom2projprivaincc'],
+                    'PROJEXEC' => $row['projexec'],
+                    'FUNDACAOTORRE' => $row['fundacaotorre'],
+                    'ESTRUTURATORRE' => $row['estruturatorre'],
+                    'INSTALACOES' => $row['instalacoes'],
+                    'ACABAMENTO' => $row['acabamento'],
+                    'REVFACHADA' => $row['revfachada'],
+                    'AEPAISAGISMO' => $row['aepaisagismo']
+                ]);
+                /*
+                 *
+                 *
                 Data::create([
                     'construction' => $row[0],
                     'uploaddata' => $this->upload_data->id,
@@ -136,7 +256,7 @@ class ConstructionImport implements ToCollection
                      'ACABAMENTO' => $row[110],
                      'REVFACHADA' => $row[111],
                      'AEPAISAGISMO' => $row[112]
-                ]);
+                ]);*/
                 $contador++;
             }catch(Exception $e){
                 $this->upload_data->uploadstatus = 3;
@@ -146,5 +266,10 @@ class ConstructionImport implements ToCollection
         $this->upload_data->uploadstatus = 2;
         $this->upload_data->linecount = $contador;
         $this->upload_data->update();
+    }
+
+    public function headingRow(): int
+    {
+        return 1;
     }
 }
