@@ -76,7 +76,7 @@ class  ClientSpaceController extends Controller
             if ($user->access_profile == 2){
                 $where = " where uc.user = " . $user->id;
             }
-            $competences = $this->competence->get()->where('status', '=', 1);
+            $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
 
@@ -191,7 +191,28 @@ class  ClientSpaceController extends Controller
 
         $constructionPluck = Arr::pluck($constructions,'id');
 
-    return $this->index($competence[0]->id,str_replace('[','',str_replace(']','',json_encode($constructionPluck))));
+        return $this->index($competence[0]->id,str_replace('[','',str_replace(']','',json_encode($constructionPluck))));
+    }
+
+    public function indexWithCompetence($id){
+        if (auth()->user()) {
+            $user = $this->user->find(auth()->user()->id);
+        } else {
+            redirect()->route('client-space.logout');
+        }
+
+        $where = '';
+        if ($user->access_profile == 2){
+            $where = " where uc.user = " . $user->id;
+        }
+
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
+
+        $competence = $this->competence->find($id);
+
+        $constructionPluck = Arr::pluck($constructions,'id');
+
+        return $this->index($competence->id,str_replace('[','',str_replace(']','',json_encode($constructionPluck))));
     }
 
     public function detail($id,$competence)
@@ -232,7 +253,33 @@ class  ClientSpaceController extends Controller
             }
         }
 
-        $competence = $this->competence->where('id','=',$competence)->get();
+        $picture = $this->upload_data
+            ->where([
+                'construction' => $id,
+                'competence' => $competence,
+                'uploadtype' => 3
+            ])
+            ->get();
+        if (count($picture) <= 0){
+            $picture = false;
+        }else{
+            $picture = $picture[0];
+        }
+
+        $report = $this->upload_data
+            ->where([
+                'construction' => $id,
+                'competence' => $competence,
+                'uploadtype' => 4
+            ])
+            ->get();
+        if (count($report) <= 0){
+            $report = false;
+        }else{
+            $report = $report[0];
+        }
+
+        $competence = $this->competence->where('id','=',$competence)->orderBy('year')->orderBy('month')->get();
 
         $details = DB::table('constructions')
             ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
@@ -279,7 +326,9 @@ class  ClientSpaceController extends Controller
             'cores' => $cores,
             'competencesselected' => $competence[0]->id,
             'nextConstruction' => $nextContruction,
-            'previousConstruction' => $previousConstruction
+            'previousConstruction' => $previousConstruction,
+            'picture' => $picture,
+            'report' => $report
         ]);
     }
 
@@ -292,7 +341,7 @@ class  ClientSpaceController extends Controller
             'uploadtype' => 2]
         )->get();
 
-        $competences = $this->competence->get()->where('status', '=', 1);
+        $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
         $competencesYear = Arr::pluck($competences,'year');
         $competencesMonth = Arr::pluck($competences,'month');
 
@@ -325,6 +374,32 @@ class  ClientSpaceController extends Controller
             }
         }
 
+        $picture = $this->upload_data
+            ->where([
+                'construction' => $id,
+                'competence' => $competenceId,
+                'uploadtype' => 3
+            ])
+            ->get();
+        if (count($picture) <= 0){
+            $picture = false;
+        }else{
+            $picture = $picture[0];
+        }
+
+        $report = $this->upload_data
+            ->where([
+                'construction' => $id,
+                'competence' => $competenceId,
+                'uploadtype' => 4
+            ])
+            ->get();
+        if (count($report) <= 0){
+            $report = false;
+        }else{
+            $report = $report[0];
+        }
+
         $meses = [
             1 => 'JANEIRO',
             2 => 'FEVEREIRO',
@@ -350,7 +425,9 @@ class  ClientSpaceController extends Controller
             'actualconst' => $id,
             'meses' => $meses,
             'nextConstruction' => $nextContruction,
-            'previousConstruction' => $previousConstruction
+            'previousConstruction' => $previousConstruction,
+            'picture' => $picture,
+            'report' => $report
         ]);
     }
 
@@ -361,7 +438,7 @@ class  ClientSpaceController extends Controller
         $competences = $this->competence->where([
             'month' => intval($month),
             'year' => intval($year)
-        ])->get();
+        ])->orderBy('year')->orderBy('month')->get();
 
         if (!$competences)
             return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
@@ -428,7 +505,7 @@ class  ClientSpaceController extends Controller
                 $where = " where uc.user = " . $user->id;
             }
 
-            $competences = $this->competence->get()->where('status', '=', 1);
+            $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
 
@@ -511,12 +588,8 @@ class  ClientSpaceController extends Controller
         ]);
     }
 
-    public function downloadPictures($competenceId,$constructionId){
-        $data = $this->upload_data->where([
-            'competence' => $competenceId,
-            'construction' => $constructionId,
-            'uploadtype' => 3
-        ])->get();
+    public function downloadPictures($uploadDataId){
+        $data = $this->upload_data->find($uploadDataId);
 
         if ($data && !empty($data)){
             return response()->download(url($data[0]->file));
@@ -525,12 +598,8 @@ class  ClientSpaceController extends Controller
         }
     }
 
-    public function downloadReports($competenceId,$constructionId){
-        $data = $this->upload_data->where([
-            'competence' => $competenceId,
-            'construction' => $constructionId,
-            'uploadtype' => 4
-        ])->get();
+    public function downloadReports($uploadDataId){
+        $data = $this->upload_data->find($uploadDataId);
 
         if ($data){
             return response()->download(url('storage/'.$data->file));

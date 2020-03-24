@@ -98,7 +98,7 @@
                         },
                         columns: [
                             {data: 'upload_type_name', name: 'upload_type_name'},
-                            {data: 'user_name', name: 'user_name'},
+                            {data: 'construction_name', name: 'construction_name'},
                             {data: 'fileName', name: 'fileName'},
                             {data: 'competence_description', name: 'competence_description'},
                             {data: 'created_at', name: 'created_at'},
@@ -122,12 +122,25 @@
                         $('#tabeladiv').show();
                     });
 
-
                     //cadastrando uma obra
                     $('#info_upload').on('click', function (e) {
 
                         $('#ModalInfo').modal('show');
                     });
                 });
+                function deletar(id) {
+                    let url = `{{route('upload_data.destroy', ':id')}}`;
+
+                    url = url.replace(':id', id);
+
+                    axios.delete(url)
+                        .then(response => {
+                            alert('Arquivo deletado com sucesso.')
+                        }).catch((error) => {
+                            alert('Desculpe, não foi possível realizar a exclusão deste arquivo.');
+                        }).finally(() =>{
+                            $('#table_uploads').DataTable().ajax.reload();
+                        });
+                }
             </script>
 @stop

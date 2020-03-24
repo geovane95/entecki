@@ -101,13 +101,14 @@ class EmailController extends Controller
                             join data d on d.construction = c.id
                     where
                         d.id = " . $dt);
-                Mail::to(Arr::pluck($users,'email'))->send(new SendConstructionMail($dt));
+                $emails = Arr::pluck($users,'email');
+                Mail::to($emails)->send(new SendConstructionMail($dt));
                 $dataUp = Data::find($dt);
                 $dataUp->email_sended_at = date("Y-m-d");
                 $dataUp->update();
                 sleep(1);
             }
-            return response()->json(['success' => true], 200);
+            return response()->json(['success' => $emails], 200);
         } catch (Exception $e) {
             return response()->json(['error' => 'Falha ao enviar o e-mail'], 500);
         }

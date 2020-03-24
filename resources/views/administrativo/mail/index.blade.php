@@ -120,12 +120,23 @@
 
             $("#enviar").click(function () {
                 let ids = $(".chkdata:checked").map(function(){return $(this).attr('id').replace('id_','')});
-                competence = $("#competence").val();
-                let url = "{{ route('email.store', [':competence',':constructions']) }}";
-                url = url.replace(":competence",competence);
-                url = url.replace(":constructions", Object.values(ids));
+                let url = "{{ route('email.store', ':data') }}";
+                url = url.replace(":data", Object.values(ids));
                 url = url.replace(/,\d+\,\[object Object]/gm,"");
-                window.location.href = url;
+                axios.get(url)
+                .then((success) => {
+                    let data = success.data;
+                    let emails = '';
+
+                    $.each(data, function(index,value){
+                        emails += value + ' \n';
+                    });
+                    alert('E-mail enviado com sucesso para os seguintes e-mails: ' + emails.replace(/,/g,', '));
+                    location.reload();
+                })
+                .catch((error) => {
+                    alert('Não foi possível realizar o envio do e-mail!')
+                });
             });
 
             $("#competence").change(function () {

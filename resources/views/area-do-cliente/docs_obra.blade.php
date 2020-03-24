@@ -27,15 +27,19 @@
                                 <i></i>
                                 Documentos
                             </a>
-                            <a href="{{ route('client-space.pictures-download', [$actualcomp, $actualconst]) }}"
+                            @if($picture)
+                            <a href="{{ route('client-space.pictures-download', $picture->id) }}"
                                class="pic">
                                 <i></i>
                                 Fotos
                             </a>
-                            <a href="{{ route('client-space.report-download', [$actualcomp, $actualconst]) }}" class="rel">
+                            @endif
+                            @if($report)
+                            <a href="{{ route('client-space.report-download', $report->id) }}" class="rel">
                                 <i></i>
                                 Relatório
                             </a>
+                            @endif
                         </div>
                     </div>
 

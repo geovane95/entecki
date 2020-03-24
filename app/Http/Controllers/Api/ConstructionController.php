@@ -70,6 +70,29 @@ class ConstructionController extends Controller
                     $respons = $this->responsible->find($data->responsible);
                     return $respons->company_name;
                 })
+                ->addColumn('users-name', function ($data) {
+                    $users = DB::table('constructions')
+                        ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
+                        ->join('users','users.id','=','users_to_constructions.user')
+                        ->select(
+                            'constructions.id',
+                            'users.name as username',
+                            'users.id as userid'
+                        )
+                        ->where('constructions.id','=',$data->id)
+                        ->get();
+                    $retorno = '';
+                    $first = true;
+                    foreach ($users as $user){
+                        if ($first){
+                            $first = false;
+                        }else{
+                            $retorno .= ', ';
+                        }
+                        $retorno .= $user->username;
+                    }
+                    return $retorno;
+                })
                 ->addColumn('action', function ($data) {
                     $button = "<button type='button'
                     name='edit' id='{$data->id}'
@@ -300,10 +323,16 @@ class ConstructionController extends Controller
 
     public function  addUser($id,$user)
     {
-        UsersToConstructions::create([
+        $usertoconstruction = UsersToConstructions::where([
             'construction' => $id,
             'user'=>$user
-        ]);
+        ])->get();
+        if (count($usertoconstruction) <= 0) {
+            UsersToConstructions::create([
+                'construction' => $id,
+                'user' => $user
+            ]);
+        }
 
         $users = DB::table('constructions')
             ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')

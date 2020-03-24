@@ -17,6 +17,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -67,6 +68,14 @@ class UploadDataController extends Controller
                     $us = $this->user->find($data->user);
                     return $us->name;
                 })
+                ->addColumn('construction_name', function ($data) {
+                    $name = "";
+                    if ($data->construction != 0){
+                        $const = $this->construction->find($data->construction);
+                        $name = $const->name;
+                    }
+                    return $name;
+                })
                 ->addColumn('competence_description', function ($data) {
                     $comp = $this->competence->find($data->competence);
                     return $comp->description;
@@ -76,7 +85,8 @@ class UploadDataController extends Controller
                     return $ust->name;
                 })
                 ->addColumn('action', function ($data){
-                    $button = '<a href="'.url('storage/'.$data->file).'" class="btn btn-info">Download</a>';
+                    $button = '<a href="'.url('storage/'.$data->file).'" class="btn btn-info btn-sm">Download</a>';
+                    $button .= '<button id="'.$data->id.'" class="btn btn-info btn-sm" onclick="deletar('.$data->id.')">Deletar</button>';
 
                     return $button;
                 })
@@ -148,6 +158,7 @@ class UploadDataController extends Controller
                 break;
             case 2:
             case 3:
+            case 4:
                 $upload_data->uploadstatus = 2;
                 $upload_data->update();
                 if ($upload_data)
@@ -201,10 +212,23 @@ class UploadDataController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $uploadData = $this->uploaddata->find($id);
+
+        if ($uploadData->uploadtype = 1){
+            $datas = $this->data->where(['uploaddata' => $uploadData->id]);
+            foreach ($datas as $data) {
+                $data->delete();
+            }
+        }
+        Storage::delete('public/'.$uploadData->file);
+        if($uploadData->delete()){
+            return response()->json(["success" => "Arquivo deletado com sucesso"], 201);
+        } else {
+            return response()->json(["error" => "Falha ao tentar deletar!"], 500);
+        }
     }
 }

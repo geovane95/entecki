@@ -106,28 +106,9 @@
                     {data: 'name', name: 'name'},
                     {data: 'company', name: 'company'},
                     {data: 'responsible-name', name: 'responsible'},
-                    {data: null, "render": async function ( row, data, index ) {
-                        let url = "{{ route('client.construction.list', ':id') }}";
-                        url = url.replace(':id', row.id);
-                        let retorno = "";
-                        primeiro = true;
-                        await axios.get(url)
-                            .then(response => {
-                                let data = response.data;
-                                $.each(data, function (index, value) {
-                                    if(primeiro) {
-                                        primeiro = false;
-                                    }else{
-                                        retorno += '\n';
-                                    }
-                                    retorno += value.username;
-                                });
-                            });
-                            return retorno;
-                        }
-                    },
-                    {data: 'status', name: 'status', orderable: false, width: '20%'},
-                    {data: 'action', name: 'action'},
+                    {data: 'users-name', name: 'users-name'},
+                    {data: 'status', name: 'status'},
+                    {data: 'action', name: 'action'}
                 ]
             });
 

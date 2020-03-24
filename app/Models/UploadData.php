@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method get()
  * @method create(array $datForm)
+ * @method find($uploadDataId)
  */
 class UploadData extends Model
 {
