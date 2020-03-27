@@ -19,6 +19,7 @@ class CreateConstructionsTable extends Migration
             $table->string('thumbnail', 256);
             $table->string('company', 64);
             $table->unsignedBigInteger('responsible');
+            $table->unsignedBigInteger('regional');
             $table->unsignedBigInteger('address');
             $table->string('contract_regime', 32);
             $table->string('reporting_regime', 32);
@@ -27,6 +28,7 @@ class CreateConstructionsTable extends Migration
             $table->boolean('status');
             $table->timestamps();
             $table->foreign('responsible')->references('id')->on('responsibles');
+            $table->foreign('regional')->references('id')->on('regionals');
             $table->foreign('address')->references('id')->on('addresses');
         });
     }

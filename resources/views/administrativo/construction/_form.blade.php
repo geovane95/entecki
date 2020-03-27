@@ -18,6 +18,10 @@
         <label for="responsible">Responsável</label>
         {{Form::select('responsible',$responsible,null,['class'=>'form-control','placeholder'=>'Escolha um Responsável'])}}
     </div>
+    <div class="form-group">
+        <label for="regional">Regional</label>
+        {{Form::select('regional',$regional,null,['class'=>'form-control','placeholder'=>'Escolha um Regional'])}}
+    </div>
     <div class="form-group row">
         <div class="col-10">
             <label for="street">Logradouro</label>

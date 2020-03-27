@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Lista de Responsáveis')
+@section('title', 'Lista de Regionais')
 
 @section('content_header')
-    <h1>Lista de Responsáveis</h1>
+    <h1>Lista de Regionais</h1>
 @stop
 
 @section('content')
@@ -17,16 +17,15 @@
 
             <br />
             <div align="left">
-                <button type="button" name="create_responsible_record" id="create_responsible_record" class="btn btn-success btn-sm">Inserir Responsável</button>
+                <button type="button" name="create_regional_record" id="create_regional_record" class="btn btn-success btn-sm">Inserir Regional</button>
             </div>
 
         </div>
         <div class="card-body ">
-            <table  id="table_responsible" class="table table-bordered table-striped" style="width:100%;">
+            <table  id="table_regional" class="table table-bordered table-striped" style="width:100%;">
                 <thead>
                 <tr>
-                    <th>Razão Social</th>
-                    <th>CNPJ</th>
+                    <th>Name</th>
                     <th>Status</th>
                     <th>Ação</th>
                 </tr>
@@ -35,7 +34,7 @@
         </div>
     </div>
     <hr/>
-    @include('administrativo.responsible.modal')
+    @include('administrativo.regional.modal')
 
 @stop
 
@@ -50,11 +49,11 @@
         $(document).ready(function(){
 
             // Listando usuarios
-            $("#table_responsible").DataTable({
+            $("#table_regional").DataTable({
                 processing:true,
                 serverSide:true,
                 ajax:{
-                    url:"{{route('responsible.index')}}",
+                    url:"{{route('regional.index')}}",
                 },
                 "oLanguage": {
                     "sLengthMenu": "Mostrar _MENU_ registros por pagina",
@@ -72,46 +71,45 @@
                     },
                 },
                 columns:[
-                    {data:'company_name', name:'company_name'},
-                    {data:'cnpj', name:'cnpj'},
-                    {data:'status', name:'status',orderable:false , width:'20%'},
+                    {data:'name', name:'name'},
+                    {data:'status', name:'status'},
                     {data:'action',name:'action'},
                 ]
             });
 
             //cadastrando um responsável
-            $('#create_responsible_record').on('click',function(e){
+            $('#create_regional_record').on('click',function(e){
                 e.preventDefault();
 
                 clear();
                 triggerForm();
 
-                $('#formModalResponsible').modal('show');
-                $('#modal-responsible-title').append('Cadastrar Responsável');
-                $('#action_responsible_button').val("Cadastrar");
-                $('#action_responsible_button').addClass('btn-primary');
+                $('#formModalRegional').modal('show');
+                $('#modal-regional-title').append('Cadastrar Regional');
+                $('#action_regional_button').val("Cadastrar");
+                $('#action_regional_button').addClass('btn-primary');
 
-                $('#responsible_form').on('submit',function(e){
+                $('#regional_form').on('submit',function(e){
                     e.preventDefault();
 
-                    let dataForm = $('#responsible_form').serialize();
+                    let dataForm = $('#regional_form').serialize();
 
-                    axios.post(`{{route('responsible.store')}}`,dataForm)
+                    axios.post(`{{route('regional.store')}}`,dataForm)
                         .then((response)=>{
                             console.log(response.data.success);
                             if(response.data.success)
                             {
-                                $('#responsible_form_result').html(
+                                $('#regional_form_result').html(
 
                                     `<div class="alert alert-success">
-                                         <p>Sucesso ao cadastrar novo responsável!</p>
+                                         <p>Sucesso ao cadastrar novo regional!</p>
                                      </div>`
                                 );
 
                                 setTimeout(() => {
                                     clear();
                                     triggerForm();
-                                    $('#formModalResponsible').modal('hide');
+                                    $('#formModalRegional').modal('hide');
                                 }, 1000);
                             }
                         }).catch((response)=>{
@@ -131,53 +129,50 @@
                 clearError();
                 triggerForm();
 
-                $('#formModalResponsible').modal('show');
+                $('#formModalRegional').modal('show');
 
-                $('#formModalResponsible').modal('show');
-                $('#modal-responsible-title').append('Editar Responsável');
-                $('#action_responsible_button').val("Editar");
-                $('#action_responsible_button').addClass('btn-primary');
+                $('#formModalRegional').modal('show');
+                $('#modal-regional-title').append('Editar Regional');
+                $('#action_regional_button').val("Editar");
+                $('#action_regional_button').addClass('btn-primary');
 
                 getData(id);
 
 
                 //enviando os dados
 
-                $('#responsible_form').on('submit', function (e) {
+                $('#regional_form').on('submit', function (e) {
                     e.preventDefault();
 
                     clearError();
-                    let dataForm = $('#responsible_form').serialize();
+                    let dataForm = $('#regional_form').serialize();
 
-                    axios.put(`/home/responsible/${id}`, dataForm)
+                    axios.put(`/home/regional/${id}`, dataForm)
                         .then((response) => {
                             console.log(response.data.success);
                             if (response.data.success) {
-                                $('#responsible_form_result').html(
+                                $('#regional_form_result').html(
                                     `<div class="alert alert-success">
-                                                <p>Sucesso ao Atualizar o responsável!</p>
+                                                <p>Sucesso ao Atualizar o regional!</p>
                                             </div>`
                                 );
 
                                 setTimeout(() => {
                                     clear();
                                     triggerForm();
-                                    $('#formModalResponsible').modal('hide');
+                                    $('#formModalRegional').modal('hide');
                                 }, 1000);
                             }
                         }).catch((error) => {
 
                         let errors = error.response.data.errors;
 
-                        if (errors.company_name) {
-                            $('#companyNameError').html(errors.company_name);
-                        }
-                        if (errors.email) {
-                            $('#cnpjError').html(errors.cnpj);
+                        if (errors.name) {
+                            $('#regionalNameError').html(errors.name);
                         }
                     }).finally(() => {
 
-                        $('#table_responsible').DataTable().ajax.reload();
+                        $('#table_regional').DataTable().ajax.reload();
                     });
 
 
@@ -189,14 +184,16 @@
             $('body').on('click', '.delete', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
-                if (confirm('Você deseja desativar esse responsável ?')) {
+                let url = "{{ route('regional.destroy', ':id') }}";
+                url = url.replace(':id', id);
+                if (confirm('Você deseja desativar esse regional ?')) {
 
-                    axios.delete(`/home/responsible/${id}`)
+                    axios.delete(url)
                         .then(response => {
                             console.log(response.status == 204);
                             if (response.status == 204) {
-                                $('#table_responsible').DataTable().ajax.reload();
-                                alert('Responsável Desativado');
+                                $('#table_regional').DataTable().ajax.reload();
+                                alert('Regional Desativado');
                             }
                         })
 
@@ -214,27 +211,32 @@
 
         function clear()
         {
-            $('#action_responsible_button').val('');
-            $('#modal-responsible-title').html('');
-            $('#action_responsible_button').removeClass('btn-primary');
-            $('#action_responsible_button').removeClass('btn-warning');
-            $('#form_responsible_result').html('');
+            $('#action_regional_button').val('');
+            $('#modal-regional-title').html('');
+            $('#action_regional_button').removeClass('btn-primary');
+            $('#action_regional_button').removeClass('btn-warning');
+            $('#form_regional_result').html('');
+        }
+
+        function clearError() {
+            $('#regionalNameError').html('');
         }
 
         function getData(id) {
-            let url = "{{ route('responsible.show', ':id') }}";
+            let url = "{{ route('regional.show', ':id') }}";
 
             url = url.replace(':id', id);
             axios.get(url)
                 .then(response => {
-                    $('#company_name').val(response.data.company_name);
-                    $('#cnpj').val(response.data.cnpj);
-                    $("#status > option[value=" + response.data.address.status + "]").prop("selected", true);
+                    let data = response.data;
+                    data = data[0];
+                    $('#name').val(data.name);
+                    $("#status > option[value=" + data.status + "]").prop("selected", true);
                 })
         }
         function triggerForm()
         {
-            $("#form_responsible_result").trigger('reset');
+            $("#form_regional_result").trigger('reset');
         }
     </script>
 @stop

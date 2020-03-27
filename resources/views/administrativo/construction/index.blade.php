@@ -23,6 +23,9 @@
                 <button type="button" name="create_responsible_record" id="create_responsible_record"
                         class="btn btn-success btn-sm">Inserir Responsável
                 </button>
+                <button type="button" name="create_regional_record" id="create_regional_record"
+                        class="btn btn-success btn-sm">Inserir Regional
+                </button>
             </div>
             <div align="right" class="col-md-3">
                 <a href="{{route('upload_data.index')}}" id="create_upload_record" class="btn btn-info btn-sm">Efetuar
@@ -37,6 +40,7 @@
                     <th>Nome</th>
                     <th>Construtora</th>
                     <th>Responsável</th>
+                    <th>Regional</th>
                     <th>Usuários</th>
                     <th>Status</th>
                     <th>Ação</th>
@@ -50,6 +54,7 @@
     @include('administrativo.state.modal')
     @include('administrativo.city.modal')
     @include('administrativo.responsible.modal')
+    @include('administrativo.regional.modal')
     @include('administrativo.user_to_construction.modal')
 
 
@@ -64,12 +69,12 @@
         $(document).ready(function () {
 
 
-            $('#state').on('change',function(e){
+            $('#state').on('change', function (e) {
                 var id = $(this).children(":selected").attr("id");
 
                 axios.get(`state/${id}`)
-                    .then(response =>{
-                        var data  = response.data;
+                    .then(response => {
+                        var data = response.data;
 
                         $.each(data, function (indexInArray, valueOfElement) {
                             console.log(valueOfElement);
@@ -106,6 +111,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'company', name: 'company'},
                     {data: 'responsible-name', name: 'responsible'},
+                    {data: 'regional-name', name: 'regional'},
                     {data: 'users-name', name: 'users-name'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action'}
@@ -146,16 +152,16 @@
             }
 
             var idObra = '';
-            $('body').on('click','.cliente',function(e){
+            $('body').on('click', '.cliente', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
                 let url = "{{ route('client.construction.list', ':id') }}";
-                url = url.replace(':id',id);
+                url = url.replace(':id', id);
                 $('#formModalUsersToConstruction').modal('show');
                 $('#constructionId').val(id);
                 $('#table_users_to_construction tbody').html('');
                 axios.get(url)
-                    .then(response =>{
+                    .then(response => {
                         var data = response.data;
                         $.each(data, function (index, value) {
                             $('#table_users_to_construction tbody').append(`
@@ -167,15 +173,15 @@
                         });
                     });
                 axios.get("{{ route('users.list') }}")
-                    .then(response =>{
+                    .then(response => {
                         var data = response.data;
                         $('select#user').html('');
-                        $.each(data, function (index,value) {
+                        $.each(data, function (index, value) {
                             $('select#user').append(`<option id="${value.id}" value="${value.id}">${value.name}</option>`);
                         });
                     });
 
-                $('#user_form').on('submit',function(e){
+                $('#user_form').on('submit', function (e) {
                     e.preventDefault();
                     let userId = $('#user').children(":selected").attr('id');
                     let constructionId = $('#constructionId').val();
@@ -184,7 +190,7 @@
                     url = url.replace(':user', userId);
                     url = url.replace(':id', constructionId);
                     axios.get(url)
-                        .then(response =>{
+                        .then(response => {
                             var data = response.data;
                             $.each(data, function (index, value) {
 
@@ -201,17 +207,17 @@
 
                 });
 
-                $(document).on('click','.delete-user',function(e){
+                $(document).on('click', '.delete-user', function (e) {
                     e.preventDefault();
                     let constructionid = $('#constructionId').val();
-                    let userid  = $(this).attr('id');
+                    let userid = $(this).attr('id');
                     let url = "{{ route('client.construction.remove', [':id',':userid']) }}";
 
                     url = url.replace(':id', constructionid);
                     url = url.replace(':userid', userid);
                     $('#table_users_to_construction tbody').html('');
                     axios.get(url)
-                        .then(response =>{
+                        .then(response => {
                             var data = response.data;
                             $.each(data, function (index, value) {
 
@@ -282,6 +288,10 @@
                             $('#responsibleError').html(errors.responsible);
                         }
 
+                        if (errors.regional) {
+                            $('#regionalError').html(errors.regional);
+                        }
+
                         if (errors.neighborhood) {
                             $('#neighborhoodError').html(errors.neighborhood);
                         }
@@ -320,104 +330,6 @@
 
                 });
             });
-
-
-            //cadastrando um estado
-            $('#create_state_record').on('click', function (e) {
-                e.preventDefault();
-
-                clear();
-                triggerForm();
-
-                $('#formModalState').modal('show');
-                $('#modal-state-title').append('Cadastrar Estado');
-                $('#action_state_button').val("Cadastrar");
-                $('#action_state_button').addClass('btn-primary');
-
-                $('#state_form').on('submit', function (e) {
-                    e.preventDefault();
-
-                    let dataForm = $('#state_form').serialize();
-
-                    axios.post(`{{route('state.store')}}`, dataForm)
-                        .then((response) => {
-                            if (response.data.success) {
-                                $('#state_form_result').html(
-                                    `<div class="alert alert-success">
-                                        <p>Sucesso ao cadastrar novo estado!</p>
-                                    </div>`
-                                );
-
-                                setTimeout(() => {
-                                    clear();
-                                    triggerForm();
-                                    $('#formModalState').modal('hide');
-                                }, 1000);
-                                location.reload();
-                            }
-                        }).catch((error) => {
-                        erros = error.response.data.errors;
-                        console.log(erros);
-                        $('#state_form_result').html(
-                            `<div class="alert alert-danger">` +
-                            `<p>` + error.response.data.message + `</p>` +
-                            `</div>`
-                        );
-                    }).finally(() => {
-                    });
-
-                });
-            });
-
-
-            //cadastrando uma cidade
-            $('#create_city_record').on('click', function (e) {
-                e.preventDefault();
-
-                clear();
-                triggerForm();
-
-                $('#formModalCity').modal('show');
-                $('#modal-city-title').append('Cadastrar Cidade');
-                $('#action_city_button').val("Cadastrar");
-                $('#action_city_button').addClass('btn-primary');
-
-                $('#city_form').on('submit', function (e) {
-                    e.preventDefault();
-
-                    let dataForm = $('#city_form').serialize();
-
-                    axios.post(`{{route('city.store')}}`, dataForm)
-                        .then((response) => {
-                            console.log(response.data.success);
-                            if (response.data.success) {
-                                $('#city_form_result').html(
-                                    `<div class="alert alert-success">
-                                         <p>Sucesso ao cadastrar nova cidade!</p>
-                                     </div>`
-                                );
-
-                                setTimeout(() => {
-                                    clear();
-                                    triggerForm();
-                                    $('#formModalCity').modal('hide');
-                                }, 1000);
-                                location.reload();
-                            }
-                        }).catch((error) => {
-                        erros = error.response.data.errors;
-                        console.log(erros);
-                        $('#city_form_result').html(
-                            `<div class="alert alert-danger">` +
-                            `<p>` + error.response.data.message + `</p>` +
-                            `</div>`
-                        );
-                    }).finally(() => {
-                    });
-
-                });
-            });
-
 
             //cadastrando um responsável
             $('#create_responsible_record').on('click', function (e) {
@@ -470,6 +382,54 @@
                 });
             });
 
+
+            //cadastrando um regional
+            $('#create_regional_record').on('click', function (e) {
+                e.preventDefault();
+
+                clear();
+                clearError();
+                triggerForm();
+
+                $('#formModalRegional').modal('show');
+                $('#modal-regional-title').append('Cadastrar Responsável');
+                $('#action_regional_button').val("Cadastrar");
+                $('#action_regional_button').addClass('btn-primary');
+
+                $('#regional_form').on('submit', function (e) {
+                    e.preventDefault();
+
+                    let dataForm = $('#regional_form').serialize();
+
+                    axios.post(`{{route('regional.store')}}`, dataForm)
+                        .then((response) => {
+                            console.log(response.data.success);
+                            if (response.data.success) {
+                                $('#regional_form_result').html(
+                                    `<div class="alert alert-success">
+                                         <p>Sucesso ao cadastrar novo regional!</p>
+                                     </div>`
+                                );
+
+                                setTimeout(() => {
+                                    clear();
+                                    triggerForm();
+                                    $('#formModalRegional').modal('hide');
+                                }, 1000);
+                                location.reload();
+                            }
+                        }).catch((error) => {
+                        let errors = error.response.data.errors;
+
+                        if (errors.name) {
+                            $('#regionalNameError').html(errors.name);
+                        }
+                    }).finally(() => {
+
+                    });
+
+                });
+            });
 
             $('body').on('click', '.edit', function (e) {
                 e.preventDefault();
@@ -526,6 +486,10 @@
 
                         if (errors.responsible) {
                             $('#responsibleError').html(errors.responsible);
+                        }
+
+                        if (errors.regional) {
+                            $('#regionalError').html(errors.regional);
                         }
 
                         if (errors.neighborhood) {
@@ -591,7 +555,6 @@
             });
 
 
-
             //dps de carregar os ajax das páginas
             $(document).ajaxComplete(function () {
                 $('#preloader').hide();
@@ -611,76 +574,82 @@
                 window.location = '{{ route('responsible.index') }}';
             });
 
+            $("#list_regionals").click(function () {
+                window.location = '{{ route('regional.index') }}';
+            });
+
             function getData(id) {
                 let url = "{{ route('construction.show', ':id') }}";
 
-                url = url.replace(':id',id);
+                url = url.replace(':id', id);
                 axios.get(url)
                     .then(response => {
-                        console.log(response);
-                        $('#name').val(response.data.name);
-                        $('#company').val(response.data.company);
-                        $("#responsible > option[value=" + response.data.city + "]").prop("selected", true);
-                        $('#street').val(response.data.address.street);
-                        $('#number').val(response.data.address.number);
-                        $('#neighborhood').val(response.data.address.neighborhood);
-                        $('#zipCode').val(response.data.address.zipCode);
-                        $("#state > option[value=" + response.data.address.state + "]").prop("selected", true);
-                        $("#city > option[value=" + response.data.address.city + "]").prop("selected", true);
-                        $('#contract_regime').val(response.data.contract_regime);
-                        $('#reporting_regime').val(response.data.reporting_regime);
-                        $('#work_number').val(response.data.work_number);
-                        $('#issuance_date').val(response.data.issuance_date);
+                        console.log(response.data);
+                        let data = response.data;
+                        $('#name').val(data.name);
+                        $('#company').val(data.company);
+                        $("#responsible > option[value=" + data.responsible + "]").prop("selected", true);
+                        $("#regional > option[value=" + data.regional + "]").prop("selected", true);
+                        $('#street').val(data.address.street);
+                        $('#number').val(data.address.number);
+                        $('#neighborhood').val(data.address.location.neighborhood);
+                        $('#zipCode').val(data.address.location.zipCode);
+                        $("#state > option[value=" + data.address.state + "]").prop("selected", true);
+                        $("#city > option[value=" + data.address.city + "]").prop("selected", true);
+                        $('#contract_regime').val(data.contract_regime);
+                        $('#reporting_regime').val(data.reporting_regime);
+                        $('#work_number').val(data.work_number);
+                        $('#issuance_date').val(data.issuance_date);
 
                     })
             }
         });
 
-        function mascaraMutuario(o){
-            v_obj=o;
-            setTimeout('execmascara()',1)
+        function mascaraMutuario(o) {
+            v_obj = o;
+            setTimeout('execmascara()', 1)
         }
 
-        function mascaraMutuarioCep(o){
-            v_obj=o;
-            setTimeout('execmascaraCep()',1)
+        function mascaraMutuarioCep(o) {
+            v_obj = o;
+            setTimeout('execmascaraCep()', 1)
         }
 
-        function execmascara(){
-            v_obj.value=cnpj(v_obj.value)
+        function execmascara() {
+            v_obj.value = cnpj(v_obj.value)
         }
 
-        function execmascaraCep(){
-            v_obj.value=cep(v_obj.value)
+        function execmascaraCep() {
+            v_obj.value = cep(v_obj.value)
         }
 
-        function cnpj(v){
+        function cnpj(v) {
 
             //Remove tudo o que não é dígito
-            v=v.replace(/\D/g,"")
+            v = v.replace(/\D/g, "")
 
             //Coloca ponto entre o segundo e o terceiro dígitos
-            v=v.replace(/^(\d{2})(\d)/,"$1.$2")
+            v = v.replace(/^(\d{2})(\d)/, "$1.$2")
 
             //Coloca ponto entre o quinto e o sexto dígitos
-            v=v.replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3")
+            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
 
             //Coloca uma barra entre o oitavo e o nono dígitos
-            v=v.replace(/\.(\d{3})(\d)/,".$1/$2")
+            v = v.replace(/\.(\d{3})(\d)/, ".$1/$2")
 
             //Coloca um hífen depois do bloco de quatro dígitos
-            v=v.replace(/(\d{4})(\d)/,"$1-$2")
+            v = v.replace(/(\d{4})(\d)/, "$1-$2")
 
             return v
 
         }
 
-        function cep(v){
+        function cep(v) {
             //Remove tudo o que não é dígito
-            v=v.replace(/\D/g,"");
+            v = v.replace(/\D/g, "");
 
             //Coloca ponto entre o segundo e o terceiro dígitos
-            v=v.replace(/^(\d{5})(\d)/,"$1-$2");
+            v = v.replace(/^(\d{5})(\d)/, "$1-$2");
 
             return v;
         }

@@ -38,6 +38,7 @@ Route::group(['namespace'=>'Api',/*'middleware'=>['permission','auth'],*/'prefix
     Route::resource('construction', 'ConstructionController')->except(['create','edit']);
     Route::resource('location', 'LocationController')->except(['create','edit']);
     Route::resource('responsible', 'ResponsibleController')->except(['create','edit']);
+    Route::resource('regional', 'RegionalController')->except(['create','edit']);
     Route::resource('state', 'StateController')->except(['create','edit']);
     Route::resource('upload_data', 'UploadDataController')->except(['create','edit']);
     Route::get('cities/{id}','ConstructionController@cities')->name('citites');

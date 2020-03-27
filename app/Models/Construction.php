@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Responsible;
+use App\Models\Regional;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -25,6 +26,7 @@ class Construction extends Model
         'thumbnail',
         'company' ,
         'responsible' ,
+        'regional' ,
         'contract_regime' ,
         'reporting_regime' ,
         'issuance_date' ,
@@ -36,6 +38,11 @@ class Construction extends Model
     public function responsibles()
     {
         return $this->hasOne(Responsible::class,'id','responsible');
+    }
+
+    public function regionals()
+    {
+        return $this->hasOne(Regional::class,'id','regional');
     }
 
     public function address()

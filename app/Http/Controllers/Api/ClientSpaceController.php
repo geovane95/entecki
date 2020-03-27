@@ -11,6 +11,7 @@ use App\Models\Competence;
 use App\Models\Construction;
 use App\Models\Data;
 use App\Models\Location;
+use App\Models\Regional;
 use App\Models\Responsible;
 use App\Models\State;
 use App\Models\UploadData;
@@ -33,6 +34,7 @@ class  ClientSpaceController extends Controller
     public function __construct(
         Construction $construction,
         Responsible $responsible,
+        Regional $regional,
         Address $address,
         Location $location,
         State $state,
@@ -49,6 +51,7 @@ class  ClientSpaceController extends Controller
     {
         $this->construction = $construction;
         $this->responsible = $responsible;
+        $this->regional = $regional;
         $this->address = $address;
         $this->location = $location;
         $this->state = $state;
@@ -100,74 +103,84 @@ class  ClientSpaceController extends Controller
                 'AL' => ['FAROL' => 'amarelo', 'ALT' => 'Condições de Alerta', 'TITLE' => 'Condições de Alerta']
             ];
 
-            $query = DB::table('constructions')
-                ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
-                ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
-                ->leftJoin('cities', 'cities.id', '=', 'locations.city')
-                ->leftJoin('states', 'states.id', '=', 'cities.state')
-                ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
-                ->join('data', 'data.construction', '=', 'constructions.id')
-                ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
-                ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
-                ->leftJoin('upload_types', 'upload_types.id', '=', 'upload_data.uploadtype')
-                ->leftJoin('upload_statuses', 'upload_statuses.id', '=', 'upload_data.uploadstatus')
-                ->select(
-                    'constructions.id as construction_id',
-                    'constructions.name as construction_name',
-                    'constructions.status as construction_status',
-                    'constructions.thumbnail',
-                    'constructions.company',
-                    'constructions.contract_regime',
-                    'constructions.reporting_regime as report_regime',
-                    'constructions.issuance_date',
-                    'constructions.work_number',
-                    'addresses.street',
-                    'addresses.number',
-                    'locations.neighborhood',
-                    'cities.name as city',
-                    'states.name as state',
-                    'responsibles.company_name as responsible_name',
-                    'responsibles.cnpj as responsible_cnpj',
-                    'data.FASE',
-                    'data.AREACONSTRM2',
-                    'data.NUNITQTD',
-                    'data.CORPRRATUAL',
-                    'data.CORRPRATUALFAROL',
-                    'data.CORRPRATUALVLR',
-                    'data.FXDPRRATUAL',
-                    'data.FXDRPRATUALFAROL',
-                    'data.FXDRPRATUALVLR',
-                    'data.FPRPRFAROL',
-                    'data.FPRPR',
-                    'data.POTEROBRARPMESFAROL',
-                    'data.POTEROBRARPMES',
-                    'data.POECOPR',
-                    'data.IDQFAROL',
-                    'data.IDSFAROL',
-                    'data.PORCCONTRATINDIC',
-                    'data.ACORCPROOJATUAL',
-                    'data.APORCPROOJATUAL',
-                    'competences.id as competence_id',
-                    'competences.month',
-                    'competences.year',
-                    'competences.description',
-                    'upload_types.name as upload_type_name',
-                    'upload_statuses.name as upload_status_name'
-                )
-                ->where('competences.id','=',$competenceIdPluck);
-            $query->whereIn('constructions.id', $constructionsIdPluck);
+            $dados = [];
 
-            $constructionstable = $query->get();
+            $regionals = $this->regional->where('status','=',1)->get();
+
+            foreach ($regionals as $regional) {
+                $query = DB::table('constructions')
+                    ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
+                    ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
+                    ->leftJoin('cities', 'cities.id', '=', 'locations.city')
+                    ->leftJoin('states', 'states.id', '=', 'cities.state')
+                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+                    ->join('data', 'data.construction', '=', 'constructions.id')
+                    ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
+                    ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
+                    ->leftJoin('upload_types', 'upload_types.id', '=', 'upload_data.uploadtype')
+                    ->leftJoin('upload_statuses', 'upload_statuses.id', '=', 'upload_data.uploadstatus')
+                    ->select(
+                        'constructions.id as construction_id',
+                        'constructions.name as construction_name',
+                        'constructions.status as construction_status',
+                        'constructions.thumbnail',
+                        'constructions.company',
+                        'constructions.contract_regime',
+                        'constructions.reporting_regime as report_regime',
+                        'constructions.issuance_date',
+                        'constructions.work_number',
+                        'addresses.street',
+                        'addresses.number',
+                        'locations.neighborhood',
+                        'cities.name as city',
+                        'states.name as state',
+                        'responsibles.company_name as responsible_name',
+                        'responsibles.cnpj as responsible_cnpj',
+                        'data.FASE',
+                        'data.AREACONSTRM2',
+                        'data.NUNITQTD',
+                        'data.CORPRRATUAL',
+                        'data.CORRPRATUALFAROL',
+                        'data.CORRPRATUALVLR',
+                        'data.FXDPRRATUAL',
+                        'data.FXDRPRATUALFAROL',
+                        'data.FXDRPRATUALVLR',
+                        'data.FPRPRFAROL',
+                        'data.FPRPR',
+                        'data.POTEROBRARPMESFAROL',
+                        'data.POTEROBRARPMES',
+                        'data.POECOPR',
+                        'data.IDQFAROL',
+                        'data.IDSFAROL',
+                        'data.PORCCONTRATINDIC',
+                        'data.ACORCPROOJATUAL',
+                        'data.APORCPROOJATUAL',
+                        'competences.id as competence_id',
+                        'competences.month',
+                        'competences.year',
+                        'competences.description',
+                        'upload_types.name as upload_type_name',
+                        'upload_statuses.name as upload_status_name'
+                    )
+                    ->where('competences.id', '=', $competenceIdPluck)
+                    ->where('constructions.regional', '=', $regional->id);
+                $query->whereIn('constructions.id', $constructionsIdPluck);
+
+                $constructionInfos = $query->get();
+
+                $regional->constructions = $constructionInfos;
+
+                array_push($dados, $regional);
+            }
         } catch (Exception $e) {
             dd($e);
         }
-
         return view('area-do-cliente.index', [
             'incc' => $incc,
             'constructions' => $constructions,
             'competences' => $competences,
             'cores' => $cores,
-            'constructionstable' => $constructionstable,
+            'dados' => $dados,
             'competencesselected' => $competenceIdPluck,
             'construtionsselected' => $constructionsIdPluck
         ]);

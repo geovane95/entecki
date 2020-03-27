@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\ConstructionRequest;
 use App\Mail\SendConstructionMail;
+use App\Models\Regional;
 use App\Models\UploadData;
 use App\Models\UsersToConstructions;
 use Exception;
@@ -32,11 +33,12 @@ use Maatwebsite\Excel\Facades\Excel;
  */
 class ConstructionController extends Controller
 {
-    private $construction, $responsible, $address, $location, $state, $city, $upload_data, $usersToConstructions;
+    private $construction, $responsible, $regional, $address, $location, $state, $city, $upload_data, $usersToConstructions;
 
     public function __construct(
         Construction $construction,
         Responsible $responsible,
+        Regional $regional,
         Address $address,
         Location $location,
         State $state,
@@ -47,6 +49,7 @@ class ConstructionController extends Controller
     {
         $this->construction = $construction;
         $this->responsible = $responsible;
+        $this->regional = $regional;
         $this->address = $address;
         $this->location = $location;
         $this->state = $state;
@@ -69,6 +72,10 @@ class ConstructionController extends Controller
                 ->addColumn('responsible-name', function ($data) {
                     $respons = $this->responsible->find($data->responsible);
                     return $respons->company_name;
+                })
+                ->addColumn('regional-name', function ($data) {
+                    $reg = $this->regional->find($data->regional);
+                    return $reg->name;
                 })
                 ->addColumn('users-name', function ($data) {
                     $users = DB::table('constructions')
@@ -114,7 +121,8 @@ class ConstructionController extends Controller
         $state = Arr::pluck($this->state->get()->where('status', '=', 1), 'name', 'id');
         $city = Arr::pluck($this->city->get()->where('status', '=', 1), 'name', 'id');
         $responsible = Arr::pluck($this->responsible->get()->where('status', '=', 1), 'company_name', 'id');
-        return view('administrativo.construction.index', ['state' => $state, 'city' => $city, 'responsible' => $responsible ]);
+        $regional = Arr::pluck($this->regional->get()->where('status', '=', 1), 'name', 'id');
+        return view('administrativo.construction.index', ['state' => $state, 'city' => $city, 'responsible' => $responsible, 'regional' => $regional ]);
     }
 
     /**
@@ -156,13 +164,14 @@ class ConstructionController extends Controller
                 // Define finalmente o nome
                 $nameFile = "{$name}.{$extension}";
                 // Faz o upload:
-                $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile, 'images');
+                $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile);
             }
             $datForm = [
                 'name' => $request->name,
                 'thumbnail' => $thumbnail,
                 'company' => $request->company,
                 'responsible' => $request->responsible,
+                'regional' => $request->regional,
                 'address' => $address->id,
                 'contract_regime' => $request->contract_regime,
                 'reporting_regime' => $request->reporting_regime,
@@ -188,7 +197,7 @@ class ConstructionController extends Controller
      */
     public function show($id)
     {
-        $construction = $this->construction->with(['responsibles', 'address'])->find($id);
+        $construction = $this->construction->with(['responsibles','regionals','address'])->find($id);
 
         if (!$construction)
             return response()->json(['error' => 'Falha ao buscar a construção'], 500);
@@ -206,7 +215,7 @@ class ConstructionController extends Controller
      */
     public function edit($id)
     {
-        $construction = $this->with(['responsible', 'address'])->construction->find($id);
+        $construction = $this->with(['responsible', 'regional', 'address'])->construction->find($id);
 
         if (!$construction)
             return response()->json(['error' => 'Fail to find Contruction'], 500);
@@ -225,7 +234,7 @@ class ConstructionController extends Controller
      */
     public function update(ConstructionRequest $request, $id)
     {
-        $construction = $this->with(['responsible', 'address'])->construction->find($id);
+        $construction = $this->with(['responsible', 'regionals', 'address'])->construction->find($id);
 
         if (!$construction)
             return response()->json(['error' => 'Fail to find Contruction'], 500);
@@ -234,6 +243,7 @@ class ConstructionController extends Controller
             'name' => $request->name,
             'company' => $request->company,
             'responsible' => $request->responsible,
+            'regional' => $request->regional,
             'address' => $request->address,
             'contract_regime' => $request->contract_regime,
             'reporting_regime' => $request->reporting_regime,
