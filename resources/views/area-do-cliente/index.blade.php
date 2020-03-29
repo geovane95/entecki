@@ -20,7 +20,7 @@
                         Custo Raso + Taxa
                     </h3>
 
-                    <form class="filtro flex-column d-flex">
+                    <form class="filtro flex-column d-flex" id="filtros">
                         <label class="d-flex align-items-center">
                             Mês Referência:
                             <select name="competences" id="competences">
@@ -35,12 +35,21 @@
                         <span>
                         INCC (N-1) = {{ $incc }}
                     </span>
+                        <select class="regionais regionals" multiple id="regionals" name="regionals">
+                            <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
+                            @foreach($regionals as $regional)
+                                <option
+                                    value="{{ $regional->id }}" {{ in_array($regional->id,$regionalsselected) ? "selected" : "" }}>
+                                    {{ $regional->name }}
+                                </option>
+                            @endforeach
+                        </select>
 
-                        <select class="obras constructions" multiple id="constructions">
+                        <select class="obras constructions" multiple id="constructions" name="constructions">
                             <option value="0">SELECIONE AS OBRAS PARA VISUALIZAÇÃO</option>
                             @foreach($constructions as $construction)
                                 <option
-                                    value="{{ $construction->id }}" {{ in_array($construction->id,$construtionsselected) ? "selected" : "" }}>
+                                    value="{{ $construction->id }}" {{ in_array($construction->id,$constructionsselected) ? "selected" : "" }}>
                                     {{ $construction->name }}
                                 </option>
                             @endforeach
@@ -79,13 +88,13 @@
                     <table border="0" colspan="0" rowspan="0" class="main-table">
                         <thead>
                         <tr>
-                            <th colspan="4">
+                            <th colspan="5">
                                 Dados Gerais
                             </th>
-                            <th>
+                            <th colspan="2">
                                 Custo Obra Rev.
                             </th>
-                            <th>
+                            <th colspan="2">
                                 Fluxo Desembolso
                             </th>
                             <th>
@@ -109,111 +118,105 @@
                             <th>
                                 A Privat.
                             </th>
-                            <th rowspan="2">
+                            <th rowspan="3">
                                 Docs.<br> Obra
                             </th>
-                            <th rowspan="2">
+                            <th rowspan="3">
                                 Det.<br> PDO.
                             </th>
                         </tr>
 
                         <tr>
-                            <th class="n-obra">
+                            <th class="n-obra" rowspan="2" colspan="2">
                                 Nº Obra PDO<br>
                                 /FASE
                             </th>
-                            <th>
+                            <th rowspan="2">
                                 Empreendimento<br>
                                 Nome
                             </th>
-                            <th>
+                            <th rowspan="2">
                                 Área<br>
                                 Constr.<br>
                                 m2
                             </th>
-                            <th>
+                            <th rowspan="2">
                                 Nº<br>
                                 Unid.<br>
                                 Qtd.
                             </th>
-                            <th>
+                            <th colspan="2">
                                 Variação (+Eco.)
-                                <table>
-                                    <tr>
-                                        <th>
-                                            [P-R]<br/>
-                                            Δ R$ (Atual)
-                                        </th>
-                                        <th>
-                                            [1 - R/P]<br/>
-                                            Δ R$ (Atual)
-                                        </th>
-                                    </tr>
-                                </table>
                             </th>
-                            <th>
+                            <th colspan="2">
                                 Variação (+Eco.)
-                                <table>
-                                    <tr>
-                                        <th>
-                                            [P-R]<br>
-                                            Δ R$ (Atual)
-                                        </th>
-                                        <th>
-                                            [1 - R/P]<br>
-                                            Δ R$ (Atual)
-                                        </th>
-                                    </tr>
-                                </table>
                             </th>
-                            <th>
+                            <th rowspan="2">
                                 Δ (+ Eco)<br>
                                 [P-R]<br>
                                 Δ%
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 Ter. Obra<br>
                                 R/Proj.<br>
                                 Mês
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 Δ (- Eco)<br/>
                                 [P-R]<br/>
                                 Δ Dias
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 IDQ<br>
                                 Obra<br>
                                 Indicador
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 IDS<br>
                                 Obra<br>
                                 Indicador
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 %<br>
                                 Contratado<br>
                                 Indicador
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 Orc. Proj.<br>
                                 Atualizado<br>
                                 R$/m2
                             </th>
 
-                            <th>
+                            <th rowspan="2">
                                 Orc. Proj.<br>
                                 Atualizado<br>
                                 R$/m2
                             </th>
 
+                        </tr>
+                        <tr>
+                            <th>
+                                [P-R]<br/>
+                                Δ R$ (Atual)
+                            </th>
+                            <th>
+                                [1 - R/P]<br/>
+                                Δ R$ (Atual)
+                            </th>
+                            <th>
+                                [P-R]<br>
+                                Δ R$ (Atual)
+                            </th>
+                            <th>
+                                [1 - R/P]<br>
+                                Δ R$ (Atual)
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -225,7 +228,7 @@
                         @foreach($dados as $dado)
                             @if(count($dado->constructions) > 0)
                                 <tr class="list">
-                                    <th colspan="2" class="text-left">
+                                    <th colspan="3" class="text-left">
                                         {{ $dado->name }}
                                     </th>
 
@@ -235,38 +238,34 @@
                                     <th class="text-right">
                                         2.146
                                     </th>
+
                                     <th class="text-right">
                                         (1.653.737)
                                     </th>
-                                    <th>
-                                <span class="leg amarelo">
+                                    <!--  GEOVANE, CONFERIR MUDANCAS inseri a classe text-center -->
+                                    <th class="text-center">
+                                                <span class="leg amarelo">
 
-                                </span>
+                                                </span>
                                         -0,6%
                                     </th>
-                                    <th colspan="12">
+                                    <th colspan="14">
 
                                     </th>
                                 </tr>
                                 <span style="display: none;">{{ $constLastId = 0 }}</span>
                                 @foreach($dado->constructions as $constructiontable)
                                     <tr>
-                                        <td colspan="2">
-                                            <table>
-                                                <tr>
-                                                    <td class="text-left">
-                                                        {{ $constructiontable->work_number }}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{ $constructiontable->FASE }}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        <a href="{{ route('client-space.construction-detail', [$constructiontable->construction_id, $constructiontable->competence_id]) }}">
-                                                            {{ $constructiontable->construction_name }}
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <td class="text-left">
+                                            {{ $constructiontable->work_number }}
+                                        </td>
+                                        <td class="text-left">
+                                            {{ $constructiontable->FASE }}
+                                        </td>
+                                        <td class="text-left">
+                                            <a href="{{ route('client-space.construction-detail', [$constructiontable->construction_id, $constructiontable->competence_id]) }}">
+                                                {{ $constructiontable->construction_name }}
+                                            </a>
                                         </td>
                                         <td class="text-right">
                                             {{ number_format($constructiontable->AREACONSTRM2, 0, ',', '.') }}
@@ -274,37 +273,25 @@
                                         <td class="text-right">
                                             {{ number_format($constructiontable->NUNITQTD, 0, ',', '.') }}
                                         </td>
-                                        <td>
-                                            <table class="inside">
-                                                <tr>
-                                                    <td class="text-right">
-                                                        ({{ number_format($constructiontable->NUNITQTD, 0, ',', '.') }})
-                                                    </td>
-                                                    <td>
-                                                    <span class="leg {{ $constructiontable->CORRPRATUALFAROL }}">
 
-                                                    </span>
-                                                        {{ $constructiontable->CORRPRATUALVLR }}
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                        <td class="text-right">
+                                            ({{ number_format($constructiontable->NUNITQTD, 0, ',', '.') }})
                                         </td>
                                         <td>
-                                            <table class="inside">
-                                                <tr>
-                                                    <td class="text-right">
-                                                        {{ $constructiontable->FXDPRRATUAL }}
-                                                    </td>
-                                                    <td>
-                                                    <span class="leg {{ $constructiontable->FXDRPRATUALFAROL }}">
+                                            <span class="leg {{ $constructiontable->CORRPRATUALFAROL }}">
 
-                                                    </span>
-                                                        {{ $constructiontable->FXDRPRATUALVLR }}%
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                            </span>
+                                            {{ $constructiontable->CORRPRATUALVLR }}
                                         </td>
+                                        <td class="text-right">
+                                            {{ $constructiontable->FXDPRRATUAL }}
+                                        </td>
+                                        <td>
+                                            <span class="leg {{ $constructiontable->FXDRPRATUALFAROL }}">
 
+                                            </span>
+                                            {{ $constructiontable->FXDRPRATUALVLR }}%
+                                        </td>
                                         <td>
                                         <span class="leg {{$constructiontable->FPRPRFAROL }}">
 
@@ -355,7 +342,7 @@
                                     @if($constructiontable->construction_id != $constLastId)
                                         <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
                                         <tr class="linha-cinza">
-                                            <td colspan="17">
+                                            <td colspan="19">
 
                                             </td>
                                         </tr>
@@ -374,24 +361,34 @@
     <script>
         $(document).ready(function () {
             $("#competences").change(function () {
-                let id = $("#competences").val();
-                let ids = $("#constructions").val();
-                let url = "{{route('client-space.index.args', [':id',':ids'])}}";
-                window.location.href = url.replace(':ids', ids).replace(':id', id);
+                let formData = "";
+                formData += "competences=" + $("#competences").val();
+                formData += "&regionals=" + $("#regionals").val();
+                formData += "&constructions=" + $("#constructions").val();
+                let url = "{{route('client-space.index', ':formData')}}";
+                window.location.href = url.replace(':formData', formData);
             });
             $("#constructions").change(function () {
-                let id = $("#competences").val();
-                let ids = $("#constructions").val();
-                let url = "{{route('client-space.index.args', [':id',':ids'])}}";
-                if (ids != 0) {
-                    window.location.href = url.replace(':ids', ids).replace(':id', id);
-                }
+                let formData = "";
+                formData += "competences=" + $("#competences").val();
+                formData += "&regionals=" + $("#regionals").val();
+                formData += "&constructions=" + $("#constructions").val();
+                let url = "{{route('client-space.index', ':formData')}}";
+                window.location.href = url.replace(':formData', formData);
+            });
+            $("#regionals").change(function () {
+                let formData = "";
+                formData += "competences=" + $("#competences").val();
+                formData += "&regionals=" + $("#regionals").val();
+                formData += "&constructions=" + $("#constructions").val();
+                let url = "{{route('client-space.index', ':formData')}}";
+                window.location.href = url.replace(':formData', formData);
             });
             $(".doc").click(function () {
                 let id = $(this).attr('id');
                 let comp_id = $(this).attr('data-id');
 
-                let url = "{{ route('client-space.construction-documents', [':comp_id',':id']) }}"
+                let url = "{{ route('client-space.construction-documents', [':comp_id',':id']) }}";
                 url = url.replace(':id', id);
                 url = url.replace(':comp_id', comp_id);
 

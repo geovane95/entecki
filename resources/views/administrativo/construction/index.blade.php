@@ -443,7 +443,7 @@
 
                 $('#formModalConstruction').modal('show');
                 $('#modal-construction-title').append('Editar Obra');
-                $('#action_construction_button').val("Editar");
+                $('#action_construction_button').val("Salvar");
                 $('#action_construction_button').addClass('btn-primary');
 
                 getData(id);

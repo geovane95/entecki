@@ -66,7 +66,7 @@ class  ClientSpaceController extends Controller
         $this->userstoconstructions = $usersToConstructions;
     }
 
-    public function index($competenceId,$constructionId)
+    public function index(Request $request)
     {
         try {
             if (auth()->user()) {
@@ -76,25 +76,33 @@ class  ClientSpaceController extends Controller
             }
 
             $where = '';
-            if ($user->access_profile == 2){
+            if ($user->access_profile == 2) {
                 $where = " where uc.user = " . $user->id;
             }
             $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
-            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
+
+            $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
 
             $incc = '773,52';
 
-            if (!$constructionId) {
+            if (!$request->constructions || $request->constructions == 0) {
                 $constructionsIdPluck = Arr::pluck($constructions, 'id');
-            }else{
-                $constructionsIdPluck = explode(',',$constructionId);
+            } else {
+                $constructionsIdPluck = explode(',', $request->constructions);
             }
 
-            if (!$competenceId){
-                $competenceIdPluck = Arr::pluck($competences,'id');
-            }else{
-                $competenceIdPluck = [$competenceId];
+            if (!$request->competences || $request->competences == 0) {
+                $competenceIdPluck = Arr::pluck($competences, 'id');
+            } else {
+                $competenceIdPluck = [$request->competences];
+            }
+
+            if (!$request->regionals || $request->regionals == 0) {
+                $regionalIdPluck = Arr::pluck($regionals, 'id');
+            } else {
+                $regionalIdPluck = explode(',', $request->regionals);
             }
 
             $cores = [
@@ -104,8 +112,6 @@ class  ClientSpaceController extends Controller
             ];
 
             $dados = [];
-
-            $regionals = $this->regional->where('status','=',1)->get();
 
             foreach ($regionals as $regional) {
                 $query = DB::table('constructions')
@@ -177,58 +183,18 @@ class  ClientSpaceController extends Controller
         }
         return view('area-do-cliente.index', [
             'incc' => $incc,
+            'regionals' => $regionals,
             'constructions' => $constructions,
             'competences' => $competences,
             'cores' => $cores,
             'dados' => $dados,
             'competencesselected' => $competenceIdPluck,
-            'construtionsselected' => $constructionsIdPluck
+            'regionalsselected' => $regionalIdPluck,
+            'constructionsselected' => $constructionsIdPluck
         ]);
     }
 
-    public function indexWithNoParams(){
-        if (auth()->user()) {
-            $user = $this->user->find(auth()->user()->id);
-        } else {
-            redirect()->route('client-space.logout');
-        }
-
-        $where = '';
-        if ($user->access_profile == 2){
-            $where = " where uc.user = " . $user->id;
-        }
-
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
-
-        $competence = $this->competence->orderBy('id', 'desc')->limit(1)->get()->where('status','=',1);
-
-        $constructionPluck = Arr::pluck($constructions,'id');
-
-        return $this->index($competence[0]->id,str_replace('[','',str_replace(']','',json_encode($constructionPluck))));
-    }
-
-    public function indexWithCompetence($id){
-        if (auth()->user()) {
-            $user = $this->user->find(auth()->user()->id);
-        } else {
-            redirect()->route('client-space.logout');
-        }
-
-        $where = '';
-        if ($user->access_profile == 2){
-            $where = " where uc.user = " . $user->id;
-        }
-
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
-
-        $competence = $this->competence->find($id);
-
-        $constructionPluck = Arr::pluck($constructions,'id');
-
-        return $this->index($competence->id,str_replace('[','',str_replace(']','',json_encode($constructionPluck))));
-    }
-
-    public function detail($id,$competence)
+    public function detail($id, $competence)
     {
 
         $cores = [
@@ -244,23 +210,23 @@ class  ClientSpaceController extends Controller
         }
 
         $where = '';
-        if ($user->access_profile == 2){
+        if ($user->access_profile == 2) {
             $where = " where uc.user = " . $user->id;
         }
 
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id " . $where);
 
         $nextContruction = 0;
         $previousConstruction = 0;
         $findOk = false;
-        foreach ($constructions as $construction){
-            if (!$findOk){
-                if ($construction->id != $id){
+        foreach ($constructions as $construction) {
+            if (!$findOk) {
+                if ($construction->id != $id) {
                     $previousConstruction = $construction->id;
-                }else{
+                } else {
                     $findOk = true;
                 }
-            }else{
+            } else {
                 $nextContruction = $construction->id;
                 break;
             }
@@ -273,9 +239,9 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 3
             ])
             ->get();
-        if (count($picture) <= 0){
+        if (count($picture) <= 0) {
             $picture = false;
-        }else{
+        } else {
             $picture = $picture[0];
         }
 
@@ -286,13 +252,13 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 4
             ])
             ->get();
-        if (count($report) <= 0){
+        if (count($report) <= 0) {
             $report = false;
-        }else{
+        } else {
             $report = $report[0];
         }
 
-        $competence = $this->competence->where('id','=',$competence)->orderBy('year')->orderBy('month')->get();
+        $competence = $this->competence->where('id', '=', $competence)->orderBy('year')->orderBy('month')->get();
 
         $details = DB::table('constructions')
             ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
@@ -330,12 +296,12 @@ class  ClientSpaceController extends Controller
                 'upload_statuses.name as upload_status_name',
                 'data.*'
             )
-            ->where(['constructions.id' => $id,'competences.id' => $competence[0]->id])
+            ->where(['constructions.id' => $id, 'competences.id' => $competence[0]->id])
             ->get();
-            $competences = $this->competence->get()->where('status', '=', 1);
+        $competences = $this->competence->get()->where('status', '=', 1);
         return view('area-do-cliente.detalhe', [
             'details' => $details[0],
-            'competences'=>$competences,
+            'competences' => $competences,
             'cores' => $cores,
             'competencesselected' => $competence[0]->id,
             'nextConstruction' => $nextContruction,
@@ -345,18 +311,19 @@ class  ClientSpaceController extends Controller
         ]);
     }
 
-    public function documents($competenceId,$id){
+    public function documents($competenceId, $id)
+    {
         $construction = $this->construction->find($id);
         $competence = $this->competence->find($competenceId);
         $documents = $this->upload_data->where([
-            'construction' => $construction->id,
-            'competence' => $competence->id,
-            'uploadtype' => 2]
+                'construction' => $construction->id,
+                'competence' => $competence->id,
+                'uploadtype' => 2]
         )->get();
 
         $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
-        $competencesYear = Arr::pluck($competences,'year');
-        $competencesMonth = Arr::pluck($competences,'month');
+        $competencesYear = Arr::pluck($competences, 'year');
+        $competencesMonth = Arr::pluck($competences, 'month');
 
         if (auth()->user()) {
             $user = $this->user->find(auth()->user()->id);
@@ -365,23 +332,23 @@ class  ClientSpaceController extends Controller
         }
 
         $where = '';
-        if ($user->access_profile == 2){
+        if ($user->access_profile == 2) {
             $where = " where uc.user = " . $user->id;
         }
 
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id ".$where);
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id " . $where);
 
         $nextContruction = 0;
         $previousConstruction = 0;
         $findOk = false;
-        foreach ($constructions as $construction){
-            if (!$findOk){
-                if ($construction->id != $id){
+        foreach ($constructions as $construction) {
+            if (!$findOk) {
+                if ($construction->id != $id) {
                     $previousConstruction = $construction->id;
-                }else{
+                } else {
                     $findOk = true;
                 }
-            }else{
+            } else {
                 $nextContruction = $construction->id;
                 break;
             }
@@ -394,9 +361,9 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 3
             ])
             ->get();
-        if (count($picture) <= 0){
+        if (count($picture) <= 0) {
             $picture = false;
-        }else{
+        } else {
             $picture = $picture[0];
         }
 
@@ -407,9 +374,9 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 4
             ])
             ->get();
-        if (count($report) <= 0){
+        if (count($report) <= 0) {
             $report = false;
-        }else{
+        } else {
             $report = $report[0];
         }
 
@@ -429,11 +396,11 @@ class  ClientSpaceController extends Controller
         ];
 
         return view('area-do-cliente.docs_obra', [
-            'documents'=>$documents,
-            'competence'=>$competence,
-            'competencesYear'=>$competencesYear,
-            'competencesMonth'=>$competencesMonth,
-            'construction'=>$construction,
+            'documents' => $documents,
+            'competence' => $competence,
+            'competencesYear' => $competencesYear,
+            'competencesMonth' => $competencesMonth,
+            'construction' => $construction,
             'actualcomp' => $competenceId,
             'actualconst' => $id,
             'meses' => $meses,
@@ -444,7 +411,8 @@ class  ClientSpaceController extends Controller
         ]);
     }
 
-    public function documentsByMonthYear($constructionId,$month,$year){
+    public function documentsByMonthYear($constructionId, $month, $year)
+    {
 
         $construction = $this->construction->find($constructionId);
 
@@ -454,11 +422,11 @@ class  ClientSpaceController extends Controller
         ])->orderBy('year')->orderBy('month')->get();
 
         if (!$competences)
-            return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
+            return response()->json(['erro' => 500, 'message' => 'Não foram localizados meses de referencia para as escolhas']);
 
         $dados = [];
 
-        foreach ($competences as $competence){
+        foreach ($competences as $competence) {
             $documents = $this->upload_data->where([
                 'construction' => $construction->id,
                 'competence' => $competence->id,
@@ -470,28 +438,29 @@ class  ClientSpaceController extends Controller
         return response()->json(['success' => $dados]);
     }
 
-    public function documentsByYearOrMonth($constructionId,$yearmonth){
+    public function documentsByYearOrMonth($constructionId, $yearmonth)
+    {
 
         $construction = $this->construction->find($constructionId);
 
-        if ($yearmonth > 0 && $yearmonth <= 12){
+        if ($yearmonth > 0 && $yearmonth <= 12) {
             $competences = $this->competence->where([
                 'month' => intval($yearmonth)
             ])->get();
-        }elseif ($yearmonth > 1900){
+        } elseif ($yearmonth > 1900) {
             $competences = $this->competence->where([
                 'year' => intval($yearmonth)
             ])->get();
-        }else{
-            return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
+        } else {
+            return response()->json(['erro' => 500, 'message' => 'Não foram localizados meses de referencia para as escolhas']);
         }
 
         if (!$competences)
-            return response()->json(['erro' => 500,'message'=>'Não foram localizados meses de referencia para as escolhas']);
+            return response()->json(['erro' => 500, 'message' => 'Não foram localizados meses de referencia para as escolhas']);
 
         $dados = [];
 
-        foreach ($competences as $competence){
+        foreach ($competences as $competence) {
             $documents = $this->upload_data->where([
                 'construction' => $construction->id,
                 'competence' => $competence->id,
@@ -503,7 +472,8 @@ class  ClientSpaceController extends Controller
         return response()->json(['success' => $dados]);
     }
 
-    public function report(Request $request){
+    public function report(Request $request)
+    {
 
 
         try {
@@ -514,133 +484,161 @@ class  ClientSpaceController extends Controller
             }
 
             $where = '';
-            if ($user->access_profile == 2){
+            if ($user->access_profile == 2) {
                 $where = " where uc.user = " . $user->id;
             }
 
             $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
-            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
+
+            $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
 
             $incc = '773,52';
 
             if (!$request->constructions) {
                 $constructionsIdPluck = Arr::pluck($constructions, 'id');
-            }else{
-                $constructionsIdPluck = explode(',',$request->constructions);
+            } else {
+                $constructionsIdPluck = explode(',', $request->constructions);
             }
 
-            if (!$request->competences){
-                $compatual = $this->competence->orderBy('id', 'desc')->take(1)->get()->where('status','=',1);
-                $competenceIdPluck = Arr::pluck($compatual,'id');
-            }else{
+            if (!$request->regionals) {
+                $regionalsIdPluck = Arr::pluck($regionals, 'id');
+            } else {
+                $regionalsIdPluck = explode(',', $request->regionals);
+            }
+
+            if (!$request->competences) {
+                $compatual = $this->competence->orderBy('id', 'desc')->take(1)->get()->where('status', '=', 1);
+                $competenceIdPluck = Arr::pluck($compatual, 'id');
+            } else {
                 $competenceIdPluck = [$request->competences];
             }
 
-        $reports = DB::table('constructions')
-            ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
-            ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
-            ->leftJoin('cities', 'cities.id', '=', 'locations.city')
-            ->leftJoin('states', 'states.id', '=', 'cities.state')
-            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
-            ->join('data', 'data.construction', '=', 'constructions.id')
-            ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
-            ->join('competences', 'competences.id', '=', 'upload_data.competence')
-            ->join('upload_types', 'upload_types.id', '=', 'upload_data.uploadtype')
-            ->join('upload_statuses', 'upload_statuses.id', '=', 'upload_data.uploadstatus')
-            ->select(
-                'constructions.id as construction_id',
-                'constructions.name as construction_name',
-                'constructions.status as construction_status',
-                'constructions.thumbnail',
-                'constructions.company',
-                'constructions.contract_regime',
-                'constructions.reporting_regime as report_regime',
-                'constructions.issuance_date',
-                'constructions.work_number',
-                'addresses.street',
-                'addresses.number',
-                'locations.neighborhood',
-                'cities.name as city',
-                'states.name as state',
-                'responsibles.company_name as responsible_name',
-                'responsibles.cnpj as responsible_cnpj',
-                'data.FASE',
-                'data.AREACONSTRM2',
-                'data.NUNITQTD',
-                'data.FBP',
-                'data.FBR',
-                'data.FBD',
-                'data.FOP',
-                'data.FOR',
-                'data.FOD',
-                'data.FOBP',
-                'data.FOBR',
-                'data.FOBD',
-                'competences.id as competence_id',
-                'competences.month',
-                'competences.year',
-                'competences.description',
-                'upload_types.name as upload_type_name',
-                'upload_statuses.name as upload_status_name'
-            )
-            ->whereIn('constructions.id', $constructionsIdPluck)
-            ->whereIn('competences.id', $competenceIdPluck)
-            ->get();
+            $dados = [];
+
+            foreach ($regionals as $regional) {
+                $reports = DB::table('constructions')
+                    ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
+                    ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
+                    ->leftJoin('cities', 'cities.id', '=', 'locations.city')
+                    ->leftJoin('states', 'states.id', '=', 'cities.state')
+                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+                    ->join('data', 'data.construction', '=', 'constructions.id')
+                    ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
+                    ->join('competences', 'competences.id', '=', 'upload_data.competence')
+                    ->join('upload_types', 'upload_types.id', '=', 'upload_data.uploadtype')
+                    ->join('upload_statuses', 'upload_statuses.id', '=', 'upload_data.uploadstatus')
+                    ->select(
+                        'constructions.id as construction_id',
+                        'constructions.name as construction_name',
+                        'constructions.status as construction_status',
+                        'constructions.thumbnail',
+                        'constructions.company',
+                        'constructions.contract_regime',
+                        'constructions.reporting_regime as report_regime',
+                        'constructions.issuance_date',
+                        'constructions.work_number',
+                        'addresses.street',
+                        'addresses.number',
+                        'locations.neighborhood',
+                        'cities.name as city',
+                        'states.name as state',
+                        'responsibles.company_name as responsible_name',
+                        'responsibles.cnpj as responsible_cnpj',
+                        'data.FASE',
+                        'data.AREACONSTRM2',
+                        'data.NUNITQTD',
+                        'data.FBP',
+                        'data.FBR',
+                        'data.FBD',
+                        'data.FOP',
+                        'data.FOR',
+                        'data.FOD',
+                        'data.FOBP',
+                        'data.FOBR',
+                        'data.FOBD',
+                        'competences.id as competence_id',
+                        'competences.month',
+                        'competences.year',
+                        'competences.description',
+                        'upload_types.name as upload_type_name',
+                        'upload_statuses.name as upload_status_name'
+                    )
+                    ->whereIn('constructions.id', $constructionsIdPluck)
+                    ->whereIn('competences.id', $competenceIdPluck)
+                    ->where('constructions.regional', '=', $regional->id)
+                    ->get();
+
+                $regional->reports = $reports;
+
+                if (count($reports) > 0)
+                    array_push($dados, $regional);
+            }
         } catch (Exception $e) {
             dd($e);
         }
 
         return view('area-do-cliente.relatorio', [
-            'reports' => $reports,
             'competences' => $competences,
             'constructions' => $constructions,
+            'regionals' => $regionals,
+            'dados' => $dados,
             'competencesselected' => $competenceIdPluck,
-            'construtionsselected' => $constructionsIdPluck,
+            'constructionsselected' => $constructionsIdPluck,
+            'regionalsselected' => $regionalsIdPluck,
             'incc' => $incc
         ]);
     }
 
-    public function downloadPictures($uploadDataId){
+    public function downloadPictures($uploadDataId)
+    {
         $data = $this->upload_data->find($uploadDataId);
 
-        if ($data && !empty($data)){
+        if ($data && !empty($data)) {
             return response()->download(url($data[0]->file));
-        }else{
+        } else {
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }
     }
 
-    public function downloadReports($uploadDataId){
+    public function downloadReports($uploadDataId)
+    {
         $data = $this->upload_data->find($uploadDataId);
 
-        if ($data){
-            return response()->download(url('storage/'.$data->file));
-        }else{
+        if ($data) {
+            return response()->download(url('storage/' . $data->file));
+        } else {
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }
     }
 
-    public function graficoFisicoAcumulado($id){
-
-    }
-    public function desempenhoFinanceiro($id){
-
-    }
-
-    public function analiseFisicaFinanceira($id){
+    public function graficoFisicoAcumulado($id)
+    {
 
     }
 
-    public function fluxoFinanceiro($id){
+    public function desempenhoFinanceiro($id)
+    {
 
     }
 
-    public function fluxoDesemb($id){
+    public function analiseFisicaFinanceira($id)
+    {
+
+    }
+
+    public function fluxoFinanceiro($id)
+    {
+
+    }
+
+    public function fluxoDesemb($id)
+    {
         $competences = DB::select("select * from competences order by id desc limit 2");
         $dados = [];
 
-        foreach ($competences as $competence){
+        foreach ($competences as $competence) {
             $fluxoDesemb = new Data();
             $fluxoDesemb->delta = 2.55;
             $fluxoDesemb->prevrev = 1134271;

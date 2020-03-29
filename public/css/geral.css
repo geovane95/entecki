@@ -656,17 +656,18 @@ td{
 .miolo table tbody td table.inside td{
     width: 50%;
 }
-.miolo table thead tr.list{
-    margin-top: 20px;
-}
-.miolo table thead tr.list th{
-    background: #6f7124;
-    font-weight: normal;
-    padding:8px 5px;
-}
 .miolo table thead tr.linha-branca th{
     background: #fff;
     padding: 5px;
+}
+.miolo table tr.list{
+    margin-top: 20px;
+}
+.miolo table tr.list th{
+    background: #6f7124;
+    font-weight: normal;
+    padding:8px 5px;
+    color: #fff;
 }
 .miolo table tbody td{
     border:1px solid #dddad4;

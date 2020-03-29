@@ -135,7 +135,7 @@
 
                 $('#formModalResponsible').modal('show');
                 $('#modal-responsible-title').append('Editar Responsável');
-                $('#action_responsible_button').val("Editar");
+                $('#action_responsible_button').val("Salvar");
                 $('#action_responsible_button').addClass('btn-primary');
 
                 getData(id);

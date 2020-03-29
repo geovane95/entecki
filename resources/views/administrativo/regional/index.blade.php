@@ -133,7 +133,7 @@
 
                 $('#formModalRegional').modal('show');
                 $('#modal-regional-title').append('Editar Regional');
-                $('#action_regional_button').val("Editar");
+                $('#action_regional_button').val("Salvar");
                 $('#action_regional_button').addClass('btn-primary');
 
                 getData(id);

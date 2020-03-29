@@ -78,7 +78,5 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('competence.list');
     Route::get('competences/{construction}/{yearmonth}','ClientSpaceController@documentsByYearOrMonth')->name('competence.list.args');
     Route::get('graficos/fluxodesemb/{id}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');
-    Route::get('/', 'ClientSpaceController@indexWithNoParams')->name('client-space.index');
-    Route::get('/{competence}/{construction}', 'ClientSpaceController@index')->name('client-space.index.args');
-    Route::get('/{competence}', 'ClientSpaceController@indexWithCompetence')->name('client-space.index.onearg');
+    Route::get('/', 'ClientSpaceController@index')->name('client-space.index');
 });
