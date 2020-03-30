@@ -81,7 +81,7 @@ class  ClientSpaceController extends Controller
             }
             $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
-            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
             $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
 
@@ -214,7 +214,7 @@ class  ClientSpaceController extends Controller
             $where = " where uc.user = " . $user->id;
         }
 
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id " . $where);
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id " . $where);
 
         $nextContruction = 0;
         $previousConstruction = 0;
@@ -336,7 +336,7 @@ class  ClientSpaceController extends Controller
             $where = " where uc.user = " . $user->id;
         }
 
-        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id " . $where);
+        $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id " . $where);
 
         $nextContruction = 0;
         $previousConstruction = 0;
@@ -490,7 +490,7 @@ class  ClientSpaceController extends Controller
 
             $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
-            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
             $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
 

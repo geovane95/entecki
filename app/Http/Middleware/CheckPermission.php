@@ -16,7 +16,7 @@ class CheckPermission
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->access_profile != 1)
+        if(auth()->user()->access_profile == 2)
         {
             return redirect()->route('client-space.index');
         }
