@@ -78,5 +78,8 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('competence.list');
     Route::get('competences/{construction}/{yearmonth}','ClientSpaceController@documentsByYearOrMonth')->name('competence.list.args');
     Route::get('graficos/fluxodesemb/{id}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');
+    Route::get('graficos/fluxofinanobra/{id}','ClientSpaceController@fluxoFinanObra')->name('graficos.fluxofinanobra');
+    Route::get('graficos/desempfinan/{id}','ClientSpaceController@desempFinan')->name('graficos.desempfinan');
+    Route::get('graficos/fislocalacummacroetapas/{id}','ClientSpaceController@fisLocalAcumMacroEtapas')->name('graficos.fislocalacummacroetapas');
     Route::get('/', 'ClientSpaceController@index')->name('client-space.index');
 });

@@ -543,12 +543,23 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-5">
+
+                <!--  GEOVANE, CONFERIR MUDANCAS  eram 3 tabelas que transformei em so 1 -->
+                <div class="col-md-12">
                     <table class="info">
                         <thead>
                         <tr>
                             <th colspan="4">
                                 EVOLUÇÃO ORÇ. (CUSTO OBRA: RASO + TAXA + OUTROS)
+                            </th>
+                            <th colspan="3">
+                                ACOMPANHAMENTO FINANCEIRO
+                            </th>
+                            <th class="text-right" colspan="2">
+                                INCC (N-1) IN: 750,18
+                            </th>
+                            <th colspan="2">
+                                CUSTO/M2 (PROJETADO)
                             </th>
                         </tr>
                         <tr>
@@ -563,6 +574,24 @@
                             </th>
                             <th class="text-center">
                                 Orc.Rev.Obra
+                            </th>
+                            <th class="text-right">
+                                Acum. Total
+                            </th>
+                            <th class="text-right">
+                                Saldo Realizar
+                            </th>
+                            <th class="text-right">
+                                Proj. Custo Obra
+                            </th>
+                            <th class="text-right" colspan="2">
+                                Var. Orc. Rev. (+ Eco.)
+                            </th>
+                            <th class="text-right">
+                                Construído
+                            </th>
+                            <th class="text-right">
+                                Privativo
                             </th>
                         </tr>
                         </thead>
@@ -580,52 +609,6 @@
                             <td class="text-center">
                                 {{ number_format($details->EVOORCREVOBRA,0,',','.') }}
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                {{ $details->EVOORCIDINCC }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($details->EVOORCINIOBRAINCC,2,',','.') }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($details->EVOORCADTVINCC,2,',','.') }}
-                            </td>
-                            <td class="text-center">
-                                {{ number_format($details->EVOORCREVOBRAINCC,2,',','.') }}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-5">
-                    <table class="info">
-                        <thead>
-                        <tr>
-                            <th colspan="3">
-                                ACOMPANHAMENTO FINANCEIRO
-                            </th>
-                            <th class="text-right" colspan="2">
-                                INCC (N-1) IN: {{ number_format($details->ACOFINCCIN,2,',','.') }}
-                            </th>
-                        </tr>
-                        <tr>
-                            <th class="text-right">
-                                Acum. Total
-                            </th>
-                            <th class="text-right">
-                                Saldo Realizar
-                            </th>
-                            <th class="text-right">
-                                Proj. Custo Obra
-                            </th>
-                            <th class="text-right" colspan="2">
-                                Var. Orc. Rev. (+ Eco.)
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
                             <td class="text-right">
                                 {{ number_format($details->ACOFACUMTOTAL,0,',','.') }}
                             </td>
@@ -642,8 +625,26 @@
                                 {{ $details->ACOFVARORCREVVALOR }}%<br>
                                 <span class="leg {{ $cores[strtoupper($details->ACOFVARORCREVFAROL)]['FAROL'] }}"></span>
                             </td>
+                            <td class="text-right">
+                                {{ number_format($details->CUSTOM2PROJCONST,2,',','.') }}
+                            </td>
+                            <td class="text-right">
+                                {{ number_format($details->CUSTOM2PROJPRIVA,2,',','.') }}
+                            </td>
                         </tr>
                         <tr>
+                            <td class="text-center">
+                                {{ $details->EVOORCIDINCC }}
+                            </td>
+                            <td class="text-center">
+                                {{ number_format($details->EVOORCINIOBRAINCC,0,',','.') }}
+                            </td>
+                            <td class="text-center">
+                                {{ number_format($details->EVOORCADTVINCC,0,',','.') }}
+                            </td>
+                            <td class="text-center">
+                                {{ number_format($details->EVOORCREVOBRAINCC,0,',','.') }}
+                            </td>
                             <td class="text-right">
                                 {{ number_format($details->ACOFACUMTOTALINCC,2,',','.') }}
                             </td>
@@ -656,39 +657,6 @@
                             <td class="text-right">
                                 {{ $details->ACOFVARORCREVINCC }}
                             </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <div class="col-md-2">
-                    <table class="info">
-                        <thead>
-                        <tr>
-                            <th colspan="2">
-                                CUSTO/M2 (PROJETADO)
-                            </th>
-                        </tr>
-                        <tr>
-                            <th class="text-right">
-                                Construído
-                            </th>
-                            <th class="text-right">
-                                Privativo
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="text-right">
-                                {{ number_format($details->CUSTOM2PROJCONST,2,',','.') }}
-                            </td>
-                            <td class="text-right">
-                                {{ number_format($details->CUSTOM2PROJPRIVA,2,',','.') }}
-                            </td>
-                        </tr>
-                        <tr>
                             <td class="text-right">
                                 {{ number_format($details->CUSTOM2PROJCONSTINCC,2,',','.') }}
                             </td>
@@ -815,7 +783,8 @@
 
 
                 <div class="col-md-12">
-                    <table class="info barras-percent chart">
+                    <!--  GEOVANE, CONFERIR MUDANCAS     ATENCAO: INSERI CLASSE AQUI: -->
+                    <table class="info barras-percent chart full-grafico">
                         <thead>
                         <tr>
                             <th class="text-left" colspan="2">
@@ -827,65 +796,6 @@
                         <tr>
                             <td>
                                 <div id="container" style="width:100%; height:400px;"></div>
-                                <script type="text/javascript">
-                                    Highcharts.chart('container', {
-                                        xAxis: {
-                                            categories: ['Jul/18', 'Ago/18', 'Set/18', 'Out/18', 'Nov/18', 'Dez/18', 'Jan/19', 'Fev/19', 'Mar/19', 'Abr/19', 'Mai/19', 'Jun/19', 'Jul/18', 'Ago/18', 'Set/18', 'Out/18', 'Nov/18', 'Dez/18', 'Jan/19', 'Fev/19', 'Mar/19', 'Abr/19', 'Mai/19', 'Jun/19']
-                                        },
-                                        title: {
-                                            text: ''
-                                        },
-                                        yAxis: {
-                                            title: {
-                                                enabled: false
-                                            }
-                                        },
-                                        series: [{
-                                            type: 'column',
-                                            name: 'Período - Fís. PREV',
-                                            data: [30, 20, 17, 38, 44, 30, 20, 17, 38, 44, 42, 48, 30, 20, 17, 38, 44, 30, 20, 17, 38, 44, 42, 48],
-                                            color: {
-                                                linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                                stops: [
-                                                    [0, '#6f7124'],
-                                                    [1, '#ae9c20']
-                                                ]
-                                            }
-                                        }, {
-                                            type: 'spline',
-                                            name: 'Acum - Fís. REAL',
-                                            data: [3, 2.67, 3, 6.33, 3.33, 3, 2.67, 3, 6.33, 3.33, 10, 15, 3, 2.67, 3, 6.33, 3.33, 3, 2.67, 3, 6.33, 3.33, 10, 15],
-                                            lineColor: '#f26d23',
-                                            marker: {
-                                                lineWidth: 2,
-                                                lineColor: '#f26d23',
-                                                fillColor: 'white'
-                                            }
-                                        }, {
-                                            type: 'spline',
-                                            name: 'Acum - Fís. (PREV/PROJ)',
-                                            data: [6.33, 3.33, 3, 2.67, 3, 2.67, 3, 3, 6.33, 3.33, 10, 15, 6.33, 3.33, 3, 2.67, 3, 2.67, 3, 3, 6.33, 3.33, 10, 15],
-                                            lineColor: '#434444',
-                                            marker: {
-                                                lineWidth: 2,
-                                                lineColor: '#434444',
-                                                fillColor: 'white'
-                                            }
-                                        }, {
-                                            type: 'scatter',
-                                            name: 'Período - Fís. (PREV/PROJ)',
-                                            data: [35, 24, 22, 40, 45, 40, 28, 33, 43, 48, 46, 53, 35, 24, 22, 40, 45, 40, 28, 33, 43, 48, 46, 53],
-                                            color: '#182857',
-                                            marker: {
-                                                radius: 4
-                                            }, //{series.name}
-                                            tooltip: {
-                                                pointFormat: '<b>{point.y}</b>'
-                                            }
-                                        }]
-                                    });
-                                </script>
-
                             </td>
                         </tr>
                         </tbody>
@@ -894,7 +804,8 @@
 
 
                 <div class="col-md-12">
-                    <table class="info barras-percent chart">
+                    <!--  GEOVANE, CONFERIR MUDANCAS     ATENCAO: INSERI CLASSE AQUI: -->
+                    <table class="info barras-percent chart full-grafico">
                         <thead>
                         <tr>
                             <th class="text-left" colspan="2">
@@ -906,66 +817,6 @@
                         <tr>
                             <td class="grad2">
                                 <div id="container2" style="width:100%; height:400px;"></div>
-                                <script type="text/javascript">
-                                    Highcharts.chart('container2', {
-                                        xAxis: {
-                                            categories: ['Jul/18', 'Ago/18', 'Set/18', 'Out/18', 'Nov/18', 'Dez/18', 'Jan/19', 'Fev/19', 'Mar/19', 'Abr/19', 'Mai/19', 'Jun/19', 'Jul/18', 'Ago/18', 'Set/18', 'Out/18', 'Nov/18', 'Dez/18', 'Jan/19', 'Fev/19', 'Mar/19', 'Abr/19', 'Mai/19', 'Jun/19']
-                                        },
-                                        title: {
-                                            text: ''
-                                        },
-                                        yAxis: {
-                                            title: {
-                                                enabled: false
-                                            }
-                                        },
-                                        series: [{
-                                            type: 'column',
-                                            name: 'Período - Fís. PREV',
-                                            data: [30, 20, 17, 38, 44, 30, 20, 17, 38, 44, 42, 48, 30, 20, 17, 38, 44, 30, 20, 17, 38, 44, 42, 48],
-                                            color: {
-                                                linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                                stops: [
-                                                    [0, '#002953'],
-                                                    [1, '#6c85af']
-                                                ]
-                                            }
-                                        }, {
-                                            type: 'spline',
-                                            name: 'Acum - Fís. REAL',
-                                            data: [3, 2.67, 3, 6.33, 3.33, 3, 2.67, 3, 6.33, 3.33, 10, 15, 3, 2.67, 3, 6.33, 3.33, 3, 2.67, 3, 6.33, 3.33, 10, 15],
-                                            lineColor: '#f26d23',
-                                            marker: {
-                                                lineWidth: 2,
-                                                lineColor: '#f26d23',
-                                                fillColor: 'white'
-                                            }
-                                        }, {
-                                            type: 'spline',
-                                            name: 'Acum - Fís. (PREV/PROJ)',
-                                            data: [6.33, 3.33, 3, 2.67, 3, 2.67, 3, 3, 6.33, 3.33, 10, 15, 6.33, 3.33, 3, 2.67, 3, 2.67, 3, 3, 6.33, 3.33, 10, 15],
-                                            lineColor: '#6b7138',
-                                            marker: {
-                                                lineWidth: 2,
-                                                lineColor: '#6b7138',
-                                                fillColor: 'white'
-                                            }
-                                        }, {
-                                            type: 'scatter',
-                                            name: 'Período - Fís. (PREV/PROJ)',
-                                            data: [35, 24, 22, 40, 45, 40, 28, 33, 43, 48, 46, 53, 35, 24, 22, 40, 45, 40, 28, 33, 43, 48, 46, 53],
-                                            color: '#b09a31',
-                                            marker: {
-                                                radius: 4
-                                            },
-                                            tooltip: {
-                                                pointFormat: '<b>{point.y}</b>'
-                                            }
-                                        }]
-                                    });
-                                </script>
-
-
                             </td>
                         </tr>
                         </tbody>
@@ -1236,224 +1087,22 @@
                         </tr>
                         </thead>
                     </table>
-                    <div class="row">
+                    <div class="row" id="fluxofinanobra">
                         <div class="col-md-3">
                             <div id="barra1" style="width: 100%; height: 300px;"></div>
-
-                            <script type="text/javascript">
-                                Highcharts.chart('barra1', {
-                                    chart: {
-                                        type: 'column'
-                                    },
-                                    title: {
-                                        text: 'Δ = 2,55%'
-                                    },
-                                    xAxis: {
-                                        crosshair: true,
-                                        title: {
-                                            text: 'JAN/19'
-                                        },
-                                        labels: {
-                                            enabled: false
-                                        }
-                                    },
-                                    yAxis: {
-                                        labels: {
-                                            enabled: false
-                                        },
-                                        title: {
-                                            enabled: false
-                                        }
-                                    },
-                                    series: [{
-                                        name: 'Prev. Rev. (R$)',
-                                        data: [1134271],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#002953'],
-                                                [1, '#6c85af']
-                                            ]
-                                        }
-
-                                    }, {
-                                        name: 'Real (R$)',
-                                        data: [684851],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#6f7124'],
-                                                [1, '#ae9c20']
-                                            ]
-                                        }
-
-                                    }]
-                                });
-                            </script>
                         </div>
                         <div class="col-md-3">
                             <div id="barra2" style="width: 100%; height: 300px;"></div>
 
-                            <script type="text/javascript">
-                                Highcharts.chart('barra2', {
-                                    chart: {
-                                        type: 'column'
-                                    },
-                                    title: {
-                                        text: 'Δ = 2,55%'
-                                    },
-                                    xAxis: {
-                                        crosshair: true,
-                                        title: {
-                                            text: 'JAN/19'
-                                        },
-                                        labels: {
-                                            enabled: false
-                                        }
-                                    },
-                                    yAxis: {
-                                        labels: {
-                                            enabled: false
-                                        },
-                                        title: {
-                                            enabled: false
-                                        }
-                                    },
-                                    series: [{
-                                        name: 'Prev. Rev. (R$)',
-                                        data: [1134271],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#002953'],
-                                                [1, '#6c85af']
-                                            ]
-                                        }
-
-                                    }, {
-                                        name: 'Real (R$)',
-                                        data: [684851],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#6f7124'],
-                                                [1, '#ae9c20']
-                                            ]
-                                        }
-
-                                    }]
-                                });
-                            </script>
                         </div>
                         <div class="col-md-3">
 
                             <div id="barra3" style="width: 100%; height: 300px;"></div>
 
-                            <script type="text/javascript">
-                                Highcharts.chart('barra3', {
-                                    chart: {
-                                        type: 'column'
-                                    },
-                                    title: {
-                                        text: 'Δ = 2,55%'
-                                    },
-                                    xAxis: {
-                                        crosshair: true,
-                                        title: {
-                                            text: 'JAN/19'
-                                        },
-                                        labels: {
-                                            enabled: false
-                                        }
-                                    },
-                                    yAxis: {
-                                        labels: {
-                                            enabled: false
-                                        },
-                                        title: {
-                                            enabled: false
-                                        }
-                                    },
-                                    series: [{
-                                        name: 'Prev. Rev. (R$)',
-                                        data: [1134271],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#002953'],
-                                                [1, '#6c85af']
-                                            ]
-                                        }
-
-                                    }, {
-                                        name: 'Real (R$)',
-                                        data: [684851],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#6f7124'],
-                                                [1, '#ae9c20']
-                                            ]
-                                        }
-
-                                    }]
-                                });
-                            </script>
                         </div>
                         <div class="col-md-3">
 
                             <div id="barra4" style="width: 100%; height: 300px;"></div>
-
-                            <script type="text/javascript">
-                                Highcharts.chart('barra4', {
-                                    chart: {
-                                        type: 'column'
-                                    },
-                                    title: {
-                                        text: 'Δ = 2,55%'
-                                    },
-                                    xAxis: {
-                                        crosshair: true,
-                                        title: {
-                                            text: 'JAN/19'
-                                        },
-                                        labels: {
-                                            enabled: false
-                                        }
-                                    },
-                                    yAxis: {
-                                        labels: {
-                                            enabled: false
-                                        },
-                                        title: {
-                                            enabled: false
-                                        }
-                                    },
-                                    series: [{
-                                        name: 'Prev. Rev. (R$)',
-                                        data: [1134271],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#002953'],
-                                                [1, '#6c85af']
-                                            ]
-                                        }
-
-                                    }, {
-                                        name: 'Real (R$)',
-                                        data: [684851],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#6f7124'],
-                                                [1, '#ae9c20']
-                                            ]
-                                        }
-
-                                    }]
-                                });
-                            </script>
                         </div>
                     </div>
                 </div>
@@ -1474,115 +1123,11 @@
 
                             <div id="barra5" style="width: 100%; height: 300px;"></div>
 
-                            <script type="text/javascript">
-                                Highcharts.chart('barra5', {
-                                    chart: {
-                                        type: 'column'
-                                    },
-                                    title: {
-                                        text: 'Δ = 2,55%'
-                                    },
-                                    xAxis: {
-                                        crosshair: true,
-                                        title: {
-                                            text: 'JAN/19'
-                                        },
-                                        labels: {
-                                            enabled: false
-                                        }
-                                    },
-                                    yAxis: {
-                                        labels: {
-                                            enabled: false
-                                        },
-                                        title: {
-                                            enabled: false
-                                        }
-                                    },
-                                    series: [{
-                                        name: 'Prev. Rev. (R$)',
-                                        data: [1134271],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#002953'],
-                                                [1, '#6c85af']
-                                            ]
-                                        }
-
-                                    }, {
-                                        name: 'Real (R$)',
-                                        data: [684851],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#6f7124'],
-                                                [1, '#ae9c20']
-                                            ]
-                                        }
-
-                                    }]
-                                });
-                            </script>
                         </div>
                         <div class="col-md-6">
                             <div id="barra6" style="width: 100%; height: 300px;"></div>
-
-                            <script type="text/javascript">
-                                Highcharts.chart('barra6', {
-                                    chart: {
-                                        type: 'column'
-                                    },
-                                    title: {
-                                        text: 'Δ = 2,55%'
-                                    },
-                                    xAxis: {
-                                        crosshair: true,
-                                        title: {
-                                            text: 'JAN/19'
-                                        },
-                                        labels: {
-                                            enabled: false
-                                        }
-                                    },
-                                    yAxis: {
-                                        labels: {
-                                            enabled: false
-                                        },
-                                        title: {
-                                            enabled: false
-                                        }
-                                    },
-                                    series: [{
-                                        name: 'Prev. Rev. (R$)',
-                                        data: [1134271],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#002953'],
-                                                [1, '#6c85af']
-                                            ]
-                                        }
-
-                                    }, {
-                                        name: 'Real (R$)',
-                                        data: [684851],
-                                        color: {
-                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                            stops: [
-                                                [0, '#6f7124'],
-                                                [1, '#ae9c20']
-                                            ]
-                                        }
-
-                                    }]
-                                });
-                            </script>
-
                         </div>
                     </div>
-
-                    </tr>
                 </div>
 
 
@@ -1698,83 +1243,38 @@
             </div>
         </div>
     </section>
-    <script>
-        $(document).ready(function () {
-            $("#competences").change(function(){
-                let id = $("#competences").val();
-                let url = "{{ route('client-space.construction-detail', [$details->construction_id, ':competence']) }}";
-                url = url.replace(':competence',id);
-                window.location.href = url;
-            });
+    <script src="{{url('js/fisico_local_acumulado_macro_etapas.js')}}"></script>
+    <script src="{{url('js/desempenho_financeiro.js')}}"></script>
+    <script src="{{url('js/fluxo_financeiro_obra.js')}}"></script>
+    <script src="{{url('js/fluxo_desemb.js')}}"></script>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        jQuery(function(){
+            setTimeout(
+                function()
+                {
+                    jQuery( '.full-grafico .highcharts-series-group > .highcharts-column-series.highcharts-series-1 > rect.highcharts-point').each(function( index ) {
+                        var $width = jQuery(this).attr('width');
+                        jQuery(this).attr('style', 'transform:translateX(-'+$width+'px)');
+
+
+                    });
+                    jQuery( '.full-grafico .highcharts-series-group > .highcharts-column-series > rect.highcharts-point').each(function( index ) {
+                        var wd = jQuery(this).attr('width');
+
+
+                        jQuery(this).attr('width', 2*wd);
+
+                    });
+
+
+
+                }, 2000);
+
+
         });
-        function fluxodesemb() {
-            let construction = "{{ $details->construction_id }}";
-            let url = "{{ route('graficos.fluxodesemb',':construction') }}";
-            url = url.replace(':construction',construction);
-            axios.get(url)
-                .then(response => {
-                    let template =
-                        `                                Highcharts.chart("barra5", {\n` +
-                        `                                    chart: {\n` +
-                        `                                        type: "column"\n` +
-                        `                                    },\n` +
-                        `                                    title: {\n` +
-                        `                                        text: "Δ = :delta%"\n` +
-                        `                                    },\n` +
-                        `                                    xAxis: {\n` +
-                        `                                        crosshair: true,\n` +
-                        `                                        title: {\n` +
-                        `                                            text: ":competencedesc"\n` +
-                        `                                        },\n` +
-                        `                                        labels: {\n` +
-                        `                                            enabled: false\n` +
-                        `                                        }\n` +
-                        `                                    },\n` +
-                        `                                    yAxis: {\n` +
-                        `                                        labels: {\n` +
-                        `                                            enabled: false\n` +
-                        `                                        },\n` +
-                        `                                        title: {\n` +
-                        `                                            enabled: false\n` +
-                        `                                        }\n` +
-                        `                                    },\n` +
-                        `                                    series: [{\n` +
-                        `                                        name: "Prev. Rev. (R$)",\n` +
-                        `                                        data: [:valueprevrev],\n` +
-                        `                                        color: {\n` +
-                        `                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n` +
-                        `                                            stops: [\n` +
-                        `                                                [0, "#002953"],\n` +
-                        `                                                [1, "#6c85af"]\n` +
-                        `                                            ]\n` +
-                        `                                        }\n` +
-                        `\n` +
-                        `                                    }, {\n` +
-                        `                                        name: "Real (R$)",\n` +
-                        `                                        data: [:valuereal],\n` +
-                        `                                        color: {\n` +
-                        `                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},\n` +
-                        `                                            stops: [\n` +
-                        `                                                [0, "#6f7124"],\n` +
-                        `                                                [1, "#ae9c20"]\n` +
-                        `                                            ]}\n` +
-                        `                                    }\n` +
-                        `                                ]\n` +
-                        `})`;
-                    let newtemplate = template.replace(':delta',delta);
-                    newtemplate = newtemplate.replace(':competencedesc',competencedesc);
-                    newtemplate = newtemplate.replace(':valueprevrev', valueprevrev);
-                    newtemplate = newtemplate.replace(':valuereal',valuereal);
-
-                    $("#fluxodesemb").append(newtemplate);
-                })
-                .catch((error) => {
-
-                })
-                .finally(() => {
-
-                });
-            $("#fluxodesemb")
-        }
     </script>
 @stop

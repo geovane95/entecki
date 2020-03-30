@@ -613,14 +613,88 @@ class  ClientSpaceController extends Controller
         }
     }
 
-    public function graficoFisicoAcumulado($id)
+    public function fisLocalAcumMacroEtapas($id)
     {
+        $where = '';
 
+        $competences = DB::select("select * from competences ".$where." order by id desc");
+        $dados = [];
+        $contreg = (count($competences) / 2);
+        foreach ($competences as $competence) {
+            $fisAcumMacroEtapas = new Data();
+            if ($id == $competence->id){
+                $fisAcumMacroEtapas->periodofisprev = 0;
+                $fisAcumMacroEtapas->periodofisprevmesaatual = rand(0, 100);
+            }else {
+                $fisAcumMacroEtapas->periodofisprev = rand(0, 100);
+                $fisAcumMacroEtapas->periodofisprevmesaatual = 0;
+            }
+            $fisAcumMacroEtapas->acumulofisreal = rand(0,150) * (rand(0,100) / 100);
+            if ($contreg < 1) {
+                $fisAcumMacroEtapas->acumulofisprev = 0;
+                $fisAcumMacroEtapas->acumulofisproj = rand(0,150) * (rand(0,100) / 100);
+            }else {
+                $fisAcumMacroEtapas->acumulofisprev = rand(0,150) * (rand(0,100) / 100);
+                $fisAcumMacroEtapas->acumulofisproj = 0;
+            }
+            if ($contreg < 1) {
+                $fisAcumMacroEtapas->periodofissubprev = 0;
+                $fisAcumMacroEtapas->periodofisproj = rand(0, 100);
+            }else {
+                $fisAcumMacroEtapas->periodofissubprev = rand(0, 100);
+                $fisAcumMacroEtapas->periodofisproj = 0;
+            }
+
+            $competence->fisacummacroetapas = $fisAcumMacroEtapas;
+
+            array_push($dados, $competence);
+            $contreg -= 1;
+        }
+        return response()->json([
+            $dados
+        ]);
     }
 
-    public function desempenhoFinanceiro($id)
+    public function desempFinan($id)
     {
+        $where = '';
 
+        $competences = DB::select("select * from competences ".$where." order by id desc");
+        $dados = [];
+        $contreg = (count($competences) / 2);
+        foreach ($competences as $competence) {
+            $desempFinan = new Data();
+            if ($id == $competence->id){
+                $desempFinan->periodofisprev = 0;
+                $desempFinan->periodofisprevmesaatual = rand(0, 100);
+            }else {
+                $desempFinan->periodofisprev = rand(0, 100);
+                $desempFinan->periodofisprevmesaatual = 0;
+            }
+            $desempFinan->acumulofisreal = rand(0,150) * (rand(0,100) / 100);
+            if ($contreg < 1) {
+                $desempFinan->acumulofisprev = 0;
+                $desempFinan->acumulofisproj = rand(0,150) * (rand(0,100) / 100);
+            }else {
+                $desempFinan->acumulofisprev = rand(0,150) * (rand(0,100) / 100);
+                $desempFinan->acumulofisproj = 0;
+            }
+            if ($contreg < 1) {
+                $desempFinan->periodofissubprev = 0;
+                $desempFinan->periodofisproj = rand(0, 100);
+            }else {
+                $desempFinan->periodofissubprev = rand(0, 100);
+                $desempFinan->periodofisproj = 0;
+            }
+
+            $competence->desempfinan = $desempFinan;
+
+            array_push($dados, $competence);
+            $contreg -= 1;
+        }
+        return response()->json([
+            $dados
+        ]);
     }
 
     public function analiseFisicaFinanceira($id)
@@ -628,14 +702,33 @@ class  ClientSpaceController extends Controller
 
     }
 
-    public function fluxoFinanceiro($id)
+    public function fluxoFinanObra($id)
     {
+        $where = '';
 
+        $competences = DB::select("select * from competences ".$where." order by id desc limit 4");
+        $dados = [];
+
+        foreach ($competences as $competence) {
+            $fluxoFinanObra = new Data();
+            $fluxoFinanObra->delta = 2.55;
+            $fluxoFinanObra->prevrev = 1134271;
+            $fluxoFinanObra->real = 684851;
+
+            $competence->fluxofinanobra = $fluxoFinanObra;
+
+            array_push($dados, $competence);
+        }
+        return response()->json([
+            $dados
+        ]);
     }
 
     public function fluxoDesemb($id)
     {
-        $competences = DB::select("select * from competences order by id desc limit 2");
+        $where = '';
+
+        $competences = DB::select("select * from competences ".$where." order by id desc limit 2");
         $dados = [];
 
         foreach ($competences as $competence) {
