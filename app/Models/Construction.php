@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Responsible;
-use App\Models\Regional;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 

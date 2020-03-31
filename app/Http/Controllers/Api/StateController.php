@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StateRequest;
+use App\Models\City;
 use App\Models\State;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -140,12 +141,5 @@ class StateController extends Controller
             return response()->json(['error'=>'Falha ao buscar a cidade'],500);
 
         return response()->json(['success' => true],200);
-    }
-
-    public function stateCity($id)
-    {
-        $cities = $this->state->find($id)->cities;
-
-        return response()->json($cities);
     }
 }

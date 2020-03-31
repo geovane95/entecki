@@ -41,12 +41,11 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::resource('regional', 'RegionalController')->except(['create','edit']);
     Route::resource('state', 'StateController')->except(['create','edit']);
     Route::resource('upload_data', 'UploadDataController')->except(['create','edit']);
-    Route::get('cities/{id}','ConstructionController@cities')->name('citites');
+    Route::get('cities/{id}','ConstructionController@cities')->name('cities');
     Route::get('email/{competence}','EmailController@index')->name('email.index.args');
     Route::get('email/','EmailController@indexWithoutArgs')->name('email.index');
     Route::get('construction/client/{id}','ConstructionController@clientIndex')->name('clientIndex');
     Route::get('construction/client','ConstructionController@clientIndex')->name('clientIndex');
-    Route::get('state/{id}','StateController@stateCity')->name('city.state');
     Route::get('construction/{id}/user','ConstructionController@users')->name('client.construction.list');
     Route::get('construction/{id}/user/add/{user}','ConstructionController@addUser')->name('client.construction.add');
     Route::get('construction/{id}/user/remove/{user}','ConstructionController@removeUser')->name('client.construction.remove');
@@ -80,6 +79,7 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     Route::get('graficos/fluxodesemb/{competence}/{construction}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');
     Route::get('graficos/fluxofinanobra/{competence}/{construction}','ClientSpaceController@fluxoFinanObra')->name('graficos.fluxofinanobra');
     Route::get('graficos/desempfinan/{competence}/{construction}','ClientSpaceController@desempFinan')->name('graficos.desempfinan');
+    Route::get('graficos/fislocalacummacroetapas/{competence}/{construction}','ClientSpaceController@fisLocalAcumMacroEtapas')->name('graficos.fislocalacummacroetapas');
     Route::get('graficos/fislocalacummacroetapas/{competence}/{construction}','ClientSpaceController@fisLocalAcumMacroEtapas')->name('graficos.fislocalacummacroetapas');
     Route::get('/', 'ClientSpaceController@index')->name('client-space.index');
 });

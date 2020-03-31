@@ -66,24 +66,26 @@
 
 @section('js')
     <script>
-        $(document).ready(function () {
+        function cities(){
+            let id = $("#state").children(":selected").attr("id");
+            let url = "{{ route('cities', ':id') }}";
+            url = url.replace(':id', id);
 
-
-            $('#state').on('change', function (e) {
-                var id = $(this).children(":selected").attr("id");
-
-                axios.get(`state/${id}`)
-                    .then(response => {
-                        var data = response.data;
-
-                        $.each(data, function (indexInArray, valueOfElement) {
-                            console.log(valueOfElement);
-                            $('#city').html(`
-                                    <option value="${valueOfElement.id}">${valueOfElement.name}</option>
+            axios.get(url)
+                .then(response => {
+                    var data = response.data;
+                    $('#city').html('');
+                    $('#city').append(`
+                                    <option value="0">Selecione uma cidade</option>
+                                `);
+                    $.each(data, function (index, value) {
+                        $('#city').append(`
+                                    <option value="${index}">${value}</option>
                                 `)
-                        });
-                    })
-            });
+                    });
+                })
+        }
+        $(document).ready(function () {
 
             // Listando usuarios
             $("#table_construction").DataTable({
@@ -165,11 +167,11 @@
                         var data = response.data;
                         $.each(data, function (index, value) {
                             $('#table_users_to_construction tbody').append(`
-                                        <tr>
-                                            <td>${value.username}</td>
-                                            <td><button id="${value.userid}" class="btn btn-danger delete-user">Deletar</button></td>
-                                        </tr>
-                                    `)
+                                <tr>
+                                    <td>${value.username}</td>
+                                    <td><button id="${value.userid}" class="btn btn-danger delete-user">Deletar</button></td>
+                                </tr>
+                            `)
                         });
                     });
                 axios.get("{{ route('users.list') }}")
@@ -592,10 +594,12 @@
                         $("#regional > option[value=" + data.regional + "]").prop("selected", true);
                         $('#street').val(data.address.street);
                         $('#number').val(data.address.number);
-                        $('#neighborhood').val(data.address.location.neighborhood);
-                        $('#zipCode').val(data.address.location.zipCode);
-                        $("#state > option[value=" + data.address.state + "]").prop("selected", true);
-                        $("#city > option[value=" + data.address.city + "]").prop("selected", true);
+                        $('#neighborhood').val(data.location.neighborhood);
+                        $('#zipCode').val(cep(data.location.zipCode));
+                        $("#state > option[value=" + data.city.state + "]").prop("selected", true);
+                        cities();
+                        setTimeout(function(){ $("#city > option[value=" + data.location.city + "]").prop("selected", true);}, 1000);
+
                         $('#contract_regime').val(data.contract_regime);
                         $('#reporting_regime').val(data.reporting_regime);
                         $('#work_number').val(data.work_number);

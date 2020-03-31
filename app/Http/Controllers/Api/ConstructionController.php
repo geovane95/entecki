@@ -79,21 +79,21 @@ class ConstructionController extends Controller
                 })
                 ->addColumn('users-name', function ($data) {
                     $users = DB::table('constructions')
-                        ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
-                        ->join('users','users.id','=','users_to_constructions.user')
+                        ->join('users_to_constructions', 'users_to_constructions.construction', '=', 'constructions.id')
+                        ->join('users', 'users.id', '=', 'users_to_constructions.user')
                         ->select(
                             'constructions.id',
                             'users.name as username',
                             'users.id as userid'
                         )
-                        ->where('constructions.id','=',$data->id)
+                        ->where('constructions.id', '=', $data->id)
                         ->get();
                     $retorno = '';
                     $first = true;
-                    foreach ($users as $user){
-                        if ($first){
+                    foreach ($users as $user) {
+                        if ($first) {
                             $first = false;
-                        }else{
+                        } else {
                             $retorno .= ', ';
                         }
                         $retorno .= $user->username;
@@ -122,7 +122,7 @@ class ConstructionController extends Controller
         $city = Arr::pluck($this->city->get()->where('status', '=', 1), 'name', 'id');
         $responsible = Arr::pluck($this->responsible->get()->where('status', '=', 1), 'company_name', 'id');
         $regional = Arr::pluck($this->regional->get()->where('status', '=', 1), 'name', 'id');
-        return view('administrativo.construction.index', ['state' => $state, 'city' => $city, 'responsible' => $responsible, 'regional' => $regional ]);
+        return view('administrativo.construction.index', ['state' => $state, 'city' => $city, 'responsible' => $responsible, 'regional' => $regional]);
     }
 
     /**
@@ -133,7 +133,7 @@ class ConstructionController extends Controller
      */
     public function store(ConstructionRequest $request)
     {
-        $zipcode = str_replace('-','',$request->zipCode);
+        $zipcode = str_replace('-', '', $request->zipCode);
         $dataLocation = [
             "neighborhood" => $request->neighborhood,
             "zipCode" => $zipcode,
@@ -197,7 +197,12 @@ class ConstructionController extends Controller
      */
     public function show($id)
     {
-        $construction = $this->construction->with(['responsibles','regionals','address'])->find($id);
+        $construction = $this->construction->with(['responsibles', 'regionals', 'address'])->find($id);
+        $address = $this->address->find($construction->address);
+        $location = $this->location->find($address->location);
+        $city = $this->city->find($location->city);
+        $construction->location = $location;
+        $construction->city = $city;
 
         if (!$construction)
             return response()->json(['error' => 'Falha ao buscar a construção'], 500);
@@ -234,27 +239,65 @@ class ConstructionController extends Controller
      */
     public function update(ConstructionRequest $request, $id)
     {
-        $construction = $this->with(['responsible', 'regionals', 'address'])->construction->find($id);
+        $construction = $this->construction->find($id);
+        $address = $this->address->find($construction->address);
+        $location = $this->location->find($address->location);
 
         if (!$construction)
             return response()->json(['error' => 'Fail to find Contruction'], 500);
 
-        $datForm = [
-            'name' => $request->name,
-            'company' => $request->company,
-            'responsible' => $request->responsible,
-            'regional' => $request->regional,
-            'address' => $request->address,
-            'contract_regime' => $request->contract_regime,
-            'reporting_regime' => $request->reporting_regime,
-            'issuance_date' => $request->reporting_regime,
-            'work_number' => $request->work_number,
-            'status' => $request->status
+        $zipcode = str_replace('-', '', $request->zipCode);
+        $dataLocation = [
+            "neighborhood" => $request->neighborhood,
+            "zipCode" => $zipcode,
+            "city" => $request->city,
+            "status" => $request->status
         ];
 
-        if (!$this->construction->update($datForm))
-            return response()->json(['error' => 'Fail to update Contruction'], 500);
+        if($location->update($dataLocation)) {
 
+            $dataAddress = [
+                "street" => $request->street,
+                "number" => $request->number,
+                "location" => $location->id,
+                "status" => $request->status
+            ];
+
+            if ($address->update($dataAddress)) {
+
+                $datForm = [
+                    'name' => $request->name,
+                    'company' => $request->company,
+                    'responsible' => $request->responsible,
+                    'regional' => $request->regional,
+                    'address' => $address->id,
+                    'contract_regime' => $request->contract_regime,
+                    'reporting_regime' => $request->reporting_regime,
+                    'issuance_date' => $request->issuance_date,
+                    'work_number' => $request->work_number,
+                    'status' => $request->status
+                ];
+
+                $thumbnail = false;
+                if ($request->hasFile('thumbnail') && $request->file('thumbnail')->isValid()) {
+                    // Define um aleatório para o arquivo baseado no timestamps atual
+                    $name = uniqid(date('HisYmd'));
+
+                    // Recupera a extensão do arquivo
+                    $extension = $request->thumbnail->extension();
+
+                    // Define finalmente o nome
+                    $nameFile = "{$name}.{$extension}";
+                    // Faz o upload:
+                    $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile);
+
+                    $datForm['thumbnail'] = $thumbnail;
+                }
+
+                if (!$construction->update($datForm))
+                    return response()->json(['error' => 'Fail to update Contruction'], 500);
+            }
+        }
         return response()->json(['success' => true], 201);
     }
 
@@ -297,7 +340,7 @@ class ConstructionController extends Controller
 
     public function cities($id)
     {
-        return $this->city->get()->where('state','=',$id)->pluck('name', 'id');
+        return Arr::pluck($this->city->where('state', '=', $id)->get(), 'name', 'id');
 
     }
 
@@ -316,14 +359,14 @@ class ConstructionController extends Controller
     public function users($id)
     {
         $users = DB::table('constructions')
-            ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
-            ->join('users','users.id','=','users_to_constructions.user')
+            ->join('users_to_constructions', 'users_to_constructions.construction', '=', 'constructions.id')
+            ->join('users', 'users.id', '=', 'users_to_constructions.user')
             ->select(
                 'constructions.id',
                 'users.name as username',
                 'users.id as userid'
             )
-            ->where('constructions.id','=',$id)
+            ->where('constructions.id', '=', $id)
             ->get();
         if (!$users)
             return redirect()->back();
@@ -331,11 +374,11 @@ class ConstructionController extends Controller
         return response()->json($users);
     }
 
-    public function  addUser($id,$user)
+    public function addUser($id, $user)
     {
         $usertoconstruction = UsersToConstructions::where([
             'construction' => $id,
-            'user'=>$user
+            'user' => $user
         ])->get();
         if (count($usertoconstruction) <= 0) {
             UsersToConstructions::create([
@@ -345,8 +388,8 @@ class ConstructionController extends Controller
         }
 
         $users = DB::table('constructions')
-            ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
-            ->join('users','users.id','=','users_to_constructions.user')
+            ->join('users_to_constructions', 'users_to_constructions.construction', '=', 'constructions.id')
+            ->join('users', 'users.id', '=', 'users_to_constructions.user')
             ->select(
                 'constructions.id',
                 'users.name as username',
@@ -360,7 +403,8 @@ class ConstructionController extends Controller
 
         return response()->json($users);
     }
-    public function  removeUser($constructionId, $userId)
+
+    public function removeUser($constructionId, $userId)
     {
         $usertoconstruction = $this->usersToConstructions->where([
             'user' => $userId,
@@ -374,14 +418,14 @@ class ConstructionController extends Controller
         }
 
         $users = DB::table('constructions')
-            ->join('users_to_constructions','users_to_constructions.construction','=','constructions.id')
-            ->join('users','users.id','=','users_to_constructions.user')
+            ->join('users_to_constructions', 'users_to_constructions.construction', '=', 'constructions.id')
+            ->join('users', 'users.id', '=', 'users_to_constructions.user')
             ->select(
                 'constructions.id',
                 'users.name as username',
                 'users.id as userid'
             )
-            ->where('constructions.id','=',$constructionId)
+            ->where('constructions.id', '=', $constructionId)
             ->get();
 
         return response()->json($users);

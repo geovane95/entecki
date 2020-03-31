@@ -16,11 +16,11 @@
     </div>
     <div class="form-group">
         <label for="responsible">Responsável</label>
-        {{Form::select('responsible',$responsible,null,['class'=>'form-control','placeholder'=>'Escolha um Responsável'])}}
+        {{Form::select('responsible',$responsible,null,['class'=>'form-control','placeholder'=>'Escolha um Responsável','id'=>'responsible'])}}
     </div>
     <div class="form-group">
         <label for="regional">Regional</label>
-        {{Form::select('regional',$regional,null,['class'=>'form-control','placeholder'=>'Escolha um Regional'])}}
+        {{Form::select('regional',$regional,null,['class'=>'form-control','placeholder'=>'Escolha um Regional','id'=>'regional'])}}
     </div>
     <div class="form-group row">
         <div class="col-10">
@@ -50,7 +50,7 @@
         <div class="col-6">
             <label for="state">Estado</label>
             {{-- {{Form::select('state',$state,null,['class'=>'form-control','placeholder'=>'Escolha um Estado','state','id'=>'state'])}} --}}
-           <select class="form-control" name="state" id="state">
+           <select class="form-control" name="state" id="state" onchange="cities()">
                 @foreach ($state as $key =>  $item)
                     <option id="{{$key}}" value="{{$key}}">{{$item}}</option>
                 @endforeach
