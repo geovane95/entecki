@@ -35,7 +35,7 @@
                         <span>
                         INCC (N-1) = {{ $incc }}
                     </span>
-                        <select class="regionais regionals" multiple id="regionals" name="regionals">
+                        <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
                             @foreach($regionals as $regional)
                                 <option
@@ -244,16 +244,15 @@
                                     </th>
                                     <!--  GEOVANE, CONFERIR MUDANCAS inseri a classe text-center -->
                                     <th class="text-center">
-                                                <span class="leg amarelo">
+                                        <span class="leg amarelo">
 
-                                                </span>
+                                        </span>
                                         -0,6%
                                     </th>
                                     <th colspan="14">
 
                                     </th>
                                 </tr>
-                                <span style="display: none;">{{ $constLastId = 0 }}</span>
                                 @foreach($dado->constructions as $constructiontable)
                                     <tr>
                                         <td class="text-left">
@@ -339,7 +338,7 @@
                                             </a>
                                         </td>
                                     </tr>
-                                    @if($constructiontable->construction_id != $constLastId)
+                                    @if(!$loop->last)
                                         <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
                                         <tr class="linha-cinza">
                                             <td colspan="19">
@@ -347,7 +346,6 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    {{ $constLastId = $constructiontable->construction_id }}
                                 @endforeach
                             @endif
                         @endforeach

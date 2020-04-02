@@ -17,75 +17,84 @@ use Illuminate\Support\Facades\Mail;
 class EmailController extends Controller
 {
     public function index($competenceId){
-        try {
-            if (auth()->user()) {
-                $user = User::find(auth()->user()->id);
-            } else {
-                redirect()->route('client-space.logout');
+        if ($competenceId != 0) {
+            try {
+                if (auth()->user()) {
+                    $user = User::find(auth()->user()->id);
+                } else {
+                    redirect()->route('client-space.logout');
+                }
+
+                $where = '';
+                if ($user->access_profile == 2) {
+                    $where = " where uc.user = " . $user->id;
+                }
+
+                $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
+
+                $competences = Competence::get();
+
+                $constructionsIdPluck = Arr::pluck($constructions, 'id');
+
+                $cores = [
+                    'WA' => ['FAROL' => 'vermelho', 'ALT' => 'Condições Criticas', 'TITLE' => 'Condições Criticas'],
+                    'OK' => ['FAROL' => 'verde', 'ALT' => 'Condições Ideais', 'TITLE' => 'Condições Ideais'],
+                    'AL' => ['FAROL' => 'amarelo', 'ALT' => 'Condições de Alerta', 'TITLE' => 'Condições de Alerta']
+                ];
+
+                $constructions = DB::table('constructions')
+                    ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
+                    ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
+                    ->leftJoin('cities', 'cities.id', '=', 'locations.city')
+                    ->leftJoin('states', 'states.id', '=', 'cities.state')
+                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+                    ->leftJoin('data', 'data.construction', '=', 'constructions.id')
+                    ->leftJoin('upload_data', 'upload_data.id', '=', 'data.uploaddata')
+                    ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
+                    ->leftJoin('upload_types', 'upload_types.id', '=', 'upload_data.uploadtype')
+                    ->leftJoin('upload_statuses', 'upload_statuses.id', '=', 'upload_data.uploadstatus')
+                    ->select(
+                        'constructions.id as construction_id',
+                        'constructions.name as construction_name',
+                        'constructions.work_number',
+                        'data.id as data_id',
+                        'data.FASE',
+                        'data.AREACONSTRM2',
+                        'data.NUNITQTD',
+                        'data.CUSTOP',
+                        'data.PRAZO',
+                        'data.FLUXOD',
+                        'data.QUALIDADE',
+                        'data.SEGORG',
+                        'data.MAMBI',
+                        'data.ACUMCONTR',
+                        'data.email_sended_at'
+                    )
+                    ->whereIn('constructions.id', $constructionsIdPluck)
+                    ->where('competences.id', '=', $competenceId)
+                    ->get();
+            } catch (Exception $e) {
+                dd($e);
             }
-
-            $where = '';
-            if ($user->access_profile == 2){
-                $where = " where uc.user = " . $user->id;
-            }
-
-            $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id".$where);
-
-            $competences = Competence::get();
-
-            $constructionsIdPluck = Arr::pluck($constructions, 'id');
-
-            $cores = [
-                'WA' => ['FAROL' => 'vermelho', 'ALT' => 'Condições Criticas', 'TITLE' => 'Condições Criticas'],
-                'OK' => ['FAROL' => 'verde', 'ALT' => 'Condições Ideais', 'TITLE' => 'Condições Ideais'],
-                'AL' => ['FAROL' => 'amarelo', 'ALT' => 'Condições de Alerta', 'TITLE' => 'Condições de Alerta']
-            ];
-
-            $constructions = DB::table('constructions')
-                ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
-                ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
-                ->leftJoin('cities', 'cities.id', '=', 'locations.city')
-                ->leftJoin('states', 'states.id', '=', 'cities.state')
-                ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
-                ->leftJoin('data', 'data.construction', '=', 'constructions.id')
-                ->leftJoin('upload_data', 'upload_data.id', '=', 'data.uploaddata')
-                ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
-                ->leftJoin('upload_types', 'upload_types.id', '=', 'upload_data.uploadtype')
-                ->leftJoin('upload_statuses', 'upload_statuses.id', '=', 'upload_data.uploadstatus')
-                ->select(
-                    'constructions.id as construction_id',
-                    'constructions.name as construction_name',
-                    'constructions.work_number',
-                    'data.id as data_id',
-                    'data.FASE',
-                    'data.AREACONSTRM2',
-                    'data.NUNITQTD',
-                    'data.CUSTOP',
-                    'data.PRAZO',
-                    'data.FLUXOD',
-                    'data.QUALIDADE',
-                    'data.SEGORG',
-                    'data.MAMBI',
-                    'data.ACUMCONTR',
-                    'data.email_sended_at'
-                )
-                ->whereIn('constructions.id', $constructionsIdPluck)
-                ->where('competences.id','=',$competenceId)
-                ->get();
-        } catch (Exception $e) {
-            dd($e);
+            return view('administrativo.mail.index', [
+                'constructions' => $constructions,
+                'competences' => $competences,
+                'cores' => $cores,
+                'competenceSelected' => $competenceId
+            ]);
+        }else{
+            return view('administrativo.mail.error', [
+                'error' => 'Você ainda não pode acessar essa página pois não existem meses de referência cadastrados.'
+            ]);
         }
-        return view('administrativo.mail.index', [
-            'constructions' => $constructions,
-            'competences' => $competences,
-            'cores' => $cores,
-            'competenceSelected' => $competenceId
-        ]);
     }
     public function indexWithoutArgs(){
-        $compentece = Competence::take(1)->orderBy('id','desc')->get();
+        $competence = Competence::take(1)->orderBy('id','desc')->get();
 
-        return $this->index($compentece[0]->id);
+        if($competence && count($competence) > 0)
+            return $this->index($competence[0]->id);
+
+        return $this->index(0);
     }
 
     public function store($data){

@@ -90,13 +90,17 @@ class ConstructionController extends Controller
                         ->get();
                     $retorno = '';
                     $first = true;
-                    foreach ($users as $user) {
-                        if ($first) {
-                            $first = false;
-                        } else {
-                            $retorno .= ', ';
+                    if ($users && count($users) > 0) {
+                        foreach ($users as $user) {
+                            if ($first) {
+                                $first = false;
+                            } else {
+                                $retorno .= ', ';
+                            }
+                            $retorno .= $user->username;
                         }
-                        $retorno .= $user->username;
+                    }else{
+                        $retorno .= "Está obra não possui usuários atrelados ainda.";
                     }
                     return $retorno;
                 })

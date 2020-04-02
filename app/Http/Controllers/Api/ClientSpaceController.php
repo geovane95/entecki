@@ -88,13 +88,26 @@ class  ClientSpaceController extends Controller
             $incc = '773,52';
 
             if (!$request->constructions || $request->constructions == 0) {
-                $constructionsIdPluck = Arr::pluck($constructions, 'id');
+                if (count($constructions) > 0) {
+                    $constructionsIdPluck = Arr::pluck($constructions, 'id');
+                }else{
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).',
+                        'return' => 'logout'
+                    ]);
+                }
             } else {
                 $constructionsIdPluck = explode(',', $request->constructions);
             }
 
             if (!$request->competences || $request->competences == 0) {
-                $competenceIdPluck = Arr::pluck($competences, 'id');
+                if (count($competences) > 0) {
+                    $competenceIdPluck = Arr::pluck($competences, 'id');
+                }else{
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
+                    ]);
+                }
             } else {
                 $competenceIdPluck = [$request->competences];
             }
@@ -181,17 +194,23 @@ class  ClientSpaceController extends Controller
         } catch (Exception $e) {
             dd($e);
         }
-        return view('area-do-cliente.index', [
-            'incc' => $incc,
-            'regionals' => $regionals,
-            'constructions' => $constructions,
-            'competences' => $competences,
-            'cores' => $cores,
-            'dados' => $dados,
-            'competencesselected' => $competenceIdPluck,
-            'regionalsselected' => $regionalIdPluck,
-            'constructionsselected' => $constructionsIdPluck
-        ]);
+        if (count($dados) > 0) {
+            return view('area-do-cliente.index', [
+                'incc' => $incc,
+                'regionals' => $regionals,
+                'constructions' => $constructions,
+                'competences' => $competences,
+                'cores' => $cores,
+                'dados' => $dados,
+                'competencesselected' => $competenceIdPluck,
+                'regionalsselected' => $regionalIdPluck,
+                'constructionsselected' => $constructionsIdPluck
+            ]);
+        }else{
+            return view('area-do-cliente.erro', [
+                'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).'
+            ]);
+        }
     }
 
     public function detail($id, $competence)
@@ -496,10 +515,15 @@ class  ClientSpaceController extends Controller
 
             $incc = '773,52';
 
-            if (!$request->constructions) {
+            if ($request->constructions){
+                $constructionsIdPluck = explode(',', $request->constructions);
+            } else if (!$request->constructions && count($constructions) > 0) {
                 $constructionsIdPluck = Arr::pluck($constructions, 'id');
             } else {
-                $constructionsIdPluck = explode(',', $request->constructions);
+                return view('area-do-cliente.erro', [
+                    'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a obra solicitada.',
+                    'return' => 'inicio'
+                ]);
             }
 
             if (!$request->regionals) {
@@ -508,11 +532,17 @@ class  ClientSpaceController extends Controller
                 $regionalsIdPluck = explode(',', $request->regionals);
             }
 
-            if (!$request->competences) {
-                $compatual = $this->competence->orderBy('id', 'desc')->take(1)->get()->where('status', '=', 1);
-                $competenceIdPluck = Arr::pluck($compatual, 'id');
-            } else {
+            if ($request->competences){
                 $competenceIdPluck = [$request->competences];
+            }else if (!$request->competences) {
+                $compatual = $this->competence->orderBy('id', 'desc')->take(1)->get()->where('status', '=', 1);
+                if (count($compatual) <= 0){
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados meses de referencia cadastrados, solicite ao administrador que os cadastre.',
+                        'return' => 'inicio'
+                    ]);
+                }
+                $competenceIdPluck = Arr::pluck($compatual, 'id');
             }
 
             $dados = [];
@@ -579,16 +609,22 @@ class  ClientSpaceController extends Controller
             dd($e);
         }
 
-        return view('area-do-cliente.relatorio', [
-            'competences' => $competences,
-            'constructions' => $constructions,
-            'regionals' => $regionals,
-            'dados' => $dados,
-            'competencesselected' => $competenceIdPluck,
-            'constructionsselected' => $constructionsIdPluck,
-            'regionalsselected' => $regionalsIdPluck,
-            'incc' => $incc
-        ]);
+        if (count($dados) > 0) {
+            return view('area-do-cliente.relatorio', [
+                'competences' => $competences,
+                'constructions' => $constructions,
+                'regionals' => $regionals,
+                'dados' => $dados,
+                'competencesselected' => $competenceIdPluck,
+                'constructionsselected' => $constructionsIdPluck,
+                'regionalsselected' => $regionalsIdPluck,
+                'incc' => $incc
+            ]);
+        }else{
+            return view('area-do-cliente.erro', [
+                'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).'
+            ]);
+        }
     }
 
     public function downloadPictures($uploadDataId)
@@ -611,138 +647,5 @@ class  ClientSpaceController extends Controller
         } else {
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }
-    }
-
-    public function fisLocalAcumMacroEtapas($id)
-    {
-        $where = '';
-
-        $competences = DB::select("select * from competences ".$where." order by id desc");
-        $dados = [];
-        $contreg = (count($competences) / 2);
-        foreach ($competences as $competence) {
-            $fisAcumMacroEtapas = new Data();
-            if ($id == $competence->id){
-                $fisAcumMacroEtapas->periodofisprev = 0;
-                $fisAcumMacroEtapas->periodofisprevmesaatual = rand(0, 100);
-            }else {
-                $fisAcumMacroEtapas->periodofisprev = rand(0, 100);
-                $fisAcumMacroEtapas->periodofisprevmesaatual = 0;
-            }
-            $fisAcumMacroEtapas->acumulofisreal = rand(0,150) * (rand(0,100) / 100);
-            if ($contreg < 1) {
-                $fisAcumMacroEtapas->acumulofisprev = 0;
-                $fisAcumMacroEtapas->acumulofisproj = rand(0,150) * (rand(0,100) / 100);
-            }else {
-                $fisAcumMacroEtapas->acumulofisprev = rand(0,150) * (rand(0,100) / 100);
-                $fisAcumMacroEtapas->acumulofisproj = 0;
-            }
-            if ($contreg < 1) {
-                $fisAcumMacroEtapas->periodofissubprev = 0;
-                $fisAcumMacroEtapas->periodofisproj = rand(0, 100);
-            }else {
-                $fisAcumMacroEtapas->periodofissubprev = rand(0, 100);
-                $fisAcumMacroEtapas->periodofisproj = 0;
-            }
-
-            $competence->fisacummacroetapas = $fisAcumMacroEtapas;
-
-            array_push($dados, $competence);
-            $contreg -= 1;
-        }
-        return response()->json([
-            $dados
-        ]);
-    }
-
-    public function desempFinan($id)
-    {
-        $where = '';
-
-        $competences = DB::select("select * from competences ".$where." order by id desc");
-        $dados = [];
-        $contreg = (count($competences) / 2);
-        foreach ($competences as $competence) {
-            $desempFinan = new Data();
-            if ($id == $competence->id){
-                $desempFinan->periodofisprev = 0;
-                $desempFinan->periodofisprevmesaatual = rand(0, 100);
-            }else {
-                $desempFinan->periodofisprev = rand(0, 100);
-                $desempFinan->periodofisprevmesaatual = 0;
-            }
-            $desempFinan->acumulofisreal = rand(0,150) * (rand(0,100) / 100);
-            if ($contreg < 1) {
-                $desempFinan->acumulofisprev = 0;
-                $desempFinan->acumulofisproj = rand(0,150) * (rand(0,100) / 100);
-            }else {
-                $desempFinan->acumulofisprev = rand(0,150) * (rand(0,100) / 100);
-                $desempFinan->acumulofisproj = 0;
-            }
-            if ($contreg < 1) {
-                $desempFinan->periodofissubprev = 0;
-                $desempFinan->periodofisproj = rand(0, 100);
-            }else {
-                $desempFinan->periodofissubprev = rand(0, 100);
-                $desempFinan->periodofisproj = 0;
-            }
-
-            $competence->desempfinan = $desempFinan;
-
-            array_push($dados, $competence);
-            $contreg -= 1;
-        }
-        return response()->json([
-            $dados
-        ]);
-    }
-
-    public function analiseFisicaFinanceira($id)
-    {
-
-    }
-
-    public function fluxoFinanObra($id)
-    {
-        $where = '';
-
-        $competences = DB::select("select * from competences ".$where." order by id desc limit 4");
-        $dados = [];
-
-        foreach ($competences as $competence) {
-            $fluxoFinanObra = new Data();
-            $fluxoFinanObra->delta = 2.55;
-            $fluxoFinanObra->prevrev = 1134271;
-            $fluxoFinanObra->real = 684851;
-
-            $competence->fluxofinanobra = $fluxoFinanObra;
-
-            array_push($dados, $competence);
-        }
-        return response()->json([
-            $dados
-        ]);
-    }
-
-    public function fluxoDesemb($id)
-    {
-        $where = '';
-
-        $competences = DB::select("select * from competences ".$where." order by id desc limit 2");
-        $dados = [];
-
-        foreach ($competences as $competence) {
-            $fluxoDesemb = new Data();
-            $fluxoDesemb->delta = 2.55;
-            $fluxoDesemb->prevrev = 1134271;
-            $fluxoDesemb->real = 684851;
-
-            $competence->fluxodesemb = $fluxoDesemb;
-
-            array_push($dados, $competence);
-        }
-        return response()->json([
-            $dados
-        ]);
     }
 }

@@ -31,7 +31,8 @@
             <div class="row d-flex">
                 <div class="col-md-4 col-lg-3">
                     <figure>
-                        <img src="{{asset('images/constructions/'.$details->thumbnail)}}" alt="{{ $details->construction_name }}" title="{{ $details->construction_name }}"/>
+                        <img src="{{asset('images/constructions/'.$details->thumbnail)}}"
+                             alt="{{ $details->construction_name }}" title="{{ $details->construction_name }}"/>
                     </figure>
                 </div>
                 <div class="col-md-8 col-lg-9 pl0 d-flex flex-column justify-content-between">
@@ -51,16 +52,16 @@
                                 Documentos
                             </a>
                             @if($picture)
-                            <a href="{{ route('client-space.pictures-download', $picture->id) }}" class="pic">
-                                <i></i>
-                                Fotos
-                            </a>
+                                <a href="{{ route('client-space.pictures-download', $picture->id) }}" class="pic">
+                                    <i></i>
+                                    Fotos
+                                </a>
                             @endif
                             @if($report)
-                            <a href="{{ route('client-space.report-download', $report->id) }}" class="rel">
-                                <i></i>
-                                Relatório
-                            </a>
+                                <a href="{{ route('client-space.report-download', $report->id) }}" class="rel">
+                                    <i></i>
+                                    Relatório
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -105,14 +106,16 @@
                                 Mês Referência:
                                 <select name="competences" id="competences">
                                     @foreach($competences as $competence)
-                                        <option value="{{ $competence->id }}" {{ $competence->id == $competencesselected ? "selected" : "" }}>
+                                        <option
+                                            value="{{ $competence->id }}" {{ $competence->id == $competencesselected ? "selected" : "" }}>
                                             {{ $competence->description }}
                                         </option>
                                     @endforeach
                                 </select>
                             </label>
                             <h4>
-                                <strong>STATUS DA OBRA:</strong> {{ $details->construction_status ? 'Em Andamento' : 'Encerrada' }}
+                                <strong>STATUS DA
+                                    OBRA:</strong> {{ $details->construction_status ? 'Em Andamento' : 'Encerrada' }}
                             </h4>
                         </form>
                     </div>
@@ -469,7 +472,8 @@
                                 {{ $details->INICIOPLANOBRADESV }}
                             </td>
                             <td>
-                                <span class="leg {{ $cores[strtoupper($details->INICIOPLANOBRAFAROL)]['FAROL'] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->INICIOPLANOBRAFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -537,7 +541,8 @@
                                 {{ $details->PRAZOOBRAMESESDESV }}
                             </td>
                             <td>
-                                <span class="leg {{ $cores[strtoupper($details->PRAZOOBRAMESESFAROL)]['FAROL'] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->PRAZOOBRAMESESFAROL)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         </tbody>
@@ -623,7 +628,8 @@
                             </td>
                             <td rowspan="2" class="text-center">
                                 {{ $details->ACOFVARORCREVVALOR }}%<br>
-                                <span class="leg {{ $cores[strtoupper($details->ACOFVARORCREVFAROL)]['FAROL'] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->ACOFVARORCREVFAROL)]['FAROL'] }}"></span>
                             </td>
                             <td class="text-right">
                                 {{ number_format($details->CUSTOM2PROJCONST,2,',','.') }}
@@ -1071,7 +1077,8 @@
                             </td>
                             <td>
                                 {{ $details->dtprevfisobra }}%
-                                <span class="leg {{ $cores[strtoupper($details->dtprevfisobrafarol)]['FAROL'] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->dtprevfisobrafarol)]['FAROL'] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -1107,7 +1114,8 @@
                             </td>
                             <td>
                                 {{ $details->dtrealfisobra }}%
-                                <span class="leg {{ $cores[strtoupper($details->dtrealfisobrafarol)]["FAROL"] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->dtrealfisobrafarol)]["FAROL"] }}"></span>
                             </td>
                         </tr>
 
@@ -1145,7 +1153,8 @@
                             </td>
                             <td>
                                 {{ $details->dtprevfisbanco }}%
-                                <span class="leg {{ $cores[strtoupper($details->dtprevfisbancofarol)]["FAROL"] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->dtprevfisbancofarol)]["FAROL"] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -1181,7 +1190,8 @@
                             </td>
                             <td>
                                 {{ $details->dtrealfisbanco }}%
-                                <span class="leg {{ $cores[strtoupper($details->dtrealfisbancofarol)]["FAROL"] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->dtrealfisbancofarol)]["FAROL"] }}"></span>
                             </td>
                         </tr>
 
@@ -1219,7 +1229,8 @@
                             </td>
                             <td>
                                 {{ $details->dtprevfinbanco }}%
-                                <span class="leg {{ $cores[strtoupper($details->dtprevfinbancofarol)]["FAROL"] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->dtprevfinbancofarol)]["FAROL"] }}"></span>
                             </td>
                         </tr>
                         <tr>
@@ -1255,7 +1266,8 @@
                             </td>
                             <td>
                                 {{ $details->dtrealfinbanco }}%
-                                <span class="leg {{ $cores[strtoupper($details->dtrealfinbancofarol)]["FAROL"] }}"></span>
+                                <span
+                                    class="leg {{ $cores[strtoupper($details->dtrealfinbancofarol)]["FAROL"] }}"></span>
                             </td>
                         </tr>
 
@@ -1300,198 +1312,214 @@
                             ffoprevrevs = ffoprevrevs.split(',');
                             let fforeals = '{{ $details->fforeal }}';
                             fforeals = fforeals.split(',');
-                            Highcharts.chart('barra1', {
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: 'Δ = '+ffodeltas[0]+'%'
-                                },
-                                xAxis: {
-                                    crosshair: true,
-                                    title: {
-                                        text: ffomeses[0]
-                                    },
-                                    labels: {
-                                        enabled: false
-                                    }
-                                },
-                                yAxis: {
-                                    labels: {
-                                        enabled: false
+                            if (!fddeltas[0]) {
+                                let ffoprevrev = ffoprevrevs[0];
+                                let fforeal = fforeals[0];
+                                Highcharts.chart('barra1', {
+                                    chart: {
+                                        type: 'column'
                                     },
                                     title: {
-                                        enabled: false
-                                    }
-                                },
-                                series: [{
-                                    name: 'Prev. Rev. (R$)',
-                                    data: [ffoprevrevs[0]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#002953'],
-                                            [1, '#6c85af']
-                                        ]
-                                    }
-
-                                }, {
-                                    name: 'Real (R$)',
-                                    data: [fforeals[0]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#6f7124'],
-                                            [1, '#ae9c20']
-                                        ]
-                                    }
-
-                                }]
-                            });
-                            Highcharts.chart('barra2', {
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: 'Δ = '+ffodeltas[1]+'%'
-                                },
-                                xAxis: {
-                                    crosshair: true,
-                                    title: {
-                                        text: ffomeses[1]
+                                        text: 'Δ = ' + ffodeltas[0] + '%'
                                     },
-                                    labels: {
-                                        enabled: false
-                                    }
-                                },
-                                yAxis: {
-                                    labels: {
-                                        enabled: false
+                                    xAxis: {
+                                        crosshair: true,
+                                        title: {
+                                            text: ffomeses[0]
+                                        },
+                                        labels: {
+                                            enabled: false
+                                        }
                                     },
-                                    title: {
-                                        enabled: false
-                                    }
-                                },
-                                series: [{
-                                    name: 'Prev. Rev. (R$)',
-                                    data: [ffoprevrevs[1]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#002953'],
-                                            [1, '#6c85af']
-                                        ]
-                                    }
-
-                                }, {
-                                    name: 'Real (R$)',
-                                    data: [fforeals[1]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#6f7124'],
-                                            [1, '#ae9c20']
-                                        ]
-                                    }
-
-                                }]
-                            });
-                            Highcharts.chart('barra3', {
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: 'Δ = '+ffodeltas[2]+'%'
-                                },
-                                xAxis: {
-                                    crosshair: true,
-                                    title: {
-                                        text: ffomeses[2]
+                                    yAxis: {
+                                        labels: {
+                                            enabled: false
+                                        },
+                                        title: {
+                                            enabled: false
+                                        }
                                     },
-                                    labels: {
-                                        enabled: false
-                                    }
-                                },
-                                yAxis: {
-                                    labels: {
-                                        enabled: false
+                                    series: [{
+                                        name: 'Prev. Rev. (R$)',
+                                        data: [ffoprevrev],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
+                                            ]
+                                        }
+
+                                    }, {
+                                        name: 'Real (R$)',
+                                        data: [fforeal],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
+                                            ]
+                                        }
+
+                                    }]
+                                });
+                            }
+                            if (!fddeltas[1]) {
+                                let ffoprevrev = ffoprevrevs[1];
+                                let fforeal = fforeals[1];
+                                Highcharts.chart('barra2', {
+                                    chart: {
+                                        type: 'column'
                                     },
                                     title: {
-                                        enabled: false
-                                    }
-                                },
-                                series: [{
-                                    name: 'Prev. Rev. (R$)',
-                                    data: [ffoprevrevs[2]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#002953'],
-                                            [1, '#6c85af']
-                                        ]
-                                    }
-
-                                }, {
-                                    name: 'Real (R$)',
-                                    data: [fforeals[2]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#6f7124'],
-                                            [1, '#ae9c20']
-                                        ]
-                                    }
-
-                                }]
-                            });
-                            Highcharts.chart('barra4', {
-                                chart: {
-                                    type: 'column'
-                                },
-                                title: {
-                                    text: 'Δ = '+ffodeltas[3]+'%'
-                                },
-                                xAxis: {
-                                    crosshair: true,
-                                    title: {
-                                        text: ffomeses[3]
+                                        text: 'Δ = ' + ffodeltas[1] + '%'
                                     },
-                                    labels: {
-                                        enabled: false
-                                    }
-                                },
-                                yAxis: {
-                                    labels: {
-                                        enabled: false
+                                    xAxis: {
+                                        crosshair: true,
+                                        title: {
+                                            text: ffomeses[1]
+                                        },
+                                        labels: {
+                                            enabled: false
+                                        }
+                                    },
+                                    yAxis: {
+                                        labels: {
+                                            enabled: false
+                                        },
+                                        title: {
+                                            enabled: false
+                                        }
+                                    },
+                                    series: [{
+                                        name: 'Prev. Rev. (R$)',
+                                        data: [ffoprevrev],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
+                                            ]
+                                        }
+
+                                    }, {
+                                        name: 'Real (R$)',
+                                        data: [fforeal],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
+                                            ]
+                                        }
+
+                                    }]
+                                });
+                            }
+                            if (!fddeltas[2]) {
+                                let ffoprevrev = ffoprevrevs[2];
+                                let fforeal = fforeals[2];
+                                Highcharts.chart('barra3', {
+                                    chart: {
+                                        type: 'column'
                                     },
                                     title: {
-                                        enabled: false
-                                    }
-                                },
-                                series: [{
-                                    name: 'Prev. Rev. (R$)',
-                                    data: [ffoprevrevs[3]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#002953'],
-                                            [1, '#6c85af']
-                                        ]
-                                    }
+                                        text: 'Δ = ' + ffodeltas[2] + '%'
+                                    },
+                                    xAxis: {
+                                        crosshair: true,
+                                        title: {
+                                            text: ffomeses[2]
+                                        },
+                                        labels: {
+                                            enabled: false
+                                        }
+                                    },
+                                    yAxis: {
+                                        labels: {
+                                            enabled: false
+                                        },
+                                        title: {
+                                            enabled: false
+                                        }
+                                    },
+                                    series: [{
+                                        name: 'Prev. Rev. (R$)',
+                                        data: [ffoprevrev],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
+                                            ]
+                                        }
 
-                                }, {
-                                    name: 'Real (R$)',
-                                    data: [fforeals[3]],
-                                    color: {
-                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                        stops: [
-                                            [0, '#6f7124'],
-                                            [1, '#ae9c20']
-                                        ]
-                                    }
+                                    }, {
+                                        name: 'Real (R$)',
+                                        data: [fforeal],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
+                                            ]
+                                        }
 
-                                }]
-                            });
+                                    }]
+                                });
+                            }
+                            if (!fddeltas[3]) {
+                                let ffoprevrev = ffoprevrevs[3];
+                                let fforeal = fforeals[3];
+                                Highcharts.chart('barra4', {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: 'Δ = ' + ffodeltas[3] + '%'
+                                    },
+                                    xAxis: {
+                                        crosshair: true,
+                                        title: {
+                                            text: ffomeses[3]
+                                        },
+                                        labels: {
+                                            enabled: false
+                                        }
+                                    },
+                                    yAxis: {
+                                        labels: {
+                                            enabled: false
+                                        },
+                                        title: {
+                                            enabled: false
+                                        }
+                                    },
+                                    series: [{
+                                        name: 'Prev. Rev. (R$)',
+                                        data: [ffoprevrev],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
+                                            ]
+                                        }
+
+                                    }, {
+                                        name: 'Real (R$)',
+                                        data: [fforeal],
+                                        color: {
+                                            linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                            stops: [
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
+                                            ]
+                                        }
+
+                                    }]
+                                });
+                            }
                         </script>
                     </div>
                 </div>
@@ -1528,102 +1556,110 @@
                         fdprevrevs = fdprevrevs.split(',');
                         let fdreals = '{{ $details->fdreal }}';
                         fdreals = fdreals.split(',');
-                        Highcharts.chart('barra5', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Δ = '+fddeltas[0]+'%'
-                            },
-                            xAxis: {
-                                crosshair: true,
-                                title: {
-                                    text: fdmeses[0]
-                                },
-                                labels: {
-                                    enabled: false
-                                }
-                            },
-                            yAxis: {
-                                labels: {
-                                    enabled: false
+                        if (!fddeltas[0]) {
+                            let fdprevrev = fdprevrevs[0];
+                            let fdreal = fdreals[0];
+                            Highcharts.chart('barra5', {
+                                chart: {
+                                    type: 'column'
                                 },
                                 title: {
-                                    enabled: false
-                                }
-                            },
-                            series: [{
-                                name: 'Prev. Rev. (R$)',
-                                data: [fdprevrevs[0]],
-                                color: {
-                                    linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                    stops: [
-                                        [0, '#002953'],
-                                        [1, '#6c85af']
-                                    ]
-                                }
-
-                            }, {
-                                name: 'Real (R$)',
-                                data: [fdreals[0]],
-                                color: {
-                                    linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                    stops: [
-                                        [0, '#6f7124'],
-                                        [1, '#ae9c20']
-                                    ]
-                                }
-
-                            }]
-                        });
-                        Highcharts.chart('barra6', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Δ = '+fddeltas[1]+'%'
-                            },
-                            xAxis: {
-                                crosshair: true,
-                                title: {
-                                    text: fdmeses[1]
+                                    text: 'Δ = ' + fddeltas[0] + '%'
                                 },
-                                labels: {
-                                    enabled: false
-                                }
-                            },
-                            yAxis: {
-                                labels: {
-                                    enabled: false
+                                xAxis: {
+                                    crosshair: true,
+                                    title: {
+                                        text: fdmeses[0]
+                                    },
+                                    labels: {
+                                        enabled: false
+                                    }
+                                },
+                                yAxis: {
+                                    labels: {
+                                        enabled: false
+                                    },
+                                    title: {
+                                        enabled: false
+                                    }
+                                },
+                                series: [{
+                                    name: 'Prev. Rev. (R$)',
+                                    data: [fdprevrev],
+                                    color: {
+                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                        stops: [
+                                            [0, '#002953'],
+                                            [1, '#6c85af']
+                                        ]
+                                    }
+
+                                }, {
+                                    name: 'Real (R$)',
+                                    data: [fdreal],
+                                    color: {
+                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                        stops: [
+                                            [0, '#6f7124'],
+                                            [1, '#ae9c20']
+                                        ]
+                                    }
+
+                                }]
+                            });
+                        }
+                        if (!fddeltas[1]) {
+                            let fdprevrev = fdprevrevs[1];
+                            let fdreal = fdreals[1];
+                            Highcharts.chart('barra6', {
+                                chart: {
+                                    type: 'column'
                                 },
                                 title: {
-                                    enabled: false
-                                }
-                            },
-                            series: [{
-                                name: 'Prev. Rev. (R$)',
-                                data: [fdprevrevs[1]],
-                                color: {
-                                    linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                    stops: [
-                                        [0, '#002953'],
-                                        [1, '#6c85af']
-                                    ]
-                                }
+                                    text: 'Δ = ' + fddeltas[1] + '%'
+                                },
+                                xAxis: {
+                                    crosshair: true,
+                                    title: {
+                                        text: fdmeses[1]
+                                    },
+                                    labels: {
+                                        enabled: false
+                                    }
+                                },
+                                yAxis: {
+                                    labels: {
+                                        enabled: false
+                                    },
+                                    title: {
+                                        enabled: false
+                                    }
+                                },
+                                series: [{
+                                    name: 'Prev. Rev. (R$)',
+                                    data: [fdprevrev],
+                                    color: {
+                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                        stops: [
+                                            [0, '#002953'],
+                                            [1, '#6c85af']
+                                        ]
+                                    }
 
-                            }, {
-                                name: 'Real (R$)',
-                                data: [fdreals[1]],
-                                color: {
-                                    linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                    stops: [
-                                        [0, '#6f7124'],
-                                        [1, '#ae9c20']
-                                    ]
-                                }
+                                }, {
+                                    name: 'Real (R$)',
+                                    data: [fdreal],
+                                    color: {
+                                        linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                        stops: [
+                                            [0, '#6f7124'],
+                                            [1, '#ae9c20']
+                                        ]
+                                    }
 
-                            }]
-                        });
+                                }]
+                            });
+                        }
                     </script>
                 </div>
 
@@ -1724,17 +1760,19 @@
 
                 <div class="col-md-12 d-flex justify-content-center align-items-center nav-btns">
                     @if($previousConstruction && $previousConstruction != 0)
-                    <a href="{{ route('client-space.construction-detail', [$previousConstruction,$details->competence_id]) }}" class="btn-nav">
-                        Obra Anterior
-                    </a>
+                        <a href="{{ route('client-space.construction-detail', [$previousConstruction,$details->competence_id]) }}"
+                           class="btn-nav">
+                            Obra Anterior
+                        </a>
                     @endif
                     <a href="{{ route('client-space.index') }}" class="btn-nav">
                         Página Inicial
                     </a>
                     @if($nextConstruction && $nextConstruction != 0)
-                    <a href="{{ route('client-space.construction-detail', [$nextConstruction,$details->competence_id]) }}" class="btn-nav">
-                        Obra Posterior
-                    </a>
+                        <a href="{{ route('client-space.construction-detail', [$nextConstruction,$details->competence_id]) }}"
+                           class="btn-nav">
+                            Obra Posterior
+                        </a>
                     @endif
                 </div>
             </div>
@@ -1746,24 +1784,22 @@
         crossorigin="anonymous"></script>
     <script type="text/javascript">
         var construction = "{{ $details->construction_id }}";
-        jQuery(function(){
+        jQuery(function () {
             setTimeout(
-                function()
-                {
-                    jQuery( '.full-grafico .highcharts-series-group > .highcharts-column-series.highcharts-series-1 > rect.highcharts-point').each(function( index ) {
+                function () {
+                    jQuery('.full-grafico .highcharts-series-group > .highcharts-column-series.highcharts-series-1 > rect.highcharts-point').each(function (index) {
                         var $width = jQuery(this).attr('width');
-                        jQuery(this).attr('style', 'transform:translateX(-'+$width+'px)');
+                        jQuery(this).attr('style', 'transform:translateX(-' + $width + 'px)');
 
 
                     });
-                    jQuery( '.full-grafico .highcharts-series-group > .highcharts-column-series > rect.highcharts-point').each(function( index ) {
+                    jQuery('.full-grafico .highcharts-series-group > .highcharts-column-series > rect.highcharts-point').each(function (index) {
                         var wd = jQuery(this).attr('width');
 
 
-                        jQuery(this).attr('width', 2*wd);
+                        jQuery(this).attr('width', 2 * wd);
 
                     });
-
 
 
                 }, 2000);
