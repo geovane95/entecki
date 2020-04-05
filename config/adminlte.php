@@ -30,8 +30,8 @@ return [
     |
     */
 
-    'logo' => 'ENTECKi Admin',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '',
+    'logo_img' => 'vendor/adminlte/dist/img/entecki.svg',
     'logo_img_class' => 'brand-image-xl',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',

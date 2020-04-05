@@ -54,5 +54,58 @@
 <script src="{{ asset('js/app.js') }}"></script>
 @endif
 
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style type="text/css">
+    body {
+    font-family: 'Roboto', sans-serif;
+}
+.content-header h1 {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #00205c;
+}
+.card-header .btn-info,
+.card-header .btn-success,
+.bg-info {
+    background-color: #b09700 !important;
+    border-color:  #b09700 !important;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.btn-success:hover,
+.btn-warning:hover,
+.btn-danger:hover,
+.btn-primary:hover,
+.card-header .btn-info:hover,
+.card-header .btn-success:hover{
+    opacity: .9;
+}
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-primary,
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+  background-color:#00205c  !important;
+  border-color:  #00205c !important;
+  cursor: pointer !important;
+  color: #fff !important;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.brand-link .brand-image {
+    box-shadow: none !important;
+    border-radius: 0;
+    opacity: 1 !important;
+    float: none !important;
+
+}
+</style>
 </body>
 </html>
