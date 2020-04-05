@@ -84,7 +84,7 @@
                 columns:[
                     {data:'name', name:'name'},
                     {data:'state-name', name:'state-name'},
-                    {data:'status', name:'status'},
+                    {data: 'status-desc', name: 'status'},
                     {data:'action',name:'action'},
                 ]
             });

@@ -31,6 +31,10 @@ class CityController extends Controller
         {
             $data = $this->city->get();
             return DataTables::of($data)
+                ->addColumn('status-desc', function ($data) {
+                    $sta = $data->status == 1 ? 'Ativo' : 'Inativo';
+                    return $sta;
+                })
                 ->addColumn('state-name',function($data){
                     $stat = $this->state->find($data->state);
                     return $stat->name;

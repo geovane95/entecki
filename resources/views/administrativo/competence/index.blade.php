@@ -76,7 +76,7 @@
                     {data: 'month', name: 'month'},
                     {data: 'year', name: 'year'},
                     {data: 'description', name: 'description'},
-                    {data: 'status', name: 'status'},
+                    {data: 'status-desc', name: 'status'},
                     {data: 'action', name: 'action'},
                 ]
             });

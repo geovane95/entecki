@@ -74,7 +74,7 @@
                 columns:[
                     {data:'company_name', name:'company_name'},
                     {data:'cnpj', name:'cnpj'},
-                    {data:'status', name:'status',orderable:false , width:'20%'},
+                    {data: 'status-desc', name: 'status'},
                     {data:'action',name:'action'},
                 ]
             });

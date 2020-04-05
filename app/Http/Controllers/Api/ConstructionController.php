@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\ConstructionRequest;
 use App\Mail\SendConstructionMail;
+use App\Models\Data;
 use App\Models\Regional;
 use App\Models\UploadData;
 use App\Models\UsersToConstructions;
@@ -77,6 +78,10 @@ class ConstructionController extends Controller
                     $reg = $this->regional->find($data->regional);
                     return $reg->name;
                 })
+                ->addColumn('status-desc', function ($data) {
+                    $sta = $data->status == 1 ? 'Ativo' : 'Inativo';
+                    return $sta;
+                })
                 ->addColumn('users-name', function ($data) {
                     $users = DB::table('constructions')
                         ->join('users_to_constructions', 'users_to_constructions.construction', '=', 'constructions.id')
@@ -99,8 +104,8 @@ class ConstructionController extends Controller
                             }
                             $retorno .= $user->username;
                         }
-                    }else{
-                        $retorno .= "Está obra não possui usuários atrelados ainda.";
+                    } else {
+                        $retorno .= "Esta obra não possui usuários atrelados ainda.";
                     }
                     return $retorno;
                 })
@@ -258,7 +263,7 @@ class ConstructionController extends Controller
             "status" => $request->status
         ];
 
-        if($location->update($dataLocation)) {
+        if ($location->update($dataLocation)) {
 
             $dataAddress = [
                 "street" => $request->street,
@@ -315,30 +320,43 @@ class ConstructionController extends Controller
     {
         $construction = $this->construction->find($id);
 
-        if (!$construction) {
-            $idAddress = $construction->address->id;
+        if ($construction) {
+            $idAddress = $construction->address;
 
             $address = $this->address->find($idAddress);
 
-            $idLocation = $address->location->id;
+            $idLocation = $address->location;
 
             $location = $this->location->find($idLocation);
 
-            $location->status = 0;
+            $datas = Data::where('construction', '=', $construction->id);
 
-            $this->location->save();
+            foreach ($datas as $data) {
+                $data->delete();
+            }
 
-            $address->status = 0;
+            $userstoconstructions = DB::table('users_to_constructions')->where("construction","=",$construction->id)->get();
 
-            $this->address->save();
+            foreach ($userstoconstructions as $uc) {
+                DB::delete("delete from users_to_constructions where id = " . $uc->id);
+            }
 
-            $construction->status = 0;
+            $uploads = DB::table('upload_data')->where("construction","=",$construction->id)->get();
 
-            $construction->save();
+            foreach ($uploads as $upload) {
+                DB::delete("delete from upload_data where id = " . $upload->id);
+            }
 
-            return response()->json(["success" => "Obra inativada com sucesso"], 201);
+            if ($construction->delete()) {
+                if ($address->delete()) {
+                    if ($location->delete()) {
+
+                        return response()->json(["success" => "Obra deletada com sucesso"], 201);
+                    }
+                }
+            }
         } else {
-            return response()->json(["error" => "Falha na alteração do status da obra!"], 500);
+            return response()->json(["error" => "Falha na exclusão do status da obra!\nObra não encontrada"], 500);
         }
     }
 

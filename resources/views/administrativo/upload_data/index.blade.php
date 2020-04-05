@@ -51,7 +51,7 @@
             <thead class="thead-dark">
             <tr>
                 <th>Tipo de Upload</th>
-                <th>Usuário</th>
+                <th>Obra</th>
                 <th>Nome do Arquivo</th>
                 <th>Mês de Referência</th>
                 <th>Data de Upload</th>

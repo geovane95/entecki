@@ -84,7 +84,7 @@
                 columns:[
                     {data:'name', name:'name'},
                     {data:'initials', name:'initials'},
-                    {data:'status', name:'status'},
+                    {data: 'status-desc', name: 'status'},
                     {data:'action',name:'action'},
                 ]
             });

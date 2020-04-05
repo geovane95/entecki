@@ -79,8 +79,17 @@ class  ClientSpaceController extends Controller
             if ($user->access_profile == 2) {
                 $where = " where uc.user = " . $user->id;
             }
-            $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
-
+            $competencesTop = DB::select("select distinct co.id, co.description
+                                                from competences co
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join data d on d.uploaddata = ud.id
+                                                order by year desc, month desc
+                                                limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
+            $competences = DB::select("select distinct co.id, co.description
+                                                from competences co
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join data d on d.uploaddata = ud.id
+                                                order by year desc, month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
             $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
@@ -101,8 +110,8 @@ class  ClientSpaceController extends Controller
             }
 
             if (!$request->competences || $request->competences == 0) {
-                if (count($competences) > 0) {
-                    $competenceIdPluck = Arr::pluck($competences, 'id');
+                if (count($competencesTop) > 0) {
+                    $competenceIdPluck = $competencesTop[0]->id;
                 }else{
                     return view('area-do-cliente.erro', [
                         'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
@@ -125,6 +134,7 @@ class  ClientSpaceController extends Controller
             ];
 
             $dados = [];
+            $dadosCompetence = [];
 
             foreach ($regionals as $regional) {
                 $query = DB::table('constructions')
@@ -188,8 +198,9 @@ class  ClientSpaceController extends Controller
                 $constructionInfos = $query->get();
 
                 $regional->constructions = $constructionInfos;
-
-                array_push($dados, $regional);
+                if (count($constructionInfos) > 0){
+                    array_push($dados, $regional);
+                }
             }
         } catch (Exception $e) {
             dd($e);
@@ -202,7 +213,7 @@ class  ClientSpaceController extends Controller
                 'competences' => $competences,
                 'cores' => $cores,
                 'dados' => $dados,
-                'competencesselected' => $competenceIdPluck,
+                'competencesselected' => [$competenceIdPluck],
                 'regionalsselected' => $regionalIdPluck,
                 'constructionsselected' => $constructionsIdPluck
             ]);

@@ -115,7 +115,7 @@
                     {data: 'responsible-name', name: 'responsible'},
                     {data: 'regional-name', name: 'regional'},
                     {data: 'users-name', name: 'users-name'},
-                    {data: 'status', name: 'status'},
+                    {data: 'status-desc', name: 'status'},
                     {data: 'action', name: 'action'}
                 ]
             });
@@ -540,14 +540,14 @@
             $('body').on('click', '.delete', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
-                if (confirm('Você deseja inativar essa obra?')) {
+                if (confirm('Você tem certeza que deseja excluir essa obra?')) {
 
                     axios.delete(`/home/construction/${id}`)
                         .then(response => {
-                            console.log(response.status == 204);
-                            if (response.status == 204) {
+                            console.log(response.status == 201);
+                            if (response.status == 201) {
+                                alert('Obra Excluida com sucesso.');
                                 $('#table_construction').DataTable().ajax.reload();
-                                alert('Obra Inativada');
                             }
                         })
 

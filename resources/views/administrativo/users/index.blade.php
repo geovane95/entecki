@@ -187,7 +187,7 @@
 
                 $('#formModal').modal('show');
                 $('#modal-title').append('Editar Usuario');
-                $('#action_button').val("Editar");
+                $('#action_button').val("Salvar");
                 $('#action_button').addClass('btn-primary');
 
                 getData(id);

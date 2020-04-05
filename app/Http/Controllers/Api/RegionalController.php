@@ -32,6 +32,10 @@ class RegionalController extends Controller
         if (request()->ajax()) {
             $data = $this->regional->get();
             return DataTables::of($data)
+                ->addColumn('status-desc', function ($data) {
+                    $sta = $data->status == 1 ? 'Ativo' : 'Inativo';
+                    return $sta;
+                })
                 ->addColumn('action', function ($data) {
                     $button = "<button type='button'
                 name='edit' id='{$data->id}'
