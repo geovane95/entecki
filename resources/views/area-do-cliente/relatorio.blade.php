@@ -32,10 +32,10 @@
                         <label class="d-flex align-items-center">
                             Mês Referência:
                             <select name="competences" id="competences">
-                                @foreach($competences as $competence)
+                                @foreach($competences as $competence => $competencedesc)
                                     <option
-                                        value="{{ $competence->id }}" {{ in_array($competence->id,$competencesselected) ? "selected" : "" }}>
-                                        {{ $competence->description }}
+                                        value="{{ $competence }}" {{ in_array($competence,$competencesselected) ? "selected" : "" }}>
+                                        {{ $competencedesc }}
                                     </option>
                                 @endforeach
                             </select>
@@ -162,7 +162,6 @@
 
                                 </th>
                             </tr>
-                            <span style="display:none;">{{ $constLastId = 0 }}</span>
                             @foreach($dado->reports as $report)
                                 <tr>
                                     <td colspan="2">
@@ -318,15 +317,14 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @if($report->construction_id != $constLastId)
+                                @if(!$loop->last)
                                     <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
                                     <tr class="linha-cinza">
-                                        <td colspan="17">
+                                        <td colspan="19">
 
                                         </td>
                                     </tr>
                                 @endif
-                                {{ $constLastId = $report->construction_id }}
                             @endforeach
                         @endforeach
                         </tbody>

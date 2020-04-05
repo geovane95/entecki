@@ -79,17 +79,17 @@ class  ClientSpaceController extends Controller
             if ($user->access_profile == 2) {
                 $where = " where uc.user = " . $user->id;
             }
-            $competencesTop = DB::select("select distinct co.id, co.description
+            $competencesTop = DB::select("select co.id, co.description
                                                 from competences co
                                                     join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
                                                     join data d on d.uploaddata = ud.id
-                                                order by year desc, month desc
+                                                order by co.year desc, co.month desc
                                                 limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
-            $competences = DB::select("select distinct co.id, co.description
+            $competences = DB::select("select co.id, co.description
                                                 from competences co
                                                     join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
                                                     join data d on d.uploaddata = ud.id
-                                                order by year desc, month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
+                                                order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
             $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
@@ -134,7 +134,6 @@ class  ClientSpaceController extends Controller
             ];
 
             $dados = [];
-            $dadosCompetence = [];
 
             foreach ($regionals as $regional) {
                 $query = DB::table('constructions')
@@ -328,7 +327,13 @@ class  ClientSpaceController extends Controller
             )
             ->where(['constructions.id' => $id, 'competences.id' => $competence[0]->id])
             ->get();
-        $competences = $this->competence->get()->where('status', '=', 1);
+
+        $competences = DB::select("select co.id, co.description
+                                                from competences co
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join data d on d.uploaddata = ud.id
+                                                where d.construction = ".$id."
+                                                order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
         return view('area-do-cliente.detalhe', [
             'details' => $details[0],
             'competences' => $competences,
@@ -351,7 +356,13 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 2]
         )->get();
 
-        $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
+
+        $competences = DB::select("select co.id, co.description, co.month, co.year
+                                                from competences co
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 2
+                                                    join data d on d.uploaddata = ud.id
+                                                where d.construction = ".$id."
+                                                order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
         $competencesYear = Arr::pluck($competences, 'year');
         $competencesMonth = Arr::pluck($competences, 'month');
 
@@ -463,7 +474,9 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 2])
                 ->get();
             $competence->documents = $documents;
-            array_push($dados, $competence);
+            if (count($documents) > 0) {
+                array_push($dados, $competence);
+            }
         }
         return response()->json(['success' => $dados]);
     }
@@ -497,7 +510,9 @@ class  ClientSpaceController extends Controller
                 'uploadtype' => 2])
                 ->get();
             $competence->documents = $documents;
-            array_push($dados, $competence);
+            if (count($documents) > 0) {
+                array_push($dados, $competence);
+            }
         }
         return response()->json(['success' => $dados]);
     }
@@ -518,7 +533,11 @@ class  ClientSpaceController extends Controller
                 $where = " where uc.user = " . $user->id;
             }
 
-            $competences = $this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
+            $competences = DB::select("select co.id, co.description
+                                                from competences co
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join data d on d.uploaddata = ud.id
+                                                order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
@@ -546,14 +565,19 @@ class  ClientSpaceController extends Controller
             if ($request->competences){
                 $competenceIdPluck = [$request->competences];
             }else if (!$request->competences) {
-                $compatual = $this->competence->orderBy('id', 'desc')->take(1)->get()->where('status', '=', 1);
+                $compatual = DB::select("select co.id, co.description
+                                                from competences co
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join data d on d.uploaddata = ud.id
+                                                order by co.year desc, co.month desc
+                                                limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
                 if (count($compatual) <= 0){
                     return view('area-do-cliente.erro', [
                         'error' => 'Não é possível acessar esta página pois não foram encontrados dados meses de referencia cadastrados, solicite ao administrador que os cadastre.',
                         'return' => 'inicio'
                     ]);
                 }
-                $competenceIdPluck = Arr::pluck($compatual, 'id');
+                $competenceIdPluck = $compatual[0]->id;
             }
 
             $dados = [];
@@ -607,7 +631,7 @@ class  ClientSpaceController extends Controller
                         'upload_statuses.name as upload_status_name'
                     )
                     ->whereIn('constructions.id', $constructionsIdPluck)
-                    ->whereIn('competences.id', $competenceIdPluck)
+                    ->where('competences.id','=', $competenceIdPluck)
                     ->where('constructions.regional', '=', $regional->id)
                     ->get();
 
@@ -619,14 +643,13 @@ class  ClientSpaceController extends Controller
         } catch (Exception $e) {
             dd($e);
         }
-
         if (count($dados) > 0) {
             return view('area-do-cliente.relatorio', [
-                'competences' => $competences,
+                'competences' => Arr::pluck($competences,'description', 'id'),
                 'constructions' => $constructions,
                 'regionals' => $regionals,
                 'dados' => $dados,
-                'competencesselected' => $competenceIdPluck,
+                'competencesselected' => [$competenceIdPluck],
                 'constructionsselected' => $constructionsIdPluck,
                 'regionalsselected' => $regionalsIdPluck,
                 'incc' => $incc
