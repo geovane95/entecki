@@ -37,6 +37,7 @@
             <table id="table_construction" class="table table-bordered table-striped" style="width:100%;">
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Nome</th>
                     <th>Construtora</th>
                     <th>Responsável</th>
@@ -110,6 +111,7 @@
                     },
                 },
                 columns: [
+                    {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'company', name: 'company'},
                     {data: 'responsible-name', name: 'responsible'},

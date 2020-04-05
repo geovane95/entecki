@@ -92,7 +92,11 @@ class  ClientSpaceController extends Controller
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
-            $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
+            $regionals = DB::select("select re.id, re.name
+                                                from regionals re
+                                                    join constructions c on c.regional = re.id
+                                                    join data d on d.construction = c.id");
+            $regionals = Arr::pluck($regionals,'name','id');
 
             $incc = '773,52';
 
@@ -135,7 +139,7 @@ class  ClientSpaceController extends Controller
 
             $dados = [];
 
-            foreach ($regionals as $regional) {
+            foreach (array_unique($regionals) as $regional => $regionalname) {
                 $query = DB::table('constructions')
                     ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
@@ -191,14 +195,17 @@ class  ClientSpaceController extends Controller
                         'upload_statuses.name as upload_status_name'
                     )
                     ->where('competences.id', '=', $competenceIdPluck)
-                    ->where('constructions.regional', '=', $regional->id);
+                    ->where('constructions.regional', '=', $regional);
                 $query->whereIn('constructions.id', $constructionsIdPluck);
 
                 $constructionInfos = $query->get();
+                $regionalobj = new Regional();
 
-                $regional->constructions = $constructionInfos;
+                $regionalobj->id = $regional;
+                $regionalobj->name = $regionalname;
+                $regionalobj->constructions = $constructionInfos;
                 if (count($constructionInfos) > 0){
-                    array_push($dados, $regional);
+                    array_push($dados, $regionalobj);
                 }
             }
         } catch (Exception $e) {
@@ -209,11 +216,11 @@ class  ClientSpaceController extends Controller
                 'incc' => $incc,
                 'regionals' => $regionals,
                 'constructions' => $constructions,
-                'competences' => $competences,
+                'competences' => Arr::pluck($competences,'description', 'id'),
                 'cores' => $cores,
                 'dados' => $dados,
                 'competencesselected' => [$competenceIdPluck],
-                'regionalsselected' => $regionalIdPluck,
+                'regionalsselected' => [$regionalIdPluck],
                 'constructionsselected' => $constructionsIdPluck
             ]);
         }else{
@@ -360,9 +367,9 @@ class  ClientSpaceController extends Controller
         $competences = DB::select("select co.id, co.description, co.month, co.year
                                                 from competences co
                                                     join upload_data ud on ud.competence = co.id and ud.uploadtype = 2
-                                                    join data d on d.uploaddata = ud.id
-                                                where d.construction = ".$id."
+                                                where ud.construction = ".$id."
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
+
         $competencesYear = Arr::pluck($competences, 'year');
         $competencesMonth = Arr::pluck($competences, 'month');
 
@@ -666,7 +673,7 @@ class  ClientSpaceController extends Controller
         $data = $this->upload_data->find($uploadDataId);
 
         if ($data && !empty($data)) {
-            return response()->download(url($data[0]->file));
+            return response()->redirectTo(url('storage/'.$data->file));
         } else {
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }
@@ -677,7 +684,7 @@ class  ClientSpaceController extends Controller
         $data = $this->upload_data->find($uploadDataId);
 
         if ($data) {
-            return response()->download(url('storage/' . $data->file));
+            return response()->redirectTo(url('storage/' . $data->file));
         } else {
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }

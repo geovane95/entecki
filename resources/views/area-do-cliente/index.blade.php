@@ -24,10 +24,10 @@
                         <label class="d-flex align-items-center">
                             Mês Referência:
                             <select name="competences" id="competences">
-                                @foreach($competences as $competence)
+                                @foreach($competences as $competence => $competencedesc)
                                     <option
-                                        value="{{ $competence->id }}" {{ in_array($competence->id,$competencesselected) ? "selected" : "" }}>
-                                        {{ $competence->description }}
+                                        value="{{ $competence }}" {{ in_array($competence,$competencesselected) ? "selected" : "" }}>
+                                        {{ $competencedesc }}
                                     </option>
                                 @endforeach
                             </select>
@@ -37,10 +37,10 @@
                     </span>
                         <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
-                            @foreach($regionals as $regional)
+                            @foreach($regionals as $regional => $regionalname)
                                 <option
-                                    value="{{ $regional->id }}" {{ in_array($regional->id,$regionalsselected) ? "selected" : "" }}>
-                                    {{ $regional->name }}
+                                    value="{{ $regional }}" {{ in_array($regional,$regionalsselected) ? "selected" : "" }}>
+                                    {{ $regionalname }}
                                 </option>
                             @endforeach
                         </select>

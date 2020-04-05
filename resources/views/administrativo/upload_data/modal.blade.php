@@ -8,60 +8,24 @@
                 </div>
             </div>
             <div class="modal-body">
-                <p>Para o upoad de informações da obra crie uma planilha no excel com formato ".xlsx"</p>
-                <p>Nessa planilha preencha as colunas sequenciamente da esquerda para a direta com as seguintes informações</p>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <td>Coluna</td>
-                            <td>Valor</td>
-                            <td>Tipo de Dado</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>A</td>
-                        <td>Identificador da Obra</td>
-                        <td>Número Inteiro</td>
-                    </tr>
-                    <tr>
-                        <td>B</td>
-                        <td>Custo P</td>
-                        <td>FAROL[WA para Vermelho, AL para Amarelo, OK para Verde]</td>
-                    </tr>
-                    <tr>
-                        <td>C</td>
-                        <td>Prazo</td>
-                        <td>FAROL[WA para Vermelho, AL para Amarelo, OK para Verde]</td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>Fluxo D</td>
-                        <td>FAROL[WA para Vermelho, AL para Amarelo, OK para Verde]</td>
-                    </tr>
-                    <tr>
-                        <td>E</td>
-                        <td>Qualidade</td>
-                        <td>FAROL[WA para Vermelho, AL para Amarelo, OK para Verde]</td>
-                    </tr>
-                    <tr>
-                        <td>F</td>
-                        <td>Seg.Org.</td>
-                        <td>FAROL[WA para Vermelho, AL para Amarelo, OK para Verde]</td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>M. Ambi</td>
-                        <td>FAROL[WA para Vermelho, AL para Amarelo, OK para Verde]</td>
-                    </tr>
-                    <tr>
-                        <td>H</td>
-                        <td>Acum. Contr.</td>
-                        <td>Número Inteiro de 1 a 100</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <p>Para realizar o upload de documentos ou fotos da obra, selecione a opção desejada e em seguida selecione a obra.</p>
+                Upload de Arquivos
+
+                Para efetuar o upload de arquivos no sistema você precisa:
+
+                1 – Escolher o tipo de upload:
+                a) Informações de Obra: Arquivo .xlsx com as informações gerais de todas as obras do mês de referência, conforme modelo que pode ser <a href="{{url('storage/storage/arquivomodelo.xlsx')}}">baixado aqui</a>
+                b) Documentos de Obra: Arquivo que ficará disponível para download na aba “Documentos de obra” de acordo com a obra e mês de referência selecionado no momento do upload. Este arquivo pode ter a extensão pdf, docx, ppt, xls e/ou zip
+                c) Arquivo de Fotos: Arquivo de fotos que ficará disponível para download na aba de “Detalhes da Obra”  ou “Documentos de obra” no  início da página, de acordo com a obra e mês de referência selecionado no momento do upload.
+                d) Relatório de Obra: Arquivo de fotos que ficará disponível para download na aba de “Detalhes da Obra”  ou “Documentos de obra” no  início da página, de acordo com a obra e mês de referência selecionado no momento do upload.
+
+                2- Escolher o Mês de Referência:
+                Todos os arquivos estão atrelados ao mês de referência, para que a evolução das obras possa ser acompanhada. Neste campo você seleciona um mês previamente cadastrado. Caso o mês que procura não esteja disponível basta cadastrá-lo no menu Mês de Referência (Geovane, colocar link para a página de cadastro mês de referência).
+
+                3- Escolher a Obra:
+                Caso você tenha escolhido o tipo de upload “Informações da Obra” este campo será desabilitado, já que a planilha é utilizada para atualizar todas as obras em conjunto. Do contrário, ao escolher outros tipos de upload você deve dizer a qual obra este upload pertence.
+
+                4- Enviar arquivo:
+                Agora basta escolher o arquivo no seu computador e clicar em enviar.
             </div>
         </div>
     </div>
