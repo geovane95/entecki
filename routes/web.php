@@ -62,7 +62,7 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     Route::get('/detalhes/{id}/{competence}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
     Route::get('/fotos/{id}', 'ClientSpaceController@downloadPictures')->name('client-space.pictures-download');
     Route::get('/relatorio', 'ClientSpaceController@report')->name('client-space.construction-report');
-    Route::get('/relatorio/{id}', 'ClientSpaceController@downloadReport')->name('client-space.report-download');
+    Route::get('/relatorio/{id}', 'ClientSpaceController@downloadReports')->name('client-space.report-download');
     Route::get('/recuperar-senha', function(){
         return view('area-do-cliente.esqueceu_a_senha');
     })->name('client-space.recover-password');
@@ -76,10 +76,5 @@ Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-client
     })->name('client-space.logout');
     Route::get('competences/{construction}/{year}/{month}','ClientSpaceController@documentsByMonthYear')->name('competence.list');
     Route::get('competences/{construction}/{yearmonth}','ClientSpaceController@documentsByYearOrMonth')->name('competence.list.args');
-    Route::get('graficos/fluxodesemb/{competence}/{construction}','ClientSpaceController@fluxoDesemb')->name('graficos.fluxodesemb');
-    Route::get('graficos/fluxofinanobra/{competence}/{construction}','ClientSpaceController@fluxoFinanObra')->name('graficos.fluxofinanobra');
-    Route::get('graficos/desempfinan/{competence}/{construction}','ClientSpaceController@desempFinan')->name('graficos.desempfinan');
-    Route::get('graficos/fislocalacummacroetapas/{competence}/{construction}','ClientSpaceController@fisLocalAcumMacroEtapas')->name('graficos.fislocalacummacroetapas');
-    Route::get('graficos/fislocalacummacroetapas/{competence}/{construction}','ClientSpaceController@fisLocalAcumMacroEtapas')->name('graficos.fislocalacummacroetapas');
     Route::get('/', 'ClientSpaceController@index')->name('client-space.index');
 });

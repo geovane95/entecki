@@ -203,6 +203,19 @@ class  ClientSpaceController extends Controller
 
                 $regionalobj->id = $regional;
                 $regionalobj->name = $regionalname;
+                $regionalobj->AREACONSTRM2 = $constructionInfos->reduce(function ($carry,$item){
+                    return $carry + $item->AREACONSTRM2;
+                });
+                $regionalobj->NUNITQTD = $constructionInfos->reduce(function ($carry,$item){
+                    return $carry + $item->NUNITQTD;
+                });
+                $regionalobj->CORPRRATUAL = $constructionInfos->reduce(function ($carry,$item){
+                    return $carry + $item->CORPRRATUAL;
+                });
+                $regionalobj->CORRPRATUALFAROL = "amarelo";
+                $regionalobj->CORRPRATUALVLR = number_format(floatval(($constructionInfos->reduce(function ($carry,$item){
+                    return floatval($carry) + floatval($item->CORRPRATUALVLR);
+                }))/count($constructionInfos)),2,',','.');
                 $regionalobj->constructions = $constructionInfos;
                 if (count($constructionInfos) > 0){
                     array_push($dados, $regionalobj);
@@ -219,7 +232,7 @@ class  ClientSpaceController extends Controller
                 'competences' => Arr::pluck($competences,'description', 'id'),
                 'cores' => $cores,
                 'dados' => $dados,
-                'competencesselected' => [$competenceIdPluck],
+                'competencesselected' => is_array($competenceIdPluck) ? $competenceIdPluck : [$competenceIdPluck],
                 'regionalsselected' => [$regionalIdPluck],
                 'constructionsselected' => $constructionsIdPluck
             ]);
@@ -345,7 +358,7 @@ class  ClientSpaceController extends Controller
             'details' => $details[0],
             'competences' => $competences,
             'cores' => $cores,
-            'competencesselected' => $competence[0]->id,
+            'competencesselected' => is_array($competence[0]->id) ? $competence[0]->id : [$competence[0]->id],
             'nextConstruction' => $nextContruction,
             'previousConstruction' => $previousConstruction,
             'picture' => $picture,

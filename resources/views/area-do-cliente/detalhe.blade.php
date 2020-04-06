@@ -1312,9 +1312,10 @@
                             ffoprevrevs = ffoprevrevs.split(',');
                             let fforeals = '{{ $details->fforeal }}';
                             fforeals = fforeals.split(',');
-                            if (!fddeltas[0]) {
+                            if (ffodeltas[0]) {
                                 let ffoprevrev = ffoprevrevs[0];
                                 let fforeal = fforeals[0];
+
                                 Highcharts.chart('barra1', {
                                     chart: {
                                         type: 'column'
@@ -1341,7 +1342,7 @@
                                     },
                                     series: [{
                                         name: 'Prev. Rev. (R$)',
-                                        data: [ffoprevrev],
+                                        data: [parseInt(ffoprevrev)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1352,7 +1353,7 @@
 
                                     }, {
                                         name: 'Real (R$)',
-                                        data: [fforeal],
+                                        data: [parseInt(fforeal)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1364,9 +1365,10 @@
                                     }]
                                 });
                             }
-                            if (!fddeltas[1]) {
+                            if (ffodeltas[1]) {
                                 let ffoprevrev = ffoprevrevs[1];
                                 let fforeal = fforeals[1];
+
                                 Highcharts.chart('barra2', {
                                     chart: {
                                         type: 'column'
@@ -1393,7 +1395,7 @@
                                     },
                                     series: [{
                                         name: 'Prev. Rev. (R$)',
-                                        data: [ffoprevrev],
+                                        data: [parseInt(ffoprevrev)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1404,7 +1406,7 @@
 
                                     }, {
                                         name: 'Real (R$)',
-                                        data: [fforeal],
+                                        data: [parseInt(fforeal)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1416,9 +1418,10 @@
                                     }]
                                 });
                             }
-                            if (!fddeltas[2]) {
+                            if (ffodeltas[2]) {
                                 let ffoprevrev = ffoprevrevs[2];
                                 let fforeal = fforeals[2];
+
                                 Highcharts.chart('barra3', {
                                     chart: {
                                         type: 'column'
@@ -1445,7 +1448,7 @@
                                     },
                                     series: [{
                                         name: 'Prev. Rev. (R$)',
-                                        data: [ffoprevrev],
+                                        data: [parseInt(ffoprevrev)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1456,7 +1459,7 @@
 
                                     }, {
                                         name: 'Real (R$)',
-                                        data: [fforeal],
+                                        data: [parseInt(fforeal)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1468,9 +1471,10 @@
                                     }]
                                 });
                             }
-                            if (!fddeltas[3]) {
+                            if (ffodeltas[3]) {
                                 let ffoprevrev = ffoprevrevs[3];
                                 let fforeal = fforeals[3];
+
                                 Highcharts.chart('barra4', {
                                     chart: {
                                         type: 'column'
@@ -1497,7 +1501,7 @@
                                     },
                                     series: [{
                                         name: 'Prev. Rev. (R$)',
-                                        data: [ffoprevrev],
+                                        data: [parseInt(ffoprevrev)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1508,7 +1512,7 @@
 
                                     }, {
                                         name: 'Real (R$)',
-                                        data: [fforeal],
+                                        data: [parseInt(fforeal)],
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
@@ -1556,7 +1560,7 @@
                         fdprevrevs = fdprevrevs.split(',');
                         let fdreals = '{{ $details->fdreal }}';
                         fdreals = fdreals.split(',');
-                        if (!fddeltas[0]) {
+                        if (fddeltas[0]) {
                             let fdprevrev = fdprevrevs[0];
                             let fdreal = fdreals[0];
                             Highcharts.chart('barra5', {
@@ -1585,7 +1589,7 @@
                                 },
                                 series: [{
                                     name: 'Prev. Rev. (R$)',
-                                    data: [fdprevrev],
+                                    data: [parseInt(fdprevrev)],
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
@@ -1596,7 +1600,7 @@
 
                                 }, {
                                     name: 'Real (R$)',
-                                    data: [fdreal],
+                                    data: [parseInt(fdreal)],
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
@@ -1608,7 +1612,7 @@
                                 }]
                             });
                         }
-                        if (!fddeltas[1]) {
+                        if (fddeltas[1]) {
                             let fdprevrev = fdprevrevs[1];
                             let fdreal = fdreals[1];
                             Highcharts.chart('barra6', {
@@ -1637,7 +1641,7 @@
                                 },
                                 series: [{
                                     name: 'Prev. Rev. (R$)',
-                                    data: [fdprevrev],
+                                    data: [parseInt(fdprevrev)],
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
@@ -1648,7 +1652,7 @@
 
                                 }, {
                                     name: 'Real (R$)',
-                                    data: [fdreal],
+                                    data: [parseInt(fdreal)],
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [

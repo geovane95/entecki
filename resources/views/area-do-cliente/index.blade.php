@@ -233,21 +233,21 @@
                                     </th>
 
                                     <th class="text-right">
-                                        137.956
+                                        {{ number_format($dado->AREACONSTRM2, 0, ',', '.') }}
                                     </th>
                                     <th class="text-right">
-                                        2.146
+                                        {{ number_format($dado->NUNITQTD, 0, ',', '.') }}
                                     </th>
 
                                     <th class="text-right">
-                                        (1.653.737)
+                                        ({{ number_format($dado->CORPRRATUAL, 0, ',', '.') }})
                                     </th>
                                     <!--  GEOVANE, CONFERIR MUDANCAS inseri a classe text-center -->
                                     <th class="text-center">
-                                        <span class="leg amarelo">
+                                            <span class="leg {{ $dado->CORRPRATUALFAROL }}">
 
-                                        </span>
-                                        -0,6%
+                                            </span>
+                                        {{ $dado->CORRPRATUALVLR }}
                                     </th>
                                     <th colspan="14">
 
@@ -274,7 +274,7 @@
                                         </td>
 
                                         <td class="text-right">
-                                            ({{ number_format($constructiontable->NUNITQTD, 0, ',', '.') }})
+                                            ({{ number_format($constructiontable->CORPRRATUAL, 0, ',', '.') }})
                                         </td>
                                         <td>
                                             <span class="leg {{ $constructiontable->CORRPRATUALFAROL }}">
