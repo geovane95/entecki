@@ -119,7 +119,7 @@ class EmailController extends Controller
             }
             return response()->json(['success' => $emails], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Falha ao enviar o e-mail'], 500);
+            return response()->json(['error' => 'Falha ao enviar o e-mail\\n'.$e->getMessage()], 500);
         }
     }
 }

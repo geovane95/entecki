@@ -91,7 +91,6 @@ class SendConstructionMail extends Mailable
             ])
             ->get();
         return $this
-            ->from('geovane.a.f.junior@gmail.com')
             ->subject('Entecki - Relatório de Empreendimento')
             ->view('area-do-cliente.mail.email')
             ->with([
