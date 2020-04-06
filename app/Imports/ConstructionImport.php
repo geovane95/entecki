@@ -190,7 +190,15 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     'fdmeses' => $row['fdmeses'],
                     'fddelta' => $row['fddelta'],
                     'fdprevrev' => $row['fdprevrev'],
-                    'fdreal' => $row['fdreal']
+                    'fdreal' => $row['fdreal'],
+                    'critpremultaconteco' => $row['critpremultaconteco'],
+                    'critpremultacontest' => $row['critpremultacontest'],
+                    'prevpremultaconstrs' => $row['prevpremultaconstrs'],
+                    'prevpremultaincorrs' => $row['prevpremultaincorrs'],
+                    'prevpremultaconstincc' => $row['prevpremultaconstincc'],
+                    'prevpremultaincorincc' => $row['prevpremultaincorincc'],
+                    'datasmarco' => $row['datasmarco'],
+                    'adiccritpremulta' => $row['adiccritpremulta']
                 ]);
                 /*
                  *
@@ -324,6 +332,6 @@ class ConstructionImport implements ToCollection, WithHeadingRow
 
     public function headingRow(): int
     {
-        return 1;
+        return 2;
     }
 }

@@ -24,7 +24,7 @@ Email on Acid - http://www.emailonacid.com/blog/details/C18/doctype_-_the_black_
 
 		/***********
 		Originally based on The MailChimp Reset from Fabio Carneiro, MailChimp User Experience Design
-		More info and templates on Github: https://github.com/mailchimp/Email-Blueprints
+		More info and templates on Github: http://github.com/mailchimp/Email-Blueprints
 		http://www.mailchimp.com &amp; http://www.fabio-carneiro.com
 		INLINE: No.
 		***********/
@@ -200,7 +200,7 @@ Email on Acid - http://www.emailonacid.com/blog/details/C18/doctype_-_the_black_
 					&nbsp;
 				</td>
 				<td width="376" height="68" valign="top">
-					<img class="image_fix" src="https://entecki.com.br/mail/entecki.jpg" alt="Entecki - Inteligência em gerenciamento, planejamento e gestão de obrast" title="Entecki - Inteligência em gerenciamento, planejamento e gestão de obras" width="376" height="68" />
+					<img class="image_fix" src="http://entecki.com.br/mail/entecki.jpg" alt="Entecki - Inteligência em gerenciamento, planejamento e gestão de obrast" title="Entecki - Inteligência em gerenciamento, planejamento e gestão de obras" width="376" height="68" />
 				</td>
 				<td width="324" height="68" valign="top">&nbsp;</td>
 			</tr>
@@ -237,7 +237,7 @@ Email on Acid - http://www.emailonacid.com/blog/details/C18/doctype_-_the_black_
 								<table width="640" cellpadding="0" cellspacing="0" border="0" align="center">
 									<tr>
 										<td width="158" height="184">
-											<img class="image_fix" src="https://entecki.com.br/mail/obra.jpg" alt="BROOKLIN SKYMARK" title="BROOKLIN SKYMARK" width="158" height="184" />
+											<img class="image_fix" src="{{ url($foto) }}" alt="{{ $obra }}" title="{{ $obra }}" width="158" height="184" />
 										</td>
 
 										<td width="10">
@@ -386,22 +386,22 @@ Email on Acid - http://www.emailonacid.com/blog/details/C18/doctype_-_the_black_
 
 									<tr>
 										<td style="text-align: center; padding: 5px;">
-											<img class="image_fix" src="https://entecki.com.br/mail/{{ $CUSTOP['FAROL'] }}.png" alt="{{ $CUSTOP['ALT'] }}" title="{{ $CUSTOP['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
+											<img class="image_fix" src="http://entecki.com.br/mail/{{ $CUSTOP['FAROL'] }}.png" alt="{{ $CUSTOP['ALT'] }}" title="{{ $CUSTOP['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
 										</td>
 										<td style="text-align: center; padding: 5px;">
-											<img class="image_fix" src="https://entecki.com.br/mail/{{ $PRAZO['FAROL'] }}.png" alt="{{ $PRAZO['ALT'] }}" title="{{ $PRAZO['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
+											<img class="image_fix" src="http://entecki.com.br/mail/{{ $PRAZO['FAROL'] }}.png" alt="{{ $PRAZO['ALT'] }}" title="{{ $PRAZO['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
 										</td>
 										<td style="text-align: center; padding: 5px;">
-											<img class="image_fix" src="https://entecki.com.br/mail/{{ $FLUXOD['FAROL'] }}.png" alt="{{ $FLUXOD['ALT'] }}" title="{{ $FLUXOD['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
+											<img class="image_fix" src="http://entecki.com.br/mail/{{ $FLUXOD['FAROL'] }}.png" alt="{{ $FLUXOD['ALT'] }}" title="{{ $FLUXOD['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
 										</td>
 										<td style="text-align: center; padding: 5px;">
-											<img class="image_fix" src="https://entecki.com.br/mail/{{ $QUALIDADE['FAROL'] }}.png" alt="{{ $QUALIDADE['ALT'] }}" title="{{ $QUALIDADE['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
+											<img class="image_fix" src="http://entecki.com.br/mail/{{ $QUALIDADE['FAROL'] }}.png" alt="{{ $QUALIDADE['ALT'] }}" title="{{ $QUALIDADE['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
 										</td>
 										<td style="text-align: center; padding: 5px;">
-											<img class="image_fix" src="https://entecki.com.br/mail/{{ $SEGORG['FAROL'] }}.png" alt="{{ $SEGORG['ALT'] }}" title="{{ $SEGORG['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
+											<img class="image_fix" src="http://entecki.com.br/mail/{{ $SEGORG['FAROL'] }}.png" alt="{{ $SEGORG['ALT'] }}" title="{{ $SEGORG['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
 										</td>
 										<td style="text-align: center; padding: 5px;">
-											<img class="image_fix" src="https://entecki.com.br/mail/{{ $MAMBI['FAROL'] }}.png" alt="{{ $MAMBI['ALT'] }}" title="{{ $MAMBI['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
+											<img class="image_fix" src="http://entecki.com.br/mail/{{ $MAMBI['FAROL'] }}.png" alt="{{ $MAMBI['ALT'] }}" title="{{ $MAMBI['TITLE'] }}" width="15" height="15" style="margin-left: 45px;" />
 										</td>
 									</tr>
 								</table>

@@ -28,14 +28,14 @@
                                 Documentos
                             </a>
                             @if($picture)
-                            <a href="{{ route('client-space.pictures-download', $picture->id) }}"
+                            <a href="{{ route('client-space.pictures-download', $picture->id) }}" target="_blank"
                                class="pic">
                                 <i></i>
                                 Fotos
                             </a>
                             @endif
                             @if($report)
-                            <a href="{{ route('client-space.report-download', $report->id) }}" class="rel">
+                            <a href="{{ route('client-space.report-download', $report->id) }}" target="_blank" class="rel">
                                 <i></i>
                                 Relatório
                             </a>

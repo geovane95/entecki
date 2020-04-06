@@ -180,6 +180,15 @@ class Data extends Model
         'fddelta',
         'fdprevrev',
         'fdreal',
+        'critpremultaconteco',
+        'critpremultacontest',
+        'prevpremultaconstrs',
+        'prevpremultaincorrs',
+        'prevpremultaconstincc',
+        'prevpremultaincorincc',
+        'datasmarco',
+        'adiccritpremulta',
         'email_sended_at'
+
     ];
 }

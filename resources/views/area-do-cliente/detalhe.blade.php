@@ -52,13 +52,13 @@
                                 Documentos
                             </a>
                             @if($picture)
-                                <a href="{{ route('client-space.pictures-download', $picture->id) }}" class="pic">
+                                <a href="{{ route('client-space.pictures-download', $picture->id) }}" target="_blank" class="pic">
                                     <i></i>
                                     Fotos
                                 </a>
                             @endif
                             @if($report)
-                                <a href="{{ route('client-space.report-download', $report->id) }}" class="rel">
+                                <a href="{{ route('client-space.report-download', $report->id) }}" target="_blank" class="rel">
                                     <i></i>
                                     Relatório
                                 </a>
@@ -1681,12 +1681,12 @@
                         <tbody>
                         <tr>
                             <td class="text-left">
-                                * Economia = 50% construtora 50% incorporadora / Taxa constr. 100% paga
+                                * Economia = {{ $details->critpremultaconteco }}
                             </td>
                         </tr>
                         <tr>
                             <td class="text-left">
-                                * Estouro = Incoporadora até 3% (contingência), após isso 100% construtora.
+                                * Estouro = {{ $details->critpremultacontest }}.
                             </td>
                         </tr>
                         </tbody>
@@ -1708,10 +1708,10 @@
                                 Construt.:
                             </td>
                             <td class="text-left">
-                                R$ -
+                                R$ {{ $details->prevpremultaconstincc }}
                             </td>
                             <td class="text-right">
-                                0 INCC
+                                {{ $details->prevpremultaconstincc }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -1719,10 +1719,10 @@
                                 Incorpor.:
                             </td>
                             <td class="text-left">
-                                R$ -
+                                R$ {{ $details->prevpremultaincorrs }}
                             </td>
                             <td class="text-right">
-                                0 INCC
+                                {{ $details->prevpremultaincorincc }} INCC
                             </td>
                         </tr>
                         </tbody>
@@ -1742,19 +1742,8 @@
                         <tbody>
                         <tr class="tot">
                             <td class="text-left">
-                                <strong>DATAS MARCO:</strong> conforme contrato, o prazo de obra é de 23 meses (01 mês
-                                para mobilização + 20 para execução + 02 de check list), a partir da ordem de início
-                                (01/set/18), tendo as seguintes
-                                datas marco a serem cumpridas (podendo acarretar a bloqueio de taxa após 30 dias de
-                                atraso):<br>
-                                *Conclusão das Fundações: 02/01/19 (123 dias) - Meta atingida em 26/10/18;<br>
-                                *Conclusão do Apto Modelo: 12/06/19 (284 dias) - Status: Em andamento;<br>
-                                *Conclusão da Estrtutura de Concreto: 04/09/19 (368 dias) - Status: Em andamento;<br>
-                                *Conclusão da Montagem do 1º Elevador: 08/01/20 (494 dias) - Status: Em andamento;<br>
-                                <strong>ADICIONAIS CRITÉRIOS PRÉMIOS E MULTAS:</strong><br>
-                                * Adendo = estouro acima de 3% a incorporadora poderá cortar a tx. adm. e cobrar multa
-                                de 2% do valor e juros de 1% ao mês calculados sobre o montante devido não pago.<br>
-                                BANCO: Até o momento banco encontra-se acima do previsto e acima do físico da obra.
+                                <strong>DATAS MARCO: </strong>{{ str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->datasmarco))) }}<br>
+                                <strong>ADICIONAIS CRITÉRIOS PRÉMIOS E MULTAS: </strong>{{ html_entity_decode(str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->adiccritpremulta)))) }}
                             </td>
                         </tr>
                         </tbody>

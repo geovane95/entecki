@@ -95,6 +95,7 @@ class SendConstructionMail extends Mailable
             ->view('area-do-cliente.mail.email')
             ->with([
                 'obra' => $data[0]->construction_name,
+                'foto' => $data[0]->thumbnail,
                 'construtora' => $data[0]->company,
                 'localregiao' => $data[0]->neighborhood,
                 'cidadeestado' => $data[0]->city.'/'.$data[0]->state,

@@ -194,6 +194,14 @@ class CreateDataTable extends Migration
             $table->string('fddelta')->nullable();
             $table->string('fdprevrev')->nullable();
             $table->string('fdreal')->nullable();
+            $table->string('critpremultaconteco')->nullable();
+            $table->string('critpremultacontest')->nullable();
+            $table->string('prevpremultaconstrs')->nullable();
+            $table->string('prevpremultaincorrs')->nullable();
+            $table->string('prevpremultaconstincc')->nullable();
+            $table->string('prevpremultaincorincc')->nullable();
+            $table->text('datasmarco')->nullable();
+            $table->text('adiccritpremulta')->nullable();
             $table->timestamps();
         });
     }
