@@ -8,17 +8,11 @@
                 </div>
             </div>
             <div class="modal-body">
-                <h4 id="modal-title" class="modal-title">Upload de Arquivos </h4>
-
-
-
-
-
                 <p>Para efetuar o upload de arquivos no sistema você precisa:</p>
                 <ol>
                     <li>
                         <strong>Escolher o tipo de upload:</strong><br>
-                        <b>a)</b> Informações de Obra: Arquivo .xlsx com as informações gerais de todas as obras do mês de referência, conforme modelo que pode ser <a href="{{url('storage/storage/arquivomodelo.xlsx')}}">baixado aqui</a><br>
+                        <b>a)</b> Informações de Obra: Arquivo .xlsx com as informações gerais de todas as obras do mês de referência, conforme modelo que pode ser <a href="{{url('storage/storage/arquivomodelo.xlsx')}}" target="_blank" >baixado aqui</a><br>
                         <b>b)</b> Documentos de Obra: Arquivo que ficará disponível para download na aba “Documentos de obra” de acordo com a obra e mês de referência selecionado no momento do upload. Este arquivo pode ter a extensão pdf, docx, ppt, xls e/ou zip<br>
                         <b>c)</b> Arquivo de Fotos: Arquivo de fotos que ficará disponível para download na aba de “Detalhes da Obra”  ou “Documentos de obra” no  início da página, de acordo com a obra e mês de referência selecionado no momento do upload.<br>
                         <b>d)</b> Relatório de Obra: Arquivo de fotos que ficará disponível para download na aba de “Detalhes da Obra”  ou “Documentos de obra” no  início da página, de acordo com a obra e mês de referência selecionado no momento do upload.

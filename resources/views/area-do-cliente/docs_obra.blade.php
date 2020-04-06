@@ -73,7 +73,7 @@
                         <ul class="list-files">
                             @foreach($documents as $document)
                                 <li>
-                                    <a href="{{ storage_path($document->folder) }}" target="_blank"
+                                    <a href="{{ url('storage/'.$document->file) }}" target="_blank"
                                        title="{{ $document->fileName }}" class="{{ $document->extension }}">
                                         {{ $document->fileName }}
                                     </a>

@@ -1742,8 +1742,8 @@
                         <tbody>
                         <tr class="tot">
                             <td class="text-left">
-                                <strong>DATAS MARCO: </strong>{{ str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->datasmarco))) }}<br>
-                                <strong>ADICIONAIS CRITÉRIOS PRÉMIOS E MULTAS: </strong>{{ html_entity_decode(str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->adiccritpremulta)))) }}
+                                <strong>DATAS MARCO: </strong> {!! str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->datasmarco))) !!} <br>
+                                <strong>ADICIONAIS CRITÉRIOS PRÉMIOS E MULTAS: </strong>{!! str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->adiccritpremulta))) !!}
                             </td>
                         </tr>
                         </tbody>
