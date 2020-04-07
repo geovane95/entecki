@@ -49,7 +49,7 @@ class CityController extends Controller
                     class='delete  btn btn-danger btn-sm ml-2'>Deletar</button>";
 
                     return $button;
-                })->rawColumns(['action','responsible'])
+                })->rawColumns(['action','business'])
                 ->make(true);
         }
 

@@ -7,7 +7,7 @@
     </div>
     <div class="form-group">
         <label for="company">Construtora</label>
-        <input type="text" class="form-control" name="company" id="company" value="{{ old('company') }}">
+        <input type="text" class="form-control" name="company" id="company" value="{{ old('business') }}">
         <span id="companyError" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -15,12 +15,24 @@
         <input type="file" name="thumbnail" id="thumbnail" class="form-control"/>
     </div>
     <div class="form-group">
-        <label for="responsible">Responsável</label>
-        {{Form::select('responsible',$responsible,null,['class'=>'form-control','placeholder'=>'Escolha um Responsável','id'=>'responsible'])}}
+        <label for="responsible">Razão Social</label>
+        <input type="text" class="form-control" name="responsible" id="responsible" value="{{ old('responsible') }}">
+        <span id="responsibleError" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="cnpj">CNPJ</label>
+        <input type="text" class="form-control" name="cnpj" id="cnpj" value="{{ old('cnpj') }}"  onkeypress='mascaraMutuario(this)' onblur='clearTimeout()' maxlength="18" minlength="18">
+        <span id="cnpjError" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="business">Empresa</label>
+        {{Form::select('business',$business,null,['class'=>'form-control','placeholder'=>'Escolha uma Empresa','id'=>'business'])}}
+        <span id="businessError" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="regional">Regional</label>
         {{Form::select('regional',$regional,null,['class'=>'form-control','placeholder'=>'Escolha um Regional','id'=>'regional'])}}
+        <span id="regionalError" class="text-danger"></span>
     </div>
     <div class="form-group row">
         <div class="col-10">
@@ -55,6 +67,7 @@
                     <option id="{{$key}}" value="{{$key}}">{{$item}}</option>
                 @endforeach
            </select>
+            <span id="stateError" class="text-danger"></span>
         </div>
         <div class="col-6">
             <label for="city">Cidade</label>
@@ -62,6 +75,7 @@
             <select name="city" id="city" class="form-control">
                 <option value="">Selecione</option>
             </select>
+            <span id="cityError" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
@@ -81,11 +95,6 @@
             <label for="work_number">Nº Obra</label>
             <input type="text" class="form-control" name="work_number" id="work_number" value="{{ old('work_number') }}">
             <span id="work_numberError" class="text-danger"></span>
-        </div>
-        <div class="col-6">
-            <label for="issuance_date">Data de Emissão</label>
-            <input type="text" class="form-control" name="issuance_date" id="issuance_date" value="{{ old('issuance_date') }}">
-            <span id="issuance_dateError" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

@@ -8,7 +8,7 @@ use App\Models\City;
 use App\Models\Competence;
 use App\Models\Construction;
 use App\Models\Data;
-use App\Models\Responsible;
+use App\Models\Business;
 use App\Models\State;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -48,7 +48,7 @@ class SendConstructionMail extends Mailable
             ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
             ->leftJoin('cities', 'cities.id', '=', 'locations.city')
             ->leftJoin('states', 'states.id', '=', 'cities.state')
-            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
             ->join('data', 'data.construction', '=', 'constructions.id')
             ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
             ->join('competences', 'competences.id', '=', 'upload_data.competence')
@@ -59,7 +59,7 @@ class SendConstructionMail extends Mailable
                 'constructions.name as construction_name',
                 'constructions.status as construction_status',
                 'constructions.thumbnail',
-                'constructions.company',
+                'constructions.business',
                 'constructions.contract_regime',
                 'constructions.reporting_regime as report_regime',
                 'constructions.issuance_date',

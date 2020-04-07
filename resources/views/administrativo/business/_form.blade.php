@@ -1,14 +1,9 @@
-<form action="" method="post" id="responsible_form" class="form-horizontal">
+<form action="" method="post" id="business_form" class="form-horizontal">
     @csrf
     <div class="form-group">
-        <label for="company_name">Razão Social</label>
-        <input type="text" class="form-control" name="company_name" id="company_name" value="{{ old('company_name') }}">
-        <span id="company_nameError" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label for="cnpj">CNPJ</label>
-        <input type="text" class="form-control" name="cnpj" id="cnpj" value="{{ old('cnpj') }}"  onkeypress='mascaraMutuario(this)' onblur='clearTimeout()' maxlength="18" minlength="18">
-        <span id="cnpjError" class="text-danger"></span>
+        <label for="business_name">Nome</label>
+        <input type="text" class="form-control" name="business_name" id="business_name" value="{{ old('business_name') }}">
+        <span id="business_nameError" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="status">Status</label><br/>
@@ -29,6 +24,6 @@
     <div class="form-group" align="center">
         <input type="hidden" name="action" id="action" value="Add" />
         <input type="hidden" name="hidden_id" id="hidden_id" />
-        <input type="submit" name="action_responsible_button" id="action_responsible_button" class="btn btn-warning" value="Add" />
+        <input type="submit" name="action_business_button" id="action_business_button" class="btn btn-warning" value="Add" />
     </div>
 </form>

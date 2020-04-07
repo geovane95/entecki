@@ -103,7 +103,7 @@
                 },
                 columns: [
                     {data: 'name', name: 'name'},
-                    {data: 'company', name: 'company'},
+                    {data: 'business', name: 'business'},
                     {data: 'email', name: 'email'},
                     {data: 'access-profile-name', name: 'profile'},
                     {data: 'action', name: 'action'},
@@ -322,7 +322,7 @@
                 .then(response => {
 
                     $('#name').val(response.data.name);
-                    $('#company').val(response.data.company);
+                    $('#business').val(response.data.company);
                     $('#email').val(response.data.email);
                     $('#password').val(response.data.password);
                     $("#access_profile > option[value="+response.data.access_profile+"]").prop("selected",true);

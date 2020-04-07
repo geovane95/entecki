@@ -23,19 +23,20 @@ class Construction extends Model
         'name' ,
         'thumbnail',
         'company' ,
+        'business' ,
         'responsible' ,
+        'cnpj' ,
         'regional' ,
         'contract_regime' ,
         'reporting_regime' ,
-        'issuance_date' ,
         'work_number' ,
         'status' ,
         'address',
     ];
 
-    public function responsibles()
+    public function business()
     {
-        return $this->hasOne(Responsible::class,'id','responsible');
+        return $this->hasOne(Business::class,'id','business');
     }
 
     public function regionals()

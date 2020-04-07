@@ -47,7 +47,7 @@ class EmailController extends Controller
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
                     ->leftJoin('cities', 'cities.id', '=', 'locations.city')
                     ->leftJoin('states', 'states.id', '=', 'cities.state')
-                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
                     ->leftJoin('data', 'data.construction', '=', 'constructions.id')
                     ->leftJoin('upload_data', 'upload_data.id', '=', 'data.uploaddata')
                     ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')

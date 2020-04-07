@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Lista de Responsáveis')
+@section('title', 'Lista de Empresas')
 
 @section('content_header')
-    <h1>Lista de Responsáveis</h1>
+    <h1>Lista de Empresas</h1>
 @stop
 
 @section('content')
@@ -17,16 +17,15 @@
 
             <br />
             <div align="left">
-                <button type="button" name="create_responsible_record" id="create_responsible_record" class="btn btn-success btn-sm">Inserir Responsável</button>
+                <button type="button" name="create_business_record" id="create_business_record" class="btn btn-success btn-sm">Inserir Empresa</button>
             </div>
 
         </div>
         <div class="card-body ">
-            <table  id="table_responsible" class="table table-bordered table-striped" style="width:100%;">
+            <table  id="table_business" class="table table-bordered table-striped" style="width:100%;">
                 <thead>
                 <tr>
-                    <th>Razão Social</th>
-                    <th>CNPJ</th>
+                    <th>Nome</th>
                     <th>Status</th>
                     <th>Ação</th>
                 </tr>
@@ -35,7 +34,7 @@
         </div>
     </div>
     <hr/>
-    @include('administrativo.responsible.modal')
+    @include('administrativo.business.modal')
 
 @stop
 
@@ -50,11 +49,11 @@
         $(document).ready(function(){
 
             // Listando usuarios
-            $("#table_responsible").DataTable({
+            $("#table_business").DataTable({
                 processing:true,
                 serverSide:true,
                 ajax:{
-                    url:"{{route('responsible.index')}}",
+                    url:"{{route('business.index')}}",
                 },
                 "oLanguage": {
                     "sLengthMenu": "Mostrar _MENU_ registros por pagina",
@@ -72,46 +71,45 @@
                     },
                 },
                 columns:[
-                    {data:'company_name', name:'company_name'},
-                    {data:'cnpj', name:'cnpj'},
+                    {data:'name', name:'name'},
                     {data: 'status-desc', name: 'status'},
                     {data:'action',name:'action'},
                 ]
             });
 
-            //cadastrando um responsável
-            $('#create_responsible_record').on('click',function(e){
+            //cadastrando uma empresa
+            $('#create_business_record').on('click',function(e){
                 e.preventDefault();
 
                 clear();
                 triggerForm();
 
-                $('#formModalResponsible').modal('show');
-                $('#modal-responsible-title').append('Cadastrar Responsável');
-                $('#action_responsible_button').val("Cadastrar");
-                $('#action_responsible_button').addClass('btn-primary');
+                $('#formModalBusiness').modal('show');
+                $('#modal-business-title').append('Cadastrar Empresa');
+                $('#action_business_button').val("Cadastrar");
+                $('#action_business_button').addClass('btn-primary');
 
-                $('#responsible_form').on('submit',function(e){
+                $('#business_form').on('submit',function(e){
                     e.preventDefault();
 
-                    let dataForm = $('#responsible_form').serialize();
+                    let dataForm = $('#business_form').serialize();
 
-                    axios.post(`{{route('responsible.store')}}`,dataForm)
+                    axios.post(`{{route('business.store')}}`,dataForm)
                         .then((response)=>{
                             console.log(response.data.success);
                             if(response.data.success)
                             {
-                                $('#responsible_form_result').html(
+                                $('#business_form_result').html(
 
                                     `<div class="alert alert-success">
-                                         <p>Sucesso ao cadastrar novo responsável!</p>
+                                         <p>Sucesso ao cadastrar nova empresa!</p>
                                      </div>`
                                 );
 
                                 setTimeout(() => {
                                     clear();
                                     triggerForm();
-                                    $('#formModalResponsible').modal('hide');
+                                    $('#formModalBusiness').modal('hide');
                                 }, 1000);
                             }
                         }).catch((response)=>{
@@ -131,53 +129,52 @@
                 clearError();
                 triggerForm();
 
-                $('#formModalResponsible').modal('show');
+                $('#formModalBusiness').modal('show');
 
-                $('#formModalResponsible').modal('show');
-                $('#modal-responsible-title').append('Editar Responsável');
-                $('#action_responsible_button').val("Salvar");
-                $('#action_responsible_button').addClass('btn-primary');
+                $('#formModalBusiness').modal('show');
+                $('#modal-business-title').append('Editar Empresa');
+                $('#action_business_button').val("Salvar");
+                $('#action_business_button').addClass('btn-primary');
 
                 getData(id);
 
 
                 //enviando os dados
 
-                $('#responsible_form').on('submit', function (e) {
+                $('#business_form').on('submit', function (e) {
                     e.preventDefault();
 
                     clearError();
-                    let dataForm = $('#responsible_form').serialize();
+                    let dataForm = $('#business_form').serialize();
 
-                    axios.put(`/home/responsible/${id}`, dataForm)
+                    axios.put(`/home/business/${id}`, dataForm)
                         .then((response) => {
                             console.log(response.data.success);
                             if (response.data.success) {
-                                $('#responsible_form_result').html(
+                                $('#business_form_result').html(
                                     `<div class="alert alert-success">
-                                                <p>Sucesso ao Atualizar o responsável!</p>
+                                                <p>Sucesso ao Atualizar a empresa!</p>
                                             </div>`
                                 );
 
                                 setTimeout(() => {
                                     clear();
                                     triggerForm();
-                                    $('#formModalResponsible').modal('hide');
+                                    $('#formModalBusiness').modal('hide');
                                 }, 1000);
                             }
                         }).catch((error) => {
 
-                        let errors = error.response.data.errors;
+                        let errors = error.response;
 
-                        if (errors.company_name) {
-                            $('#companyNameError').html(errors.company_name);
-                        }
-                        if (errors.email) {
-                            $('#cnpjError').html(errors.cnpj);
+                        console.log(errors);
+
+                        if (errors.business_name) {
+                            $('#busines_nameError').html(errors.business_name);
                         }
                     }).finally(() => {
 
-                        $('#table_responsible').DataTable().ajax.reload();
+                        $('#table_business').DataTable().ajax.reload();
                     });
 
 
@@ -189,14 +186,14 @@
             $('body').on('click', '.delete', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
-                if (confirm('Você deseja desativar esse responsável ?')) {
+                if (confirm('Você deseja desativar essa empresa ?')) {
 
-                    axios.delete(`/home/responsible/${id}`)
+                    axios.delete(`/home/business/${id}`)
                         .then(response => {
                             console.log(response.status == 204);
                             if (response.status == 204) {
-                                $('#table_responsible').DataTable().ajax.reload();
-                                alert('Responsável Desativado');
+                                $('#table_business').DataTable().ajax.reload();
+                                alert('Empresa Desativada');
                             }
                         })
 
@@ -212,29 +209,34 @@
             });
         });
 
+        function clearError() {
+            $('#business_nameError').html('');
+        }
+
         function clear()
         {
-            $('#action_responsible_button').val('');
-            $('#modal-responsible-title').html('');
-            $('#action_responsible_button').removeClass('btn-primary');
-            $('#action_responsible_button').removeClass('btn-warning');
-            $('#form_responsible_result').html('');
+            $('#action_business_button').val('');
+            $('#modal-business-title').html('');
+            $('#action_business_button').removeClass('btn-primary');
+            $('#action_business_button').removeClass('btn-warning');
+            $('#form_business_result').html('');
         }
 
         function getData(id) {
-            let url = "{{ route('responsible.show', ':id') }}";
+            let url = "{{ route('business.show', ':id') }}";
 
             url = url.replace(':id', id);
             axios.get(url)
                 .then(response => {
-                    $('#company_name').val(response.data.company_name);
-                    $('#cnpj').val(response.data.cnpj);
-                    $("#status > option[value=" + response.data.address.status + "]").prop("selected", true);
+                    let data = response.data;
+                    data = data[0];
+                    $('#business_name').val(data.name);
+                    $("#status > option[value=" + data.status + "]").prop("selected", true);
                 })
         }
         function triggerForm()
         {
-            $("#form_responsible_result").trigger('reset');
+            $("#form_business_result").trigger('reset');
         }
     </script>
 @stop

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ResponsibleRequest;
+use App\Http\Requests\Api\BusinessRequest;
 use App\Models\AccessProfile;
 use App\Models\Address;
 use App\Models\City;
@@ -12,7 +12,7 @@ use App\Models\Construction;
 use App\Models\Data;
 use App\Models\Location;
 use App\Models\Regional;
-use App\Models\Responsible;
+use App\Models\Business;
 use App\Models\State;
 use App\Models\UploadData;
 use App\Models\UploadStatus;
@@ -33,7 +33,7 @@ class  ClientSpaceController extends Controller
 
     public function __construct(
         Construction $construction,
-        Responsible $responsible,
+        Business $responsible,
         Regional $regional,
         Address $address,
         Location $location,
@@ -145,7 +145,7 @@ class  ClientSpaceController extends Controller
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
                     ->leftJoin('cities', 'cities.id', '=', 'locations.city')
                     ->leftJoin('states', 'states.id', '=', 'cities.state')
-                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
                     ->join('data', 'data.construction', '=', 'constructions.id')
                     ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
                     ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
@@ -156,7 +156,7 @@ class  ClientSpaceController extends Controller
                         'constructions.name as construction_name',
                         'constructions.status as construction_status',
                         'constructions.thumbnail',
-                        'constructions.company',
+                        'constructions.business',
                         'constructions.contract_regime',
                         'constructions.reporting_regime as report_regime',
                         'constructions.issuance_date',
@@ -314,7 +314,7 @@ class  ClientSpaceController extends Controller
             ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
             ->leftJoin('cities', 'cities.id', '=', 'locations.city')
             ->leftJoin('states', 'states.id', '=', 'cities.state')
-            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
             ->leftJoin('data', 'data.construction', '=', 'constructions.id')
             ->leftJoin('upload_data', 'upload_data.id', '=', 'data.uploaddata')
             ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
@@ -325,7 +325,7 @@ class  ClientSpaceController extends Controller
                 'constructions.name as construction_name',
                 'constructions.status as construction_status',
                 'constructions.thumbnail',
-                'constructions.company',
+                'constructions.business',
                 'constructions.contract_regime',
                 'constructions.reporting_regime as report_regime',
                 'constructions.issuance_date',
@@ -608,7 +608,7 @@ class  ClientSpaceController extends Controller
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
                     ->leftJoin('cities', 'cities.id', '=', 'locations.city')
                     ->leftJoin('states', 'states.id', '=', 'cities.state')
-                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.responsible')
+                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
                     ->join('data', 'data.construction', '=', 'constructions.id')
                     ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
                     ->join('competences', 'competences.id', '=', 'upload_data.competence')
@@ -619,7 +619,7 @@ class  ClientSpaceController extends Controller
                         'constructions.name as construction_name',
                         'constructions.status as construction_status',
                         'constructions.thumbnail',
-                        'constructions.company',
+                        'constructions.business',
                         'constructions.contract_regime',
                         'constructions.reporting_regime as report_regime',
                         'constructions.issuance_date',

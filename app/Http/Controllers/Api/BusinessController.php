@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\ResponsibleRequest;
-use App\Models\Responsible;
+use App\Http\Requests\Api\BusinessRequest;
+use App\Models\Business;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class ResponsibleController extends Controller
+class BusinessController extends Controller
 {
-    private $responsible;
-    public function __construct(Responsible $responsible)
+    private $business;
+    public function __construct(Business $business)
     {
-        $this->responsible = $responsible;
+        $this->business = $business;
     }
 
     /**
@@ -27,7 +26,7 @@ class ResponsibleController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = $this->responsible->get();
+            $data = $this->business->get();
             return DataTables::of($data)
                 ->addColumn('status-desc', function ($data) {
                     $sta = $data->status == 1 ? 'Ativo' : 'Inativo';
@@ -46,29 +45,26 @@ class ResponsibleController extends Controller
                 })->rawColumns(['action'])
                 ->make(true);
         }
-        return view('administrativo.responsible.index');
+        return view('administrativo.business.index');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param ResponsibleRequest $request
+     * @param BusinessRequest $request
      * @return JsonResponse
      */
-    public function store(ResponsibleRequest $request)
+    public function store(BusinessRequest $request)
     {
-        $formCpnj = $request->cnpj;
-        $formCpnj = str_replace('.','',str_replace('/','',str_replace('-','',$formCpnj)));
         $datForm = [
-            'company_name'=>$request->company_name,
-            'cnpj'=>$formCpnj,
+            'name'=>$request->business_name,
             'status'=>$request->status
         ];
 
-        $responsible = $this->responsible->create($datForm);
+        $business = $this->business->create($datForm);
 
-        if (!$responsible)
-            return response()->json(['error'=>'Falha ao criar um responsavel.', 500]);
+        if (!$business)
+            return response()->json(['error'=>'Falha ao criar uma empresa.', 500]);
 
         return response()->json(['success' => true], 201);
     }
@@ -81,12 +77,12 @@ class ResponsibleController extends Controller
      */
     public function show($id)
     {
-        $responsible = $this->responsible->find($id);
+        $business = $this->business->find($id);
 
-        if (!$responsible)
-            return response()->json(['error'=>'Falha ao buscar responsável'],500);
+        if (!$business)
+            return response()->json(['error'=>'Falha ao buscar empresa'],500);
 
-        return response()->json([$responsible],200);
+        return response()->json([$business],200);
     }
 
     /**
@@ -97,36 +93,35 @@ class ResponsibleController extends Controller
      */
     public function edit($id)
     {
-        $responsible = $this->responsible->find($id);
+        $business = $this->business->find($id);
 
-        if (!$responsible)
-            return response()->json(['error'=>'Falha ao buscar responsável'],500);
+        if (!$business)
+            return response()->json(['error'=>'Falha ao buscar empresa'],500);
 
-        return response()->json([$responsible],200);
+        return response()->json([$business],200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param ResponsibleRequest $request
+     * @param BusinessRequest $request
      * @param  int  $id
      * @return JsonResponse
      */
-    public function update(ResponsibleRequest $request, $id)
+    public function update(BusinessRequest $request, $id)
     {
-        $responsible = $this->responsible->find($id);
+        $business = $this->business->find($id);
 
-        if (!$responsible)
-            return response()->json(['error'=>'Falha ao buscar responsável'],500);
+        if (!$business)
+            return response()->json(['error'=>'Falha ao buscar empresa'],500);
 
         $datForm = [
-            'company_name'=>$request->company_name,
-            'cnpj'=>$request->cnpj,
+            'name'=>$request->business_name,
             'status'=>$request->status
         ];
 
-        if (!$this->responsible->update($datForm))
-            return response()->json(['error'=>'Falha na alteração do Responsável'], 500);
+        if (!$business->update($datForm))
+            return response()->json(['error'=>'Falha na alteração do empresa'], 500);
 
         return response()->json(['success'=>true],200);
     }
@@ -139,12 +134,12 @@ class ResponsibleController extends Controller
      */
     public function destroy($id)
     {
-        $responsible = $this->responsible->find($id);
+        $business = $this->business->find($id);
 
-        $responsible->status = 0;
+        $business->status = 0;
 
-        if (!$responsible->save())
-            return response()->json(['error'=>'Falha ao buscar responsável'],500);
+        if (!$business->save())
+            return response()->json(['error'=>'Falha ao buscar empresa'],500);
 
         return response()->json(['success' => true],204);
     }

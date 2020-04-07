@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
  * @method find(int $id)
  * @method create(array $datForm)
  */
-class Responsible extends Model
+class Business extends Model
 {
     use Notifiable;
 
@@ -20,6 +20,6 @@ class Responsible extends Model
      * @var array
      */
     protected $fillable = [
-        'company_name','cnpj','status',
+        'name','status',
     ];
 }

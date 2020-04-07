@@ -17,14 +17,14 @@
     <div style="display:none;" class="card">
         <div class="card-header row">
             <div align="left" class="col-md-9">
-                <button type="button" name="create_construction_record" id="create_construction_record"
-                        class="btn btn-success btn-sm">Inserir Obra
-                </button>
-                <button type="button" name="create_responsible_record" id="create_responsible_record"
-                        class="btn btn-success btn-sm">Inserir Responsável
+                <button type="button" name="create_business_record" id="create_business_record"
+                        class="btn btn-success btn-sm">Inserir Empresa
                 </button>
                 <button type="button" name="create_regional_record" id="create_regional_record"
                         class="btn btn-success btn-sm">Inserir Regional
+                </button>
+                <button type="button" name="create_construction_record" id="create_construction_record"
+                        class="btn btn-success btn-sm">Inserir Obra
                 </button>
             </div>
             <div align="right" class="col-md-3">
@@ -40,7 +40,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Construtora</th>
-                    <th>Responsável</th>
+                    <th>Empresa</th>
                     <th>Regional</th>
                     <th>Usuários</th>
                     <th>Status</th>
@@ -54,7 +54,7 @@
     @include('administrativo.construction.modal')
     @include('administrativo.state.modal')
     @include('administrativo.city.modal')
-    @include('administrativo.responsible.modal')
+    @include('administrativo.business.modal')
     @include('administrativo.regional.modal')
     @include('administrativo.user_to_construction.modal')
 
@@ -113,47 +113,14 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'company', name: 'company'},
-                    {data: 'responsible-name', name: 'responsible'},
+                    {data: 'business', name: 'business'},
+                    {data: 'business-name', name: 'business'},
                     {data: 'regional-name', name: 'regional'},
                     {data: 'users-name', name: 'users-name'},
                     {data: 'status-desc', name: 'status'},
                     {data: 'action', name: 'action'}
                 ]
             });
-
-            setTimeout(function () {
-                $(".email").click(function () {
-                    var id = $(this).attr("id").replace('email_', '');
-                    var email = validEmail(prompt("Digite o e-mail para onde quer enviar:"));
-
-                    if (email) {
-                        axios.get('./email/' + id, email).then((response) => {
-                            console.log(response);
-                            if (response.data.success) {
-                                alert('Email enviado com sucesso! Em alguns segundos este usuário deve estar recebendo seu e-mail.')
-                            }
-                        }).catch((error) => {
-                            erros = error.response.data.errors;
-                            console.log(erros);
-                            alert('Desculpe, não foi possível realizar o e-mail nesse momento, pedimos que aguarde alguns minutos e tente novamente.');
-                        }).finally(() => {
-
-                        });
-                    }
-                });
-            }, 500);
-
-            function validEmail(email) {
-                if (email == ""
-                    || email.indexOf('@') == -1
-                    || email.indexOf('.') == -1) {
-                    alert("Por favor, informe um E-MAIL válido!");
-                    return false;
-                } else {
-                    return email;
-                }
-            }
 
             var idObra = '';
             $('body').on('click', '.cliente', function (e) {
@@ -240,7 +207,7 @@
             //cadastrando uma obra
             $('#create_construction_record').on('click', function (e) {
                 e.preventDefault();
-                console.log(e);
+
                 clear();
                 clearError();
                 triggerForm();
@@ -279,7 +246,7 @@
                                 }, 1000);
                             }
                         }).catch((error) => {
-                        let errors = error.response.data.errors;
+                        let errors = error.response;
 
                         if (errors.name) {
                             $('#nameError').html(errors.name);
@@ -290,6 +257,14 @@
 
                         if (errors.responsible) {
                             $('#responsibleError').html(errors.responsible);
+                        }
+
+                        if (errors.cnpj) {
+                            $('#cnpjError').html(errors.cnpj);
+                        }
+
+                        if (errors.business) {
+                            $('#businessError').html(errors.business);
                         }
 
                         if (errors.regional) {
@@ -320,10 +295,6 @@
                             $('#reporting_regimeError').html(errors.reporting_regime);
                         }
 
-                        if (errors.issuance_date) {
-                            $('#issuance_dateError').html(errors.issuance_date);
-                        }
-
                         if (errors.work_number) {
                             $('#work_numberError').html(errors.work_number);
                         }
@@ -336,48 +307,45 @@
             });
 
             //cadastrando um responsável
-            $('#create_responsible_record').on('click', function (e) {
+            $('#create_business_record').on('click', function (e) {
                 e.preventDefault();
 
                 clear();
                 clearError();
                 triggerForm();
 
-                $('#formModalResponsible').modal('show');
-                $('#modal-responsible-title').append('Cadastrar Responsável');
-                $('#action_responsible_button').val("Cadastrar");
-                $('#action_responsible_button').addClass('btn-primary');
+                $('#formModalBusiness').modal('show');
+                $('#modal-business-title').append('Cadastrar Empresa');
+                $('#action_business_button').val("Cadastrar");
+                $('#action_business_button').addClass('btn-primary');
 
-                $('#responsible_form').on('submit', function (e) {
+                $('#business_form').on('submit', function (e) {
                     e.preventDefault();
 
-                    let dataForm = $('#responsible_form').serialize();
+                    let dataForm = $('#business_form').serialize();
 
-                    axios.post(`{{route('responsible.store')}}`, dataForm)
+                    axios.post(`{{route('business.store')}}`, dataForm)
                         .then((response) => {
                             console.log(response.data.success);
                             if (response.data.success) {
-                                $('#responsible_form_result').html(
+                                $('#business_form_result').html(
                                     `<div class="alert alert-success">
-                                         <p>Sucesso ao cadastrar novo responsável!</p>
+                                         <p>Sucesso ao cadastrar nova empresa!</p>
                                      </div>`
                                 );
 
                                 setTimeout(() => {
                                     clear();
                                     triggerForm();
-                                    $('#formModalResponsible').modal('hide');
+                                    $('#formModalBusiness').modal('hide');
                                 }, 1000);
                                 location.reload();
                             }
                         }).catch((error) => {
                         let errors = error.response.data.errors;
 
-                        if (errors.company_name) {
-                            $('#company_nameError').html(errors.company_name);
-                        }
-                        if (errors.cnpj) {
-                            $('#cnpjError').html(errors.cnpj);
+                        if (errors.business_name) {
+                            $('#business_nameError').html(errors.business_name);
                         }
                     }).finally(() => {
 
@@ -574,8 +542,8 @@
                 window.location = '{{ route('state.index') }}';
             });
 
-            $("#list_responsibles").click(function () {
-                window.location = '{{ route('responsible.index') }}';
+            $("#list_businesses").click(function () {
+                window.location = '{{ route('business.index') }}';
             });
 
             $("#list_regionals").click(function () {
@@ -588,11 +556,14 @@
                 url = url.replace(':id', id);
                 axios.get(url)
                     .then(response => {
-                        console.log(response.data);
                         let data = response.data;
+
+                        console.log(data);
                         $('#name').val(data.name);
                         $('#company').val(data.company);
-                        $("#responsible > option[value=" + data.responsible + "]").prop("selected", true);
+                        $('#responsible').val(data.responsible);
+                        $('#cnpj').val(data.cnpj);
+                        $("#business > option[value=" + data.business.id + "]").prop("selected", true);
                         $("#regional > option[value=" + data.regional + "]").prop("selected", true);
                         $('#street').val(data.address.street);
                         $('#number').val(data.address.number);
@@ -664,8 +635,8 @@
             $('#nameError').html('');
             $('#companyError').html('');
             $('#responsibleError').html('');
-            $('#company_nameError').html('');
             $('#cnpjError').html('');
+            $('#company_nameError').html('');
             $('#neighborhoodError').html('');
             $('#zipCodeError').html('');
             $('#streetError').html('');

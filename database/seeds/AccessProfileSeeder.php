@@ -15,10 +15,11 @@ class AccessProfileSeeder extends Seeder
         AccessProfile::create([
             'name'=>'Admin',
         ]);
-
-
         AccessProfile::create([
             'name'=>'Cliente',
+        ]);
+        AccessProfile::create([
+            'name'=>'Admin Entecki',
         ]);
     }
 }
