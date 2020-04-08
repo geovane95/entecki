@@ -54,6 +54,16 @@
                                 </option>
                             @endforeach
                         </select>
+
+                        <select class="obras businesses" multiple id="businesses" name="businesses">
+                            <option value="0">SELECIONE AS EMPRESAS PARA VISUALIZAÇÃO</option>
+                            @foreach($businesses as $business => $businessname)
+                                <option
+                                    value="{{ $business }}" {{ in_array($business,$businessesselected) ? "selected" : "" }}>
+                                    {{ $businessname }}
+                                </option>
+                            @endforeach
+                        </select>
                     </form>
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-between align-items-end">
@@ -371,6 +381,7 @@
                 formData += "competences=" + $("#competences").val();
                 formData += "&regionals=" + $("#regionals").val();
                 formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.index', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
             });
@@ -379,6 +390,16 @@
                 formData += "competences=" + $("#competences").val();
                 formData += "&regionals=" + $("#regionals").val();
                 formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
+                let url = "{{route('client-space.index', ':formData')}}";
+                window.location.href = url.replace(':formData', formData);
+            });
+            $("#businesses").change(function () {
+                let formData = "";
+                formData += "competences=" + $("#competences").val();
+                formData += "&regionals=" + $("#regionals").val();
+                formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.index', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
             });

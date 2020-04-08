@@ -12,6 +12,7 @@ class Data extends Model
     protected $fillable = [
         'uploaddata',
         'construction',
+        'DATAEMISSAO',
         'CUSTOP',
         'PRAZO',
         'FLUXOD',

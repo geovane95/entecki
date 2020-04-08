@@ -48,7 +48,7 @@ class SendConstructionMail extends Mailable
             ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
             ->leftJoin('cities', 'cities.id', '=', 'locations.city')
             ->leftJoin('states', 'states.id', '=', 'cities.state')
-            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
+            ->leftJoin('businesses', 'businesses.id', '=', 'constructions.business')
             ->join('data', 'data.construction', '=', 'constructions.id')
             ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
             ->join('competences', 'competences.id', '=', 'upload_data.competence')
@@ -59,19 +59,19 @@ class SendConstructionMail extends Mailable
                 'constructions.name as construction_name',
                 'constructions.status as construction_status',
                 'constructions.thumbnail',
-                'constructions.business',
+                'constructions.company',
+                'businesses.name as business_name',
                 'constructions.contract_regime',
                 'constructions.reporting_regime as report_regime',
-                'constructions.issuance_date',
                 'constructions.work_number',
+                'construction.responsibles as responsible_name',
+                'construction.cnpj as responsible_cnpj',
                 'constructions.status as construction_status',
                 'addresses.street',
                 'addresses.number',
                 'locations.neighborhood',
                 'cities.name as city',
                 'states.name as state',
-                'responsibles.company_name as responsible_name',
-                'responsibles.cnpj as responsible_cnpj',
                 'competences.id as competence_id',
                 'competences.month',
                 'competences.year',

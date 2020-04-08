@@ -92,7 +92,7 @@
                                     <strong>REGIME RELATÓRIO:</strong> {{ $details->report_regime }}
                                 </li>
                                 <li>
-                                    <strong>DATA EMISSÃO:</strong> {{ $details->issuance_date }}
+                                    <strong>DATA EMISSÃO:</strong> {{ $details->DATAEMISSAO }}
                                 </li>
                                 <li>
                                     <strong>OBRA Nº:</strong> {{ $details->work_number }}

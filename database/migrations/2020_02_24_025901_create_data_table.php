@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateDataTable extends Migration
@@ -27,6 +28,7 @@ class CreateDataTable extends Migration
                 ->on('constructions')
                 ->references('id')
                 ->onDelete('cascade');
+            $table->string('DATAEMISSAO',32);
             $table->string('CUSTOP',2);
             $table->string('PRAZO',2);
             $table->string('FLUXOD',2);
@@ -39,35 +41,35 @@ class CreateDataTable extends Migration
             $table->integer('NUNITQTD')->nullable();
             $table->string('CORPRRATUAL',10)->nullable();
             $table->string('CORRPRATUALFAROL',2)->nullable();
-            $table->string('CORRPRATUALVLR',18)->nullable();
+            $table->double('CORRPRATUALVLR',12,2)->nullable();
             $table->string('FXDPRRATUAL',10)->nullable();
             $table->string('FXDRPRATUALFAROL',2)->nullable();
-            $table->string('FXDRPRATUALVLR', 18)->nullable();
+            $table->double('FXDRPRATUALVLR', 12,2)->nullable();
             $table->string('FPRPRFAROL',2)->nullable();
-            $table->string('FPRPR',16)->nullable();
+            $table->double('FPRPR',12,2)->nullable();
             $table->string('POTEROBRARPMESFAROL',2)->nullable();
             $table->string('POTEROBRARPMES',16)->nullable();
             $table->integer('POECOPR')->nullable();
             $table->string('IDQFAROL',2)->nullable();
             $table->string('IDSFAROL',2)->nullable();
             $table->integer('PORCCONTRATINDIC')->nullable();
-            $table->float('ACORCPROOJATUAL',10,2)->nullable();
-            $table->float('APORCPROOJATUAL',10,2)->nullable();
-            $table->float('FBP',6,2)->nullable();
-            $table->float('FBR',6,2)->nullable();
-            $table->float('FBD',6,2)->nullable();
-            $table->float('FOP',6,2)->nullable();
-            $table->float('FOR',6,2)->nullable();
-            $table->float('FOD',6,2)->nullable();
-            $table->float('FOBP',6,2)->nullable();
-            $table->float('FOBR',6,2)->nullable();
-            $table->float('FOBD',6,2)->nullable();
-            $table->float('AREATERRENO',8,2)->nullable();
-            $table->float('AREACONSTRUIDA',8,2)->nullable();
-            $table->float('AREAPRIVATIVA',8,2)->nullable();
-            $table->float('AREAEQUIVNB',8,2)->nullable();
-            $table->float('AREADEGARGAGEM',8,2)->nullable();
-            $table->float('EFECIEPROJ',8,2)->nullable();
+            $table->double('ACORCPROOJATUAL',10,2)->nullable();
+            $table->double('APORCPROOJATUAL',10,2)->nullable();
+            $table->double('FBP',6,2)->nullable();
+            $table->double('FBR',6,2)->nullable();
+            $table->double('FBD',6,2)->nullable();
+            $table->double('FOP',6,2)->nullable();
+            $table->double('FOR',6,2)->nullable();
+            $table->double('FOD',6,2)->nullable();
+            $table->double('FOBP',6,2)->nullable();
+            $table->double('FOBR',6,2)->nullable();
+            $table->double('FOBD',6,2)->nullable();
+            $table->double('AREATERRENO',8,2)->nullable();
+            $table->double('AREACONSTRUIDA',8,2)->nullable();
+            $table->double('AREAPRIVATIVA',8,2)->nullable();
+            $table->double('AREAEQUIVNB',8,2)->nullable();
+            $table->double('AREADEGARGAGEM',8,2)->nullable();
+            $table->double('EFECIEPROJ',8,2)->nullable();
             $table->string('TIPOEMPREEND',40)->nullable();
             $table->string('SISTCONSTRUTIVO',40)->nullable();
             $table->string('NDETORRESPVTOS',40)->nullable();
@@ -76,13 +78,13 @@ class CreateDataTable extends Migration
             $table->string('AREAAPARTAMENTOS',40)->nullable();
             $table->string('AGENTEFINANCEIRO',16)->nullable();
             $table->string('DATAVISTORIA',40)->nullable();
-            $table->float('VALORFINANCIAMENTO',12,2)->nullable();
+            $table->double('VALORFINANCIAMENTO',12,2)->nullable();
             $table->string('ORCCONTRATUAL',40)->nullable();
-            $table->float('CUSTORASOOBRA',12,2)->nullable();
-            $table->float('TAXAADM',12,2)->nullable();
-            $table->float('CUSTORASOTAXA',12,2)->nullable();
-            $table->float('MANUTENCAO',12,2)->nullable();
-            $table->float('CUSTOSDIVERSOS',12,2)->nullable();
+            $table->double('CUSTORASOOBRA',12,2)->nullable();
+            $table->double('TAXAADM',12,2)->nullable();
+            $table->double('CUSTORASOTAXA',12,2)->nullable();
+            $table->double('MANUTENCAO',12,2)->nullable();
+            $table->double('CUSTOSDIVERSOS',12,2)->nullable();
             $table->integer('ORCCONTRATUALINCC')->nullable();
             $table->integer('CUSTORASOOBRAINCC')->nullable();
             $table->integer('TAXAADMINCC')->nullable();
@@ -120,12 +122,12 @@ class CreateDataTable extends Migration
             $table->string('ACOFACUMTOTAL',40)->nullable();
             $table->string('ACOFSALDOREAL',40)->nullable();
             $table->string('ACOFPROJCUSTO',40)->nullable();
-            $table->string('ACOFVARORCREV',40)->nullable();
+            $table->double('ACOFVARORCREV',12,2)->nullable();
             $table->string('ACOFACUMTOTALINCC',40)->nullable();
             $table->string('ACOFSALDOREALINCC',40)->nullable();
             $table->string('ACOFPROJCUSTOINCC',40)->nullable();
-            $table->string('ACOFVARORCREVINCC',40)->nullable();
-            $table->string('ACOFVARORCREVVALOR',30)->nullable();
+            $table->double('ACOFVARORCREVINCC',12,2)->nullable();
+            $table->double('ACOFVARORCREVVALOR',12,2)->nullable();
             $table->string('ACOFVARORCREVFAROL',2)->nullable();
             $table->string('ACOFINCCIN')->nullable();
             $table->string('CUSTOM2PROJCONST',40)->nullable();
@@ -162,8 +164,8 @@ class CreateDataTable extends Migration
             $table->integer('nprealfisobra')->nullable();
             $table->integer('atprevfisobra')->nullable();
             $table->integer('atrealfisobra')->nullable();
-            $table->float('dtprevfisobra',12,2)->nullable();
-            $table->float('dtrealfisobra',12,2)->nullable();
+            $table->double('dtprevfisobra',12,2)->nullable();
+            $table->double('dtrealfisobra',12,2)->nullable();
             $table->string('dtprevfisobrafarol', 2)->nullable();
             $table->string('dtrealfisobrafarol', 2)->nullable();
             $table->integer('aaprevfisbanco')->nullable();
@@ -172,8 +174,8 @@ class CreateDataTable extends Migration
             $table->integer('nprealfisbanco')->nullable();
             $table->integer('atprevfisbanco')->nullable();
             $table->integer('atrealfisbanco')->nullable();
-            $table->float('dtprevfisbanco',12,2)->nullable();
-            $table->float('dtrealfisbanco',12,2)->nullable();
+            $table->double('dtprevfisbanco',12,2)->nullable();
+            $table->double('dtrealfisbanco',12,2)->nullable();
             $table->string('dtprevfisbancofarol',2)->nullable();
             $table->string('dtrealfisbancofarol',2)->nullable();
             $table->integer('aaprevfinbanco')->nullable();
@@ -182,8 +184,8 @@ class CreateDataTable extends Migration
             $table->integer('nprealfinbanco')->nullable();
             $table->integer('atprevfinbanco')->nullable();
             $table->integer('atrealfinbanco')->nullable();
-            $table->float('dtprevfinbanco',12,2)->nullable();
-            $table->float('dtrealfinbanco',12,2)->nullable();
+            $table->double('dtprevfinbanco',12,2)->nullable();
+            $table->double('dtrealfinbanco',12,2)->nullable();
             $table->string('dtprevfinbancofarol', 2)->nullable();
             $table->string('dtrealfinbancofarol', 2)->nullable();
             $table->string('ffomeses')->nullable();
@@ -204,6 +206,12 @@ class CreateDataTable extends Migration
             $table->text('adiccritpremulta')->nullable();
             $table->timestamps();
         });
+        DB::statement('ALTER TABLE data CHANGE CORRPRATUALVLR CORRPRATUALVLR decimal(12,2) signed');
+        DB::statement('ALTER TABLE data CHANGE FXDRPRATUALVLR FXDRPRATUALVLR decimal(12,2) signed');
+        DB::statement('ALTER TABLE data CHANGE FPRPR FPRPR decimal(12,2) signed');
+        DB::statement('ALTER TABLE data CHANGE ACOFVARORCREV ACOFVARORCREV decimal(12,2) signed');
+        DB::statement('ALTER TABLE data CHANGE ACOFVARORCREVINCC ACOFVARORCREVINCC decimal(12,2) signed');
+        DB::statement('ALTER TABLE data CHANGE ACOFVARORCREVVALOR ACOFVARORCREVVALOR decimal(12,2) signed');
     }
 
     /**

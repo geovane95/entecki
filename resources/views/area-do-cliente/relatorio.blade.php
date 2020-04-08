@@ -43,12 +43,12 @@
                         <span>
                         INCC (N-1) = {{ $incc }}
                     </span>
-                        <select class="regionais regionals" multiple id="regionals" name="regionals">
+                        <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
-                            @foreach($regionals as $regional)
+                            @foreach($regionals as $regional => $regionalname)
                                 <option
-                                    value="{{ $regional->id }}" {{ in_array($regional->id,$regionalsselected) ? "selected" : "" }}>
-                                    {{ $regional->name }}
+                                    value="{{ $regional }}" {{ in_array($regional,$regionalsselected) ? "selected" : "" }}>
+                                    {{ $regionalname }}
                                 </option>
                             @endforeach
                         </select>
@@ -59,6 +59,16 @@
                                 <option
                                     value="{{ $construction->id }}" {{ in_array($construction->id,$constructionsselected) ? "selected" : "" }}>
                                     {{ $construction->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <select class="obras businesses" multiple id="businesses" name="businesses">
+                            <option value="0">SELECIONE AS EMPRESAS PARA VISUALIZAÇÃO</option>
+                            @foreach($businesses as $business => $businessname)
+                                <option
+                                    value="{{ $business }}" {{ in_array($business,$businessesselected) ? "selected" : "" }}>
+                                    {{ $businessname }}
                                 </option>
                             @endforeach
                         </select>
@@ -349,6 +359,7 @@
                 formData += "competences=" + $("#competences").val();
                 formData += "&regionals=" + $("#regionals").val();
                 formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.construction-report', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
             });
@@ -357,6 +368,16 @@
                 formData += "competences=" + $("#competences").val();
                 formData += "&regionals=" + $("#regionals").val();
                 formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
+                let url = "{{route('client-space.construction-report', ':formData')}}";
+                window.location.href = url.replace(':formData', formData);
+            });
+            $("#businesses").change(function () {
+                let formData = "";
+                formData += "competences=" + $("#competences").val();
+                formData += "&regionals=" + $("#regionals").val();
+                formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.construction-report', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
             });

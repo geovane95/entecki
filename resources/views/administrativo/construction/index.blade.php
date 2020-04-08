@@ -113,7 +113,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'business', name: 'business'},
+                    {data: 'company', name: 'company'},
                     {data: 'business-name', name: 'business'},
                     {data: 'regional-name', name: 'regional'},
                     {data: 'users-name', name: 'users-name'},

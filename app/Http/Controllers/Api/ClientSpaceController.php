@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\BusinessRequest;
 use App\Models\AccessProfile;
 use App\Models\Address;
 use App\Models\City;
@@ -20,12 +19,9 @@ use App\Models\UploadType;
 use App\Models\User;
 use App\Models\UsersToConstructions;
 use http\Exception;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class  ClientSpaceController extends Controller
 {
@@ -80,9 +76,9 @@ class  ClientSpaceController extends Controller
                 $where = " where uc.user = " . $user->id;
             }
             $competencesTop = DB::select("select co.id, co.description
-                                                from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
-                                                    join data d on d.uploaddata = ud.id
+                                                from competences as co
+                                                    join upload_data as ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join data as d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc
                                                 limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $competences = DB::select("select co.id, co.description
@@ -92,18 +88,24 @@ class  ClientSpaceController extends Controller
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
-            $regionals = DB::select("select re.id, re.name
+            $regionals = DB::select("select distinct re.id, re.name
                                                 from regionals re
                                                     join constructions c on c.regional = re.id
                                                     join data d on d.construction = c.id");
-            $regionals = Arr::pluck($regionals,'name','id');
+            $regionals = Arr::pluck($regionals, 'name', 'id');
+
+            $businesses = DB::select("select distinct bs.id, bs.name
+                                                from businesses bs
+                                                    join constructions c on c.business = bs.id
+                                                    join data d on d.construction = c.id");
+            $businesses = Arr::pluck($businesses, 'name', 'id');
 
             $incc = '773,52';
 
             if (!$request->constructions || $request->constructions == 0) {
                 if (count($constructions) > 0) {
                     $constructionsIdPluck = Arr::pluck($constructions, 'id');
-                }else{
+                } else {
                     return view('area-do-cliente.erro', [
                         'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).',
                         'return' => 'logout'
@@ -116,7 +118,7 @@ class  ClientSpaceController extends Controller
             if (!$request->competences || $request->competences == 0) {
                 if (count($competencesTop) > 0) {
                     $competenceIdPluck = $competencesTop[0]->id;
-                }else{
+                } else {
                     return view('area-do-cliente.erro', [
                         'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
                     ]);
@@ -125,10 +127,33 @@ class  ClientSpaceController extends Controller
                 $competenceIdPluck = [$request->competences];
             }
 
+            $regionalsIdPluck = [];
             if (!$request->regionals || $request->regionals == 0) {
-                $regionalIdPluck = Arr::pluck($regionals, 'id');
+                if (count($regionals) > 0) {
+                    foreach ($regionals as $regional => $regionaldesc) {
+                        array_push($regionalsIdPluck, $regional);
+                    }
+                } else {
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
+                    ]);
+                }
             } else {
-                $regionalIdPluck = explode(',', $request->regionals);
+                $regionalsIdPluck = explode(',', $request->regionals);
+            };
+            $businessesIdPluck = [];
+            if (!$request->businesses || $request->businesses == 0) {
+                if (count($regionals) > 0) {
+                    foreach ($businesses as $business => $businessdesc) {
+                        array_push($businessesIdPluck, $business);
+                    }
+                } else {
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
+                    ]);
+                }
+            } else {
+                $businessesIdPluck = explode(',', $request->businesses);
             }
 
             $cores = [
@@ -145,7 +170,7 @@ class  ClientSpaceController extends Controller
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
                     ->leftJoin('cities', 'cities.id', '=', 'locations.city')
                     ->leftJoin('states', 'states.id', '=', 'cities.state')
-                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
+                    ->leftJoin('businesses', 'businesses.id', '=', 'constructions.business')
                     ->join('data', 'data.construction', '=', 'constructions.id')
                     ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
                     ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
@@ -156,18 +181,18 @@ class  ClientSpaceController extends Controller
                         'constructions.name as construction_name',
                         'constructions.status as construction_status',
                         'constructions.thumbnail',
-                        'constructions.business',
+                        'constructions.company',
                         'constructions.contract_regime',
                         'constructions.reporting_regime as report_regime',
-                        'constructions.issuance_date',
+                        'businesses.name as business_name',
+                        'constructions.responsible as responsible_name',
+                        'constructions.cnpj as responsible_cnpj',
                         'constructions.work_number',
                         'addresses.street',
                         'addresses.number',
                         'locations.neighborhood',
                         'cities.name as city',
                         'states.name as state',
-                        'responsibles.company_name as responsible_name',
-                        'responsibles.cnpj as responsible_cnpj',
                         'data.FASE',
                         'data.AREACONSTRM2',
                         'data.NUNITQTD',
@@ -194,30 +219,32 @@ class  ClientSpaceController extends Controller
                         'upload_types.name as upload_type_name',
                         'upload_statuses.name as upload_status_name'
                     )
-                    ->where('competences.id', '=', $competenceIdPluck)
-                    ->where('constructions.regional', '=', $regional);
+                    ->where('competences.id', '=', $competenceIdPluck);
                 $query->whereIn('constructions.id', $constructionsIdPluck);
+                $query->whereIn('constructions.regional', $regionalsIdPluck);
+                $query->whereIn('constructions.business', $businessesIdPluck);
 
                 $constructionInfos = $query->get();
-                $regionalobj = new Regional();
 
-                $regionalobj->id = $regional;
-                $regionalobj->name = $regionalname;
-                $regionalobj->AREACONSTRM2 = $constructionInfos->reduce(function ($carry,$item){
-                    return $carry + $item->AREACONSTRM2;
-                });
-                $regionalobj->NUNITQTD = $constructionInfos->reduce(function ($carry,$item){
-                    return $carry + $item->NUNITQTD;
-                });
-                $regionalobj->CORPRRATUAL = $constructionInfos->reduce(function ($carry,$item){
-                    return $carry + $item->CORPRRATUAL;
-                });
-                $regionalobj->CORRPRATUALFAROL = "amarelo";
-                $regionalobj->CORRPRATUALVLR = number_format(floatval(($constructionInfos->reduce(function ($carry,$item){
-                    return floatval($carry) + floatval($item->CORRPRATUALVLR);
-                }))/count($constructionInfos)),2,',','.');
-                $regionalobj->constructions = $constructionInfos;
-                if (count($constructionInfos) > 0){
+                if (count($constructionInfos) > 0) {
+                    $regionalobj = new Regional();
+
+                    $regionalobj->id = $regional;
+                    $regionalobj->name = $regionalname;
+                    $regionalobj->AREACONSTRM2 = $constructionInfos->reduce(function ($carry, $item) {
+                        return $carry + $item->AREACONSTRM2;
+                    });
+                    $regionalobj->NUNITQTD = $constructionInfos->reduce(function ($carry, $item) {
+                        return $carry + $item->NUNITQTD;
+                    });
+                    $regionalobj->CORPRRATUAL = $constructionInfos->reduce(function ($carry, $item) {
+                        return $carry + $item->CORPRRATUAL;
+                    });
+                    $regionalobj->CORRPRATUALFAROL = "amarelo";
+                    $regionalobj->CORRPRATUALVLR = number_format(floatval(($constructionInfos->reduce(function ($carry, $item) {
+                            return floatval($carry) + floatval($item->CORRPRATUALVLR);
+                        })) / count($constructionInfos)), 2, ',', '.');
+                    $regionalobj->constructions = $constructionInfos;
                     array_push($dados, $regionalobj);
                 }
             }
@@ -229,14 +256,16 @@ class  ClientSpaceController extends Controller
                 'incc' => $incc,
                 'regionals' => $regionals,
                 'constructions' => $constructions,
-                'competences' => Arr::pluck($competences,'description', 'id'),
+                'competences' => Arr::pluck($competences, 'description', 'id'),
+                'businesses' => $businesses,
                 'cores' => $cores,
                 'dados' => $dados,
                 'competencesselected' => is_array($competenceIdPluck) ? $competenceIdPluck : [$competenceIdPluck],
-                'regionalsselected' => [$regionalIdPluck],
+                'regionalsselected' => is_array($regionalsIdPluck) ? $regionalsIdPluck : [$regionalsIdPluck],
+                'businessesselected' => is_array($businessesIdPluck) ? $businessesIdPluck : [$businessesIdPluck],
                 'constructionsselected' => $constructionsIdPluck
             ]);
-        }else{
+        } else {
             return view('area-do-cliente.erro', [
                 'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).'
             ]);
@@ -314,7 +343,7 @@ class  ClientSpaceController extends Controller
             ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
             ->leftJoin('cities', 'cities.id', '=', 'locations.city')
             ->leftJoin('states', 'states.id', '=', 'cities.state')
-            ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
+            ->leftJoin('businesses', 'businesses.id', '=', 'constructions.business')
             ->leftJoin('data', 'data.construction', '=', 'constructions.id')
             ->leftJoin('upload_data', 'upload_data.id', '=', 'data.uploaddata')
             ->leftJoin('competences', 'competences.id', '=', 'upload_data.competence')
@@ -325,18 +354,18 @@ class  ClientSpaceController extends Controller
                 'constructions.name as construction_name',
                 'constructions.status as construction_status',
                 'constructions.thumbnail',
-                'constructions.business',
+                'constructions.company',
                 'constructions.contract_regime',
                 'constructions.reporting_regime as report_regime',
-                'constructions.issuance_date',
+                'constructions.responsible as responsible_name',
+                'constructions.cnpj as responsible_cnpj',
                 'constructions.work_number',
+                'businesses.name as business_name',
                 'addresses.street',
                 'addresses.number',
                 'locations.neighborhood',
                 'cities.name as city',
                 'states.name as state',
-                'responsibles.company_name as responsible_name',
-                'responsibles.cnpj as responsible_cnpj',
                 'competences.id as competence_id',
                 'competences.month',
                 'competences.year',
@@ -352,7 +381,7 @@ class  ClientSpaceController extends Controller
                                                 from competences co
                                                     join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
                                                     join data d on d.uploaddata = ud.id
-                                                where d.construction = ".$id."
+                                                where d.construction = " . $id . "
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
         return view('area-do-cliente.detalhe', [
             'details' => $details[0],
@@ -380,7 +409,7 @@ class  ClientSpaceController extends Controller
         $competences = DB::select("select co.id, co.description, co.month, co.year
                                                 from competences co
                                                     join upload_data ud on ud.competence = co.id and ud.uploadtype = 2
-                                                where ud.construction = ".$id."
+                                                where ud.construction = " . $id . "
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
         $competencesYear = Arr::pluck($competences, 'year');
@@ -561,37 +590,73 @@ class  ClientSpaceController extends Controller
 
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
-            $regionals = $this->regional->where('status', '=', 1)->orderBy('name')->get();
+            $regionals = DB::select("select distinct re.id, re.name
+                                                from regionals re
+                                                    join constructions c on c.regional = re.id
+                                                    join data d on d.construction = c.id");
+            $regionals = Arr::pluck($regionals, 'name', 'id');
+
+            $businesses = DB::select("select distinct bs.id, bs.name
+                                                from businesses bs
+                                                    join constructions c on c.business = bs.id
+                                                    join data d on d.construction = c.id");
+            $businesses = Arr::pluck($businesses, 'name', 'id');
 
             $incc = '773,52';
 
-            if ($request->constructions){
-                $constructionsIdPluck = explode(',', $request->constructions);
-            } else if (!$request->constructions && count($constructions) > 0) {
-                $constructionsIdPluck = Arr::pluck($constructions, 'id');
+            if (!$request->constructions || $request->constructions == 0) {
+                if (count($constructions) > 0) {
+                    $constructionsIdPluck = Arr::pluck($constructions, 'id');
+                } else {
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).',
+                        'return' => 'logout'
+                    ]);
+                }
             } else {
-                return view('area-do-cliente.erro', [
-                    'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a obra solicitada.',
-                    'return' => 'inicio'
-                ]);
+                $constructionsIdPluck = explode(',', $request->constructions);
             }
 
-            if (!$request->regionals) {
-                $regionalsIdPluck = Arr::pluck($regionals, 'id');
+            $regionalsIdPluck = [];
+            if (!$request->regionals || $request->regionals == 0) {
+                if (count($regionals) > 0) {
+                    foreach ($regionals as $regional => $regionaldesc) {
+                        array_push($regionalsIdPluck, $regional);
+                    }
+                } else {
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
+                    ]);
+                }
             } else {
                 $regionalsIdPluck = explode(',', $request->regionals);
+            };
+
+            $businessesIdPluck = [];
+            if (!$request->businesses || $request->businesses == 0) {
+                if (count($regionals) > 0) {
+                    foreach ($businesses as $business => $businessdesc) {
+                        array_push($businessesIdPluck, $business);
+                    }
+                } else {
+                    return view('area-do-cliente.erro', [
+                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
+                    ]);
+                }
+            } else {
+                $businessesIdPluck = explode(',', $request->businesses);
             }
 
-            if ($request->competences){
+            if ($request->competences || $request->competences != 0) {
                 $competenceIdPluck = [$request->competences];
-            }else if (!$request->competences) {
+            } else if (!$request->competences) {
                 $compatual = DB::select("select co.id, co.description
                                                 from competences co
                                                     join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
                                                     join data d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc
                                                 limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
-                if (count($compatual) <= 0){
+                if (count($compatual) <= 0) {
                     return view('area-do-cliente.erro', [
                         'error' => 'Não é possível acessar esta página pois não foram encontrados dados meses de referencia cadastrados, solicite ao administrador que os cadastre.',
                         'return' => 'inicio'
@@ -602,13 +667,13 @@ class  ClientSpaceController extends Controller
 
             $dados = [];
 
-            foreach ($regionals as $regional) {
-                $reports = DB::table('constructions')
+            foreach (array_unique($regionals) as $regional => $regionalname) {
+                $query = DB::table('constructions')
                     ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
                     ->leftJoin('cities', 'cities.id', '=', 'locations.city')
                     ->leftJoin('states', 'states.id', '=', 'cities.state')
-                    ->leftJoin('responsibles', 'responsibles.id', '=', 'constructions.business')
+                    ->leftJoin('businesses', 'businesses.id', '=', 'constructions.business')
                     ->join('data', 'data.construction', '=', 'constructions.id')
                     ->join('upload_data', 'upload_data.id', '=', 'data.uploaddata')
                     ->join('competences', 'competences.id', '=', 'upload_data.competence')
@@ -619,18 +684,18 @@ class  ClientSpaceController extends Controller
                         'constructions.name as construction_name',
                         'constructions.status as construction_status',
                         'constructions.thumbnail',
-                        'constructions.business',
+                        'constructions.company',
                         'constructions.contract_regime',
                         'constructions.reporting_regime as report_regime',
-                        'constructions.issuance_date',
+                        'constructions.responsible as responsible_name',
+                        'constructions.cnpj as responsible_cnpj',
                         'constructions.work_number',
+                        'businesses.name as business_name',
                         'addresses.street',
                         'addresses.number',
                         'locations.neighborhood',
                         'cities.name as city',
                         'states.name as state',
-                        'responsibles.company_name as responsible_name',
-                        'responsibles.cnpj as responsible_cnpj',
                         'data.FASE',
                         'data.AREACONSTRM2',
                         'data.NUNITQTD',
@@ -650,31 +715,40 @@ class  ClientSpaceController extends Controller
                         'upload_types.name as upload_type_name',
                         'upload_statuses.name as upload_status_name'
                     )
-                    ->whereIn('constructions.id', $constructionsIdPluck)
-                    ->where('competences.id','=', $competenceIdPluck)
-                    ->where('constructions.regional', '=', $regional->id)
-                    ->get();
+                    ->where('competences.id', '=', $competenceIdPluck);
+                $query->whereIn('constructions.id', $constructionsIdPluck);
+                $query->whereIn('constructions.regional', $regionalsIdPluck);
+                $query->whereIn('constructions.business', $businessesIdPluck);
+                $reports = $query->get();
 
-                $regional->reports = $reports;
+                if (count($reports) > 0) {
+                    $regionalobj = new Regional();
 
-                if (count($reports) > 0)
-                    array_push($dados, $regional);
+                    $regionalobj->id = $regional;
+                    $regionalobj->name = $regionalname;
+
+                    $regionalobj->reports = $reports;
+
+                    array_push($dados, $regionalobj);
+                }
             }
         } catch (Exception $e) {
             dd($e);
         }
         if (count($dados) > 0) {
             return view('area-do-cliente.relatorio', [
-                'competences' => Arr::pluck($competences,'description', 'id'),
+                'competences' => Arr::pluck($competences, 'description', 'id'),
                 'constructions' => $constructions,
                 'regionals' => $regionals,
+                'businesses' => $businesses,
                 'dados' => $dados,
-                'competencesselected' => [$competenceIdPluck],
                 'constructionsselected' => $constructionsIdPluck,
-                'regionalsselected' => $regionalsIdPluck,
+                'competencesselected' => is_array($competenceIdPluck) ? $competenceIdPluck : [$competenceIdPluck],
+                'regionalsselected' => is_array($regionalsIdPluck) ? $regionalsIdPluck : [$regionalsIdPluck],
+                'businessesselected' => is_array($businessesIdPluck) ? $businessesIdPluck : [$businessesIdPluck],
                 'incc' => $incc
             ]);
-        }else{
+        } else {
             return view('area-do-cliente.erro', [
                 'error' => 'Não é possível acessar esta página pois não foram encontrados dados referentes a(s) obra(s) solicitada(s).'
             ]);
@@ -686,7 +760,7 @@ class  ClientSpaceController extends Controller
         $data = $this->upload_data->find($uploadDataId);
 
         if ($data && !empty($data)) {
-            return response()->redirectTo(url('storage/'.$data->file));
+            return response()->redirectTo(url('storage/' . $data->file));
         } else {
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }
