@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::group(['prefix'=>'auth','namespace'=>'Auth','middlewares'=>['web','guest']],function(){
+Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
 
     Route::get('login','LoginController@showLoginForm')->name('login');
     Route::post('login','LoginController@login');
