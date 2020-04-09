@@ -95,12 +95,6 @@ class UploadDataController extends Controller
 
         $qtdAprovs = count(UploadData::where('uploadstatus','=',4)->get());
 
-        if (auth()->user()) {
-            $user = User::find(auth()->user()->id);
-        } else {
-            redirect()->route('home');
-        }
-
         $competence = Arr::pluck($this->competence->get()->where('status', '=', 1), 'description', 'id');
         $uploadtype = Arr::pluck($this->uploadtype->get()->where('status', '=', 1), 'name', 'id');
         $construction = Arr::pluck($this->construction->get()->where('status', '=', 1), 'name', 'id');
@@ -110,7 +104,7 @@ class UploadDataController extends Controller
             'uploadtype' => $uploadtype,
             'construction' => $construction,
         ];
-        if ($user->access_profile == 1) {
+        if (auth()->user()->access_profile == 1) {
             $data['aprovs'] = $qtdAprovs;
         }
 

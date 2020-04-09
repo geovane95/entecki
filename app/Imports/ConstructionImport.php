@@ -24,13 +24,7 @@ class ConstructionImport implements ToCollection, WithHeadingRow
     {
         $aprov = false;
 
-        if (auth()->user()) {
-            $user = User::find(auth()->user()->id);
-        } else {
-            redirect()->route('home');
-        }
-
-        if ($user->access_profile != 1) {
+        if (auth()->user()->access_profile == 1) {
             $aprov = true;
         }
         $contador = 0;
@@ -219,6 +213,7 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     Data::create($data);
                     $contador++;
                 } else {
+                    dd($aprov);
                     DataAux::create($data);
                 }
             } catch (Exception $e) {

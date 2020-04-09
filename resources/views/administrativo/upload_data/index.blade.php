@@ -103,7 +103,14 @@
                             {data: 'fileName', name: 'fileName'},
                             {data: 'competence_description', name: 'competence_description'},
                             {data: 'created_at', name: 'created_at'},
-                            {data: 'upload_status_name', name: 'upload_status_name'},
+                            {data: null, render: function(row,index,data){
+                                let retorno = row.upload_status_name;
+                                if (row.uploadstatus == 4) {
+                                    retorno += '<button id="' + row.id + '" class="btn btn-warning btn_sm" onclick="aprovar(' + row.id + ')">Aprovar</button>';
+                                }
+                                return retorno;
+                                }
+                            },
                             {data: 'action', name: 'action'},
                         ]
                     });
