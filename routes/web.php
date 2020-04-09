@@ -41,7 +41,7 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::resource('regional', 'RegionalController')->except(['create','edit']);
     Route::resource('state', 'StateController')->except(['create','edit']);
     Route::resource('upload_data', 'UploadDataController')->except(['create', 'edit']);
-    Route::get('upload_data/{id}','UploadDataController@approve')->name('cities');
+    Route::get('upload_data/approve/{id}','UploadDataController@approve')->name('upload_data.approve');
     Route::get('cities/{id}','ConstructionController@cities')->name('cities');
     Route::get('email/{competence}','EmailController@index')->name('email.index.args');
     Route::get('email/','EmailController@indexWithoutArgs')->name('email.index');

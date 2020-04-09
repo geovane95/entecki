@@ -8,6 +8,7 @@ use App\Models\Competence;
 use App\Models\Construction;
 use App\Models\Data;
 use App\Models\AccessProfile;
+use App\Models\DataAux;
 use App\Models\UploadData;
 use App\Models\UploadStatus;
 use App\Models\UploadType;
@@ -246,6 +247,6 @@ class UploadDataController extends Controller
     }
 
     public function approve($id){
-
+        return "OK";
     }
 }
