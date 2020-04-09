@@ -23,10 +23,11 @@ Route::group(['prefix'=>'auth','namespace'=>'Auth','middlewares'=>['web','guest'
     Route::post('logout','LoginController@logout')->name('logout');
 });
 
+Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'home'],function() {
+    Route::resource('upload_data', 'UploadDataController')->except(['create', 'edit']);
+});
 
 Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'home'],function(){
-
-
     Route::get('', 'HomeController@index')->name('home');
     Route::resource('user','UserController')->except(['create']);
     Route::get('users','UserController@list')->name('users.list');
@@ -40,7 +41,6 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::resource('business', 'BusinessController')->except(['create','edit']);
     Route::resource('regional', 'RegionalController')->except(['create','edit']);
     Route::resource('state', 'StateController')->except(['create','edit']);
-    Route::resource('upload_data', 'UploadDataController')->except(['create','edit']);
     Route::get('cities/{id}','ConstructionController@cities')->name('cities');
     Route::get('email/{competence}','EmailController@index')->name('email.index.args');
     Route::get('email/','EmailController@indexWithoutArgs')->name('email.index');

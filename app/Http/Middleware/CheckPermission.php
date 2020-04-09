@@ -20,6 +20,10 @@ class CheckPermission
         {
             return redirect()->route('client-space.index');
         }
+        if (auth()->user()->access_profile == 3)
+        {
+            return redirect()->route('upload_data.index');
+        }
         return $next($request);
     }
 }

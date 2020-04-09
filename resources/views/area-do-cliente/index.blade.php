@@ -263,6 +263,9 @@
 
                                     </th>
                                 </tr>
+                                @php
+                                    $auxidobra = 0;
+                                @endphp
                                 @foreach($dado->constructions as $constructiontable)
                                     <tr>
                                         <td class="text-left">
@@ -348,7 +351,7 @@
                                             </a>
                                         </td>
                                     </tr>
-                                    @if(!$loop->last)
+                                    @if($auxidobra != $constructiontable->construction_id)
                                         <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
                                         <tr class="linha-cinza">
                                             <td colspan="19">
@@ -356,6 +359,7 @@
                                             </td>
                                         </tr>
                                     @endif
+                                    @php($auxidobra = $constructiontable->construction_id)
                                 @endforeach
                             @endif
                         @endforeach

@@ -47,6 +47,7 @@
     </div>
     <div style="display:none;" id="tabeladiv">
         <h3>Ultimos Uploads realizados</h3>
+        {{ $aprovs ? 'Você tem ' . $aprovs . ' registros de upload para aprovar' : '' }}
         <table id="table_uploads" class="table table-bordered table-striped" style="width:100%;">
             <thead class="thead-dark">
             <tr>

@@ -72,7 +72,7 @@ class  ClientSpaceController extends Controller
             }
 
             $where = '';
-            if ($user->access_profile == 2) {
+            if ($user->access_profile != 1) {
                 $where = " where uc.user = " . $user->id;
             }
             $competencesTop = DB::select("select co.id, co.description
@@ -288,7 +288,7 @@ class  ClientSpaceController extends Controller
         }
 
         $where = '';
-        if ($user->access_profile == 2) {
+        if ($user->access_profile != 1) {
             $where = " where uc.user = " . $user->id;
         }
 
@@ -421,8 +421,9 @@ class  ClientSpaceController extends Controller
             redirect()->route('client-space.logout');
         }
 
+
         $where = '';
-        if ($user->access_profile == 2) {
+        if ($user->access_profile != 1) {
             $where = " where uc.user = " . $user->id;
         }
 
@@ -578,7 +579,7 @@ class  ClientSpaceController extends Controller
             }
 
             $where = '';
-            if ($user->access_profile == 2) {
+            if ($user->access_profile != 1) {
                 $where = " where uc.user = " . $user->id;
             }
 

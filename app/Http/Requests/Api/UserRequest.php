@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
             // $id = request()->hidden_id ;
             return [
                 'name'=>'required|min:3|max:150',
-                'business'=>'required|min:3|max:150',
+                'company'=>'required|min:3|max:150',
                 'password'=>'required|min:6|max:100',
                 'email'=>"required"
             ];
@@ -43,7 +43,7 @@ class UserRequest extends FormRequest
         return [
 
             'name.required'=>'Campo Nome é obrigatório',
-            'business.required'=>'Campo Empresa é obrigatório',
+            'company.required'=>'Campo Empresa é obrigatório',
             'password.required'=>'Campo Senha é obrigatório',
             'email.required'=>'Campo E-mail é obrigatório',
             'name.min'=>'Campo nome precisa de no mínimo 3 caracteres',

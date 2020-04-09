@@ -113,10 +113,20 @@
                     <label>
                         Usuário
                         <input type="email" name="email" id="email" placeholder="Digite seu usuário aqui">
+                        @if ($errors->has('email'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('email') }}
+                            </div>
+                        @endif
                     </label>
                     <label>
                         Senha
                         <input type="password" name="password" id="password">
+                        @if ($errors->has('password'))
+                            <div class="text-danger">
+                                {{ $errors->first('password') }}
+                            </div>
+                        @endif
                     </label>
                     <a href="{{ route('client-space.recover-password') }}" class="forget">
                         Esqueceu a senha?

@@ -103,7 +103,7 @@
                 },
                 columns: [
                     {data: 'name', name: 'name'},
-                    {data: 'business', name: 'business'},
+                    {data: 'company', name: 'company'},
                     {data: 'email', name: 'email'},
                     {data: 'access-profile-name', name: 'profile'},
                     {data: 'action', name: 'action'},

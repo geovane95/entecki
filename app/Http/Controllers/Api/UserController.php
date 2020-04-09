@@ -96,7 +96,7 @@ class UserController extends Controller
     {
         $data = [
             "name"=>$request->name,
-            "business"=>$request->company,
+            "company"=>$request->company,
             "email"=>$request->email,
             "password"=>\Hash::make($request->password),
             "access_profile"=>$request->access_profile,

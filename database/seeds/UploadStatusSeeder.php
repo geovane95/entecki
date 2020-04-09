@@ -24,5 +24,9 @@ class UploadStatusSeeder extends Seeder
             'name' => 'Erro no processamento',
             'status' => 1
         ]);
+        UploadStatus::create([
+            'name' => 'Aguardando Aprovação',
+            'status' => 1
+        ]);
     }
 }

@@ -93,10 +93,28 @@ class UploadDataController extends Controller
                 ->make(true);
         }
 
+        $qtdAprovs = count(UploadData::where('uploadstatus','=',4)->get());
+
+        if (auth()->user()) {
+            $user = User::find(auth()->user()->id);
+        } else {
+            redirect()->route('home');
+        }
+
         $competence = Arr::pluck($this->competence->get()->where('status', '=', 1), 'description', 'id');
         $uploadtype = Arr::pluck($this->uploadtype->get()->where('status', '=', 1), 'name', 'id');
         $construction = Arr::pluck($this->construction->get()->where('status', '=', 1), 'name', 'id');
-        return view('administrativo.upload_data.index', ['competence' => $competence, 'uploadtype' => $uploadtype, 'construction' => $construction]);
+
+        $data = [
+            'competence' => $competence,
+            'uploadtype' => $uploadtype,
+            'construction' => $construction,
+        ];
+        if ($user->access_profile == 1) {
+            $data['aprovs'] = $qtdAprovs;
+        }
+
+        return view('administrativo.upload_data.index', $data);
     }
 
     /**
