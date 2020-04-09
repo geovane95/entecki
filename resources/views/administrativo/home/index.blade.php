@@ -8,36 +8,41 @@
 
 @section('content')
     <div class="row">
-
+        @can('administrativo')
         <div class="col-lg-6 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
-              <div class="inner">
-              <h3>{{$user}}</h3>
+                <div class="inner">
+                    <h3>{{$user}}</h3>
 
-                <p>Usuarios</p>
-              </div>
-              <div class="icon">
-                <i class="fa fa-users"></i>
-              </div>
-              <a href="{{ route('user.index') }}" class="small-box-footer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+                    <p>Usuarios</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <a href="{{ route('user.index') }}" class="small-box-footer">Mais informações <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
+        </div>
+        @endcan
 
+        @can('administrativo')
         <div class="col-lg-6 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
-              <div class="inner">
-              <h3>{{$construction}}</h3>
+                <div class="inner">
+                    <h3>{{$construction}}</h3>
 
-                <p>Obras</p>
-              </div>
-              <div class="icon">
-                <i class="fa fa-building"></i>
-              </div>
-              <a href="{{ route('construction.index') }}" class="small-box-footer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+                    <p>Obras</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-building"></i>
+                </div>
+                <a href="{{ route('construction.index') }}" class="small-box-footer">Mais informações <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
+        </div>
+        @endcan
 
 
     </div>
