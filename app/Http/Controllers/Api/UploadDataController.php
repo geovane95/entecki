@@ -104,6 +104,7 @@ class UploadDataController extends Controller
             'uploadtype' => $uploadtype,
             'construction' => $construction,
         ];
+
         if (auth()->user()->access_profile == 1) {
             $data['aprovs'] = $qtdAprovs;
         }
@@ -242,5 +243,9 @@ class UploadDataController extends Controller
         } else {
             return response()->json(["error" => "Falha ao tentar deletar!"], 500);
         }
+    }
+
+    public function approve($id){
+
     }
 }

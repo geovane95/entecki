@@ -176,8 +176,7 @@ return [
         [
             'text' => 'Dashboard',
             'icon'=>'fas fa-tachometer-alt',
-            'url'=>'/home',
-            'can' => 'administrativo'
+            'url'=>'/home'
         ],
         [
             'text'=>'Usuarios',

@@ -213,7 +213,6 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     Data::create($data);
                     $contador++;
                 } else {
-                    dd($aprov);
                     DataAux::create($data);
                 }
             } catch (Exception $e) {

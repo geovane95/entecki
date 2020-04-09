@@ -47,7 +47,6 @@
     </div>
     <div style="display:none;" id="tabeladiv">
         <h3>Ultimos Uploads realizados</h3>
-        {{ $aprovs ? 'Você tem ' . $aprovs . ' registros de upload para aprovar' : '' }}
         <table id="table_uploads" class="table table-bordered table-striped" style="width:100%;">
             <thead class="thead-dark">
             <tr>
@@ -105,9 +104,11 @@
                             {data: 'created_at', name: 'created_at'},
                             {data: null, render: function(row,index,data){
                                 let retorno = row.upload_status_name;
+                                @can('administrativo')
                                 if (row.uploadstatus == 4) {
                                     retorno += '<button id="' + row.id + '" class="btn btn-warning btn_sm" onclick="aprovar(' + row.id + ')">Aprovar</button>';
                                 }
+                                @endcan
                                 return retorno;
                                 }
                             },
@@ -145,10 +146,24 @@
                         .then(response => {
                             alert('Arquivo deletado com sucesso.')
                         }).catch((error) => {
-                            alert('Desculpe, não foi possível realizar a exclusão deste arquivo.');
-                        }).finally(() =>{
-                            $('#table_uploads').DataTable().ajax.reload();
-                        });
+                        alert('Desculpe, não foi possível realizar a exclusão deste arquivo.');
+                    }).finally(() =>{
+                        $('#table_uploads').DataTable().ajax.reload();
+                    });
+                }
+                function aprovar(id) {
+                    let url = `{{route('upload_data.approve', ':id')}}`;
+
+                    url = url.replace(':id', id);
+
+                    axios.get(url)
+                        .then(response => {
+                            alert('Upload Aprovado com sucesso.')
+                        }).catch((error) => {
+                        alert('Desculpe, não foi possível realizar a aprovação deste arquivo.');
+                    }).finally(() =>{
+                        $('#table_uploads').DataTable().ajax.reload();
+                    });
                 }
             </script>
 @stop
