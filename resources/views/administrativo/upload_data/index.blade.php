@@ -21,7 +21,14 @@
             <div class="row">
                 <div class="col">
                     <label for="upload_type">Tipo de Upload</label>
-                    {{Form::select('upload_type',$uploadtype,null,['class'=>'form-control','placeholder'=>'Escolha um tipo de upload','id'=>'upload_type'])}}
+                    <select class="form-control" id="uploadtype" name="uploadtype">
+                        @foreach($uploadtype as $ut => $utn)
+                            @if(auth()->user()->access_profile == 3 && $ut == 1)
+                            @else
+                                <option value="{{$ut}}">{{$utn}}</option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col">
                     <label for="competence">Mês de Referência</label>
@@ -74,6 +81,12 @@
 
                 $(document).ready(function () {
 
+                    if ($("#uploadtype").val() == "1") {
+                        $("#constructionselect").hide();
+                    } else {
+                        $("#constructionselect").show();
+                    }
+
                     // Listando usuarios
                     $("#table_uploads").DataTable({
                         processing: true,
@@ -116,8 +129,8 @@
                         ]
                     });
 
-                    $("#upload_type").change(function () {
-                        if ($("#upload_type").val() == "1") {
+                    $("#uploadtype").change(function () {
+                        if ($("#uploadtype").val() == "1") {
                             $("#constructionselect").hide();
                         } else {
                             $("#constructionselect").show();
