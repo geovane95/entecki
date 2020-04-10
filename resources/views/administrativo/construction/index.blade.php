@@ -173,9 +173,9 @@
                                `)
                             });
 
+                        }).finally(() => {
+                            $('#table_construction').DataTable().ajax.reload();
                         });
-
-
                 });
 
                 $(document).on('click', '.delete-user', function (e) {
@@ -200,6 +200,8 @@
                                `)
                             });
 
+                        }).finally(() => {
+                            $('#table_construction').DataTable().ajax.reload();
                         });
                 });
             });

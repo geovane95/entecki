@@ -90,7 +90,7 @@
                 <a href="{{ route('client-space.index') }}" target="_blank" class="btn-area">
                     Área do Cliente
                 </a>
-                <a href="{{ route('client-space.recover-password',auth()->user()->id) }}" class="forget">
+                <a href="{{ route('client-space.recover-password') }}" class="forget">
                     Esqueceu a senha?
                 </a>
             </div>
@@ -112,7 +112,7 @@
 </header>
 
 
-
+@if(!Auth::guest())
 <!--LOGGED INFO -->
 <section class="logged-info">
     <div class="container-fluid">
@@ -126,6 +126,7 @@
         </div>
     </div>
 </section>
+@endif
 
 
 <!-- MIOLO -->

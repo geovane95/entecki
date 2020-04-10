@@ -185,28 +185,27 @@ return [
             'can' => 'administrativo'
         ],
         [
-            'text'=>'Obras',
-            'icon'=>'fa fa-building',
-            'route'=>"construction.index",
-            'can' => 'administrativo'
-        ],
-        [
-            'text'=>'Disparo de E-mail',
-            'icon'=>'fa fa-envelope',
-            'route'=>"email.index",
-            'can' => 'administrativo'
-        ],
-        [
             'text'=>'Mês de refêrencia',
             'icon'=>'fa fa-calendar-plus',
             'route'=>"competence.index",
             'can' => 'administrativo'
         ],
         [
+            'text'=>'Obras',
+            'icon'=>'fa fa-building',
+            'route'=>"construction.index",
+            'can' => 'administrativo'
+        ],
+        [
             'text'=>'Upload de Arquivos',
             'icon'=>'fa fa-database',
-            'route'=>"upload_data.index",
-            'can' => 'admin-entecki'
+            'route'=>"upload_data.index"
+        ],
+        [
+            'text'=>'Disparo de E-mail',
+            'icon'=>'fa fa-envelope',
+            'route'=>"email.index",
+            'can' => 'administrativo'
         ],
         [
             'text'=>'Área do Cliente',

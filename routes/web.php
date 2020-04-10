@@ -15,6 +15,7 @@ Route::get('/', function () {
 
 });
 
+Auth::routes();
 
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
 
@@ -58,18 +59,20 @@ Route::get("download/{file}", function ($file) {
     return response()->download(url("storage/".$file));
 })->name('download');
 
-
-Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-cliente'], function (){
-    Route::get('/detalhes/{id}/{competence}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
-    Route::get('/fotos/{id}', 'ClientSpaceController@downloadPictures')->name('client-space.pictures-download');
-    Route::get('/relatorio', 'ClientSpaceController@report')->name('client-space.construction-report');
-    Route::get('/relatorio/{id}', 'ClientSpaceController@downloadReports')->name('client-space.report-download');
+Route::group(['namespace' => 'Api', 'prefix' => 'area-do-cliente'], function (){
     Route::get('/recuperar-senha', function(){
         return view('area-do-cliente.esqueceu_a_senha');
     })->name('client-space.recover-password');
     Route::get('/alterar-senha/{id}', function(){
         return view('area-do-cliente.nova_senha');
     })->name('client-space.change-password');
+});
+
+Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-cliente'], function (){
+    Route::get('/detalhes/{id}/{competence}', 'ClientSpaceController@detail')->name('client-space.construction-detail');
+    Route::get('/fotos/{id}', 'ClientSpaceController@downloadPictures')->name('client-space.pictures-download');
+    Route::get('/relatorio', 'ClientSpaceController@report')->name('client-space.construction-report');
+    Route::get('/relatorio/{id}', 'ClientSpaceController@downloadReports')->name('client-space.report-download');
     Route::get('/docs-obra/{competence}/{id}', 'ClientSpaceController@documents')->name('client-space.construction-documents');
     Route::get('/logout', function (){
         Auth::logout();
