@@ -315,7 +315,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $id,
                 'competence' => $competence,
                 'uploadtype' => 3,
-                'statusupload' => 2
+                'uploadstatus' => 2
             ])
             ->get();
         if (count($picture) <= 0) {
@@ -329,7 +329,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $id,
                 'competence' => $competence,
                 'uploadtype' => 4,
-                'statusupload' => 2
+                'uploadstatus' => 2
             ])
             ->get();
         if (count($report) <= 0) {
@@ -405,7 +405,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $construction->id,
                 'competence' => $competence->id,
                 'uploadtype' => 2,
-                'statusupload' => 2
+                'uploadstatus' => 2
             ]
         )->get();
 
@@ -454,7 +454,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $id,
                 'competence' => $competenceId,
                 'uploadtype' => 3,
-                'statusupload' => 2
+                'uploadstatus' => 2
             ])
             ->get();
         if (count($picture) <= 0) {
@@ -468,7 +468,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $id,
                 'competence' => $competenceId,
                 'uploadtype' => 4,
-                'statusupload' => 2
+                'uploadstatus' => 2
             ])
             ->get();
         if (count($report) <= 0) {
@@ -528,7 +528,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $construction->id,
                 'competence' => $competence->id,
                 'uploadtype' => 2,
-                'statusupload' => 2])
+                'uploadstatus' => 2])
                 ->get();
             $competence->documents = $documents;
             if (count($documents) > 0) {
@@ -565,7 +565,7 @@ class  ClientSpaceController extends Controller
                 'construction' => $construction->id,
                 'competence' => $competence->id,
                 'uploadtype' => 2,
-                'statusupload' => 2
+                'uploadstatus' => 2
             ])
                 ->get();
             $competence->documents = $documents;
