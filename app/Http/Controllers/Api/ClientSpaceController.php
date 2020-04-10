@@ -594,7 +594,7 @@ class  ClientSpaceController extends Controller
 
             $competences = DB::select("select co.id, co.description
                                                 from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1 and us.uploadstatus = 2
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1 and ud.uploadstatus = 2
                                                     join data d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
