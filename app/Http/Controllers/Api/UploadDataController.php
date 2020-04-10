@@ -87,8 +87,9 @@ class UploadDataController extends Controller
                 })
                 ->addColumn('action', function ($data){
                     $button = '<a href="'.url('storage/'.$data->file).'" target="_blank" class="btn btn-info btn-sm">Download</a>';
-                    $button .= '<button id="'.$data->id.'" class="btn btn-info btn-sm" onclick="deletar('.$data->id.')">Deletar</button>';
-
+                    if (auth()->user()->access_profile == 1) {
+                        $button .= '<button id="' . $data->id . '" class="btn btn-info btn-sm" onclick="deletar(' . $data->id . ')">Deletar</button>';
+                    }
                     return $button;
                 })
                 ->make(true);

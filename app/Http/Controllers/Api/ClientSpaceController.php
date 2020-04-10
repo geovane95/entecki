@@ -77,13 +77,13 @@ class  ClientSpaceController extends Controller
             }
             $competencesTop = DB::select("select co.id, co.description
                                                 from competences as co
-                                                    join upload_data as ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join upload_data as ud on ud.competence = co.id and ud.uploadtype = 1 and ud.uploadstatus = 2
                                                     join data as d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc
                                                 limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $competences = DB::select("select co.id, co.description
                                                 from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1 and ud.uploadstatus = 2
                                                     join data d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
@@ -314,7 +314,8 @@ class  ClientSpaceController extends Controller
             ->where([
                 'construction' => $id,
                 'competence' => $competence,
-                'uploadtype' => 3
+                'uploadtype' => 3,
+                'statusupload' => 2
             ])
             ->get();
         if (count($picture) <= 0) {
@@ -327,7 +328,8 @@ class  ClientSpaceController extends Controller
             ->where([
                 'construction' => $id,
                 'competence' => $competence,
-                'uploadtype' => 4
+                'uploadtype' => 4,
+                'statusupload' => 2
             ])
             ->get();
         if (count($report) <= 0) {
@@ -379,7 +381,7 @@ class  ClientSpaceController extends Controller
 
         $competences = DB::select("select co.id, co.description
                                                 from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1 and ud.uploadstatus = 2
                                                     join data d on d.uploaddata = ud.id
                                                 where d.construction = " . $id . "
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
@@ -402,13 +404,15 @@ class  ClientSpaceController extends Controller
         $documents = $this->upload_data->where([
                 'construction' => $construction->id,
                 'competence' => $competence->id,
-                'uploadtype' => 2]
+                'uploadtype' => 2,
+                'statusupload' => 2
+            ]
         )->get();
 
 
         $competences = DB::select("select co.id, co.description, co.month, co.year
                                                 from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 2
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 2 and uploadstatus = 2
                                                 where ud.construction = " . $id . "
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
@@ -449,7 +453,8 @@ class  ClientSpaceController extends Controller
             ->where([
                 'construction' => $id,
                 'competence' => $competenceId,
-                'uploadtype' => 3
+                'uploadtype' => 3,
+                'statusupload' => 2
             ])
             ->get();
         if (count($picture) <= 0) {
@@ -462,7 +467,8 @@ class  ClientSpaceController extends Controller
             ->where([
                 'construction' => $id,
                 'competence' => $competenceId,
-                'uploadtype' => 4
+                'uploadtype' => 4,
+                'statusupload' => 2
             ])
             ->get();
         if (count($report) <= 0) {
@@ -521,7 +527,8 @@ class  ClientSpaceController extends Controller
             $documents = $this->upload_data->where([
                 'construction' => $construction->id,
                 'competence' => $competence->id,
-                'uploadtype' => 2])
+                'uploadtype' => 2,
+                'statusupload' => 2])
                 ->get();
             $competence->documents = $documents;
             if (count($documents) > 0) {
@@ -557,7 +564,9 @@ class  ClientSpaceController extends Controller
             $documents = $this->upload_data->where([
                 'construction' => $construction->id,
                 'competence' => $competence->id,
-                'uploadtype' => 2])
+                'uploadtype' => 2,
+                'statusupload' => 2
+            ])
                 ->get();
             $competence->documents = $documents;
             if (count($documents) > 0) {
@@ -585,7 +594,7 @@ class  ClientSpaceController extends Controller
 
             $competences = DB::select("select co.id, co.description
                                                 from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1 and us.uploadstatus = 2
                                                     join data d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
 
@@ -653,7 +662,7 @@ class  ClientSpaceController extends Controller
             } else if (!$request->competences) {
                 $compatual = DB::select("select co.id, co.description
                                                 from competences co
-                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1
+                                                    join upload_data ud on ud.competence = co.id and ud.uploadtype = 1 and ud.uploadstatus = 2
                                                     join data d on d.uploaddata = ud.id
                                                 order by co.year desc, co.month desc
                                                 limit 1");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
