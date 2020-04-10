@@ -26,7 +26,6 @@
         </div>
         @endcan
 
-        @can('administrativo')
         <div class="col-lg-6 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
@@ -38,11 +37,12 @@
                 <div class="icon">
                     <i class="fa fa-building"></i>
                 </div>
+                @can('administrativo')
                 <a href="{{ route('construction.index') }}" class="small-box-footer">Mais informações <i
                         class="fas fa-arrow-circle-right"></i></a>
+                @endcan
             </div>
         </div>
-        @endcan
 
 
     </div>

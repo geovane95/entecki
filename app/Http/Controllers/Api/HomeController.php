@@ -7,6 +7,7 @@ use App\Models\Construction;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -33,8 +34,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-        $construction = $this->construction->get()->count();
+        if (auth()->user()->access_profile == 1) {
+            $construction = $this->construction->get()->count();
+        }else{
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id where uc.user = " . auth()->user()->id);
+            $construction = count($constructions);
+        }
         $user = $this->user->get()->count();
         return view('administrativo.home.index',compact('construction','user'));
     }
