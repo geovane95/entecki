@@ -203,15 +203,15 @@ return [
             'can' => 'administrativo'
         ],
         [
-            'text'=>'Área do Cliente',
-            'icon'=>'fa fa-user',
-            'route'=>"client-space.index"
-        ],
-        [
             'text'=>'Upload de Arquivos',
             'icon'=>'fa fa-database',
             'route'=>"upload_data.index",
             'can' => 'admin-entecki'
+        ],
+        [
+            'text'=>'Área do Cliente',
+            'icon'=>'fa fa-user',
+            'route'=>"client-space.index"
         ]
     ],
 

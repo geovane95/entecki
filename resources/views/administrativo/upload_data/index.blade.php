@@ -126,7 +126,8 @@
                                 }
                             },
                             {data: 'action', name: 'action'},
-                        ]
+                        ],
+                        "order": [[ 4, "desc" ]]
                     });
 
                     $("#uploadtype").change(function () {

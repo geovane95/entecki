@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -58,7 +59,11 @@ class UploadDataController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = $this->uploaddata->get();
+            if (auth()->user()->access_profile == 1) {
+                $data = $this->uploaddata->get();
+            }else{
+                $data = $this->uploaddata->where('user','=',auth()->user()->id)->get();
+            }
 
             return DataTables::of($data)
                 ->addColumn('upload_type_name', function ($data) {
@@ -99,7 +104,13 @@ class UploadDataController extends Controller
 
         $competence = Arr::pluck($this->competence->get()->where('status', '=', 1), 'description', 'id');
         $uploadtype = Arr::pluck($this->uploadtype->get()->where('status', '=', 1), 'name', 'id');
-        $construction = Arr::pluck($this->construction->get()->where('status', '=', 1), 'name', 'id');
+        $construction = [];
+        if (auth()->user()->access_profile == 1) {
+            $construction = Arr::pluck($this->construction->get()->where('status', '=', 1), 'name', 'id');
+        }else{
+            $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id where uc.user = " . auth()->user()->id);
+            $construction = Arr::pluck($constructions,'name','id');
+        }
 
         $data = [
             'competence' => $competence,
