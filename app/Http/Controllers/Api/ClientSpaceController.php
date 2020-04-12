@@ -786,4 +786,13 @@ class  ClientSpaceController extends Controller
             return response()->json(['erro' => 'Não existe arquivo de fotos nessa obra para o mês de referência selecionado']);
         }
     }
+
+
+    public function getResetForm(Request $request, $token = null)
+    {
+        return view('area-do-cliente.nova_senha')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
 }

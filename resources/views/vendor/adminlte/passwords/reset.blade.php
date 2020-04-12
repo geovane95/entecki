@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         @if ($errors->has('password_confirmation'))
-                            <div class="invalid-feedback">
+                            <span class="invalid-feedback">
                                 <strong>{{ $errors->first('password_confirmation') }}</strong>
                             </span>
                         @endif

@@ -24,9 +24,6 @@ Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::post('logout','LoginController@logout')->name('logout');
 });
 
-Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'home'],function() {
-});
-
 Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'home'],function(){
     Route::get('', 'HomeController@index')->name('home');
     Route::resource('user','UserController')->except(['create']);
@@ -63,9 +60,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'area-do-cliente'], function (){
     Route::get('/recuperar-senha', function(){
         return view('area-do-cliente.esqueceu_a_senha');
     })->name('client-space.recover-password');
-    Route::get('/alterar-senha/{id}', function(){
-        return view('area-do-cliente.nova_senha');
-    })->name('client-space.change-password');
+    Route::get('/alterar-senha/{token}', 'ClientSpaceController@getResetForm')->name('client-space.change-password');
 });
 
 Route::group(['namespace'=>'Api','middleware'=>'auth', 'prefix'=>'area-do-cliente'], function (){
