@@ -114,18 +114,105 @@
                                 }, 1000);
                             }
                         }).catch((error) => {
-                        erros = error.response.data.errors;
-                        console.log(erros);
-                        $('#competence_form_result').html(
-                            `<div class="alert alert-danger">` +
-                            `<p>` + error.response.data.message + `</p>` +
-                            `</div>`
-                        );
+                        let errors = error.response;
+                        errors = errors.data.errors;
+
+                        if (errors.year) {
+                            $('#yearError').html(errors.year);
+                        }
+
+                        if (errors.month) {
+                            $('#monthError').html(errors.month);
+                        }
                     }).finally(() => {
-                        location.reload();
+                        $('#table_competence').DataTable().ajax.reload();
                     });
 
                 });
+            });
+
+            $('body').on('click', '.edit', function (e) {
+                e.preventDefault();
+                let id = $(this).attr('id');
+                //limopando a modal e os forms
+                clear();
+                clearError();
+                triggerForm();
+
+                $('#formModalCompetence').modal('show');
+
+                $('#formModalCompetence').modal('show');
+                $('#modal-competence-title').append('Editar Mês de referencia');
+                $('#action_competence_button').val("Salvar");
+                $('#action_competence_button').addClass('btn-primary');
+
+                getData(id);
+
+
+                //enviando os dados
+
+                $('#competence_form').on('submit', function (e) {
+                    e.preventDefault();
+
+                    clearError();
+                    let dataForm = $('#competence_form').serialize();
+
+                    axios.put(`/home/competence/${id}`, dataForm)
+                        .then((response) => {
+                            console.log(response.data.success);
+                            if (response.data.success) {
+                                $('#competence_form_result').html(
+                                    `<div class="alert alert-success">
+                                                <p>Sucesso ao Atualizar o mês de referencia!</p>
+                                            </div>`
+                                );
+
+                                setTimeout(() => {
+                                    clear();
+                                    triggerForm();
+                                    $('#formModalCompetence').modal('hide');
+                                }, 1000);
+                            }
+                        }).catch((error) => {
+
+                        let errors = error.response.data.errors;
+
+                        if (errors.month) {
+                            $('#monthError').html(errors.month);
+                        }
+
+                        if (errors.year) {
+                            $('#yearError').html(errors.year);
+                        }
+                    }).finally(() => {
+
+                        $('#table_competence').DataTable().ajax.reload();
+                    });
+
+
+                });
+
+
+            });
+
+            $('body').on('click', '.delete', function (e) {
+                e.preventDefault();
+                let id = $(this).attr('id');
+                let url = "{{ route('competence.destroy', ':id') }}";
+                url = url.replace(':id', id);
+                if (confirm('Você deseja excluir esse mês de referencia?')) {
+                    axios.delete(url)
+                        .then(response => {
+                            console.log(response.status == 204);
+                            if (response.status == 204) {
+                                $('#table_competence').DataTable().ajax.reload();
+                                alert('Mês de referencia deletado');
+                            }
+                        })
+
+                }
+
+
             });
 
             //dps de carregar os ajax das páginas
@@ -134,6 +221,25 @@
                 $('.card').show();
             });
         });
+
+        function clearError() {
+            $('#monthError').html('');
+            $('#yearError').html('');
+        }
+
+        function getData(id) {
+            let url = "{{ route('competence.show', ':id') }}";
+
+            url = url.replace(':id', id);
+            axios.get(url)
+                .then(response => {
+                    let data = response.data;
+                    data = data[0];
+                    $("#month > option[value=" + data.month + "]").prop("selected", true);
+                    $('#year').val(data.year);
+                    $("#status > option[value=" + data.status + "]").prop("selected", true);
+                })
+        }
 
         function clear() {
             $('#action_competence_button').val('');

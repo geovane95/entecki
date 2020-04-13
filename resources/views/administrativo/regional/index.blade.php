@@ -186,14 +186,14 @@
                 let id = $(this).attr('id');
                 let url = "{{ route('regional.destroy', ':id') }}";
                 url = url.replace(':id', id);
-                if (confirm('Você deseja desativar esse regional ?')) {
+                if (confirm('Você deseja deletar esse regional?')) {
 
                     axios.delete(url)
                         .then(response => {
                             console.log(response.status == 204);
                             if (response.status == 204) {
                                 $('#table_regional').DataTable().ajax.reload();
-                                alert('Regional Desativado');
+                                alert('Regional Deletado');
                             }
                         })
 

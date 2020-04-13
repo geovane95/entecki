@@ -249,6 +249,7 @@
                             }
                         }).catch((error) => {
                         let errors = error.response;
+                        errors = errors.data.errors;
 
                         if (errors.name) {
                             $('#nameError').html(errors.name);

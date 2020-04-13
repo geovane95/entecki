@@ -8,6 +8,7 @@ use App\Models\Location;
 use App\Models\State;
 use App\Models\User;
 use App\Models\AccessProfile;
+use App\Models\UsersToConstructions;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -202,6 +203,13 @@ class UserController extends Controller
 
         if(!$user || $user->id == auth()->user()->id)
                 return response()->json(['error'=>'User not found or user logged in'],500);
+
+        $usertoconstructions = UsersToConstructions::where('user','=',$user->id)->get();
+
+        foreach ($usertoconstructions as $usertoconstruction){
+            $utc = UsersToConstructions::find($usertoconstruction->id);
+            $utc->delete();
+        }
 
         $user->delete();
 

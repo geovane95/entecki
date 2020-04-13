@@ -347,6 +347,7 @@ class ConstructionController extends Controller
 
             foreach ($uploads as $upload) {
                 DB::delete("delete from upload_data where id = " . $upload->id);
+                DB::delete("delete from data where uploaddata = " . $upload->id);
             }
 
             if ($construction->delete()) {

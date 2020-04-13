@@ -186,14 +186,14 @@
             $('body').on('click', '.delete', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
-                if (confirm('Você deseja desativar essa empresa ?')) {
+                if (confirm('Você deseja deletar essa empresa ?')) {
 
                     axios.delete(`/home/business/${id}`)
                         .then(response => {
                             console.log(response.status == 204);
                             if (response.status == 204) {
                                 $('#table_business').DataTable().ajax.reload();
-                                alert('Empresa Desativada');
+                                alert('Empresa Deletada');
                             }
                         })
 

@@ -17,10 +17,12 @@
                 <option value="11">Novembro</option>
                 <option value="12">Dezembro</option>
             </select>
+            <span id="monthError" class="text-danger"></span>
         </div>
         <div class="col-md-6">
             <label for="year">Ano</label>
             <input type="number" name="year" id="year" step="1" min="1900" max="2100" class="form-control">
+            <span id="yearError" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

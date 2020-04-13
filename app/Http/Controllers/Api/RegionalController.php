@@ -4,12 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RegionalRequest;
+use App\Models\Address;
+use App\Models\Construction;
+use App\Models\Data;
+use App\Models\Location;
 use App\Models\Regional;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Yajra\DataTables\DataTables;
 
@@ -145,11 +150,46 @@ class RegionalController extends Controller
     {
         $regional = $this->regional->find($id);
 
-        $regional->status = 0;
+        $constructions = Construction::where('regional', '=', $regional->id)->get();
 
-        if (!$regional->save())
-            return response()->json(['error'=>'Falha ao buscar o regional'],500);
+        foreach ($constructions as $const) {
+            $construction = Construction::find($const->id);
+            if ($construction) {
+                $idAddress = $construction->address;
 
-        return response()->json(['success' => true],204);
+                $address = Address::find($idAddress);
+
+                $idLocation = $address->location;
+
+                $location = Location::find($idLocation);
+
+                $datas = Data::where('construction', '=', $construction->id)->get();
+
+                foreach ($datas as $data) {
+                    $data->delete();
+                }
+
+                $userstoconstructions = DB::table('users_to_constructions')->where("construction", "=", $construction->id)->get();
+
+                foreach ($userstoconstructions as $uc) {
+                    DB::delete("delete from users_to_constructions where id = " . $uc->id);
+                }
+
+                $uploads = DB::table('upload_data')->where("construction", "=", $construction->id)->get();
+
+                foreach ($uploads as $upload) {
+                    DB::delete("delete from upload_data where id = " . $upload->id);
+                    DB::delete("delete from data where uploaddata = " . $upload->id);
+                }
+
+                $construction->delete();
+                $address->delete();
+                $location->delete();
+            }
+        }
+        if ($regional->delete()) {
+            return response()->json(["success" => "Regional deletado com sucesso"], 204);
+        }
+        return response()->json(['error' => 'Falha ao buscar regional'], 500);
     }
 }

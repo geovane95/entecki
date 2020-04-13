@@ -322,7 +322,7 @@
                 .then(response => {
 
                     $('#name').val(response.data.name);
-                    $('#business').val(response.data.company);
+                    $('#company').val(response.data.company);
                     $('#email').val(response.data.email);
                     $('#password').val(response.data.password);
                     $("#access_profile > option[value="+response.data.access_profile+"]").prop("selected",true);
