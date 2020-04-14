@@ -22,7 +22,7 @@
                                autocomplete="email" autofocus>
                     </label>
                     @if ($errors->has('email'))
-                        <span class="invalid-feedback">
+                        <span class="text-danger">
                                 <strong>{{ $errors->first('email') }}</strong>
                             </span>
                     @endif
@@ -31,7 +31,7 @@
                         <input id="password" type="password" name="password" required autocomplete="new-password">
                     </label>
                     @if ($errors->has('password'))
-                        <span class="invalid-feedback">
+                        <span class="text-danger">
                                 <strong>{{ $errors->first('password') }}</strong>
                             </span>
                     @endif
@@ -41,7 +41,7 @@
                                autocomplete="new-password">
                     </label>
                     @if ($errors->has('password_confirmation'))
-                        <span class="invalid-feedback">
+                        <span class="text-danger">
                             <strong>{{ $errors->first('password_confirmation') }}</strong>
                             </span>
                     @endif
