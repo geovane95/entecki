@@ -83,8 +83,8 @@
         <br />
         <div align="center">
             <button type="button" name="enviar" id="enviar" class="btn btn-success">ENVIAR</button>
-            <div style="display:none;" id="preloader" style="width: 50px;">
-                <img  src="https://mk0supsystic186fa3rj.kinstacdn.com/wp-content/uploads/2018/09/upload-file-feature-contact-form-300x300.gif" alt="preloader">
+            <div style="display:none;" id="preloader">
+                <img  src="https://mk0supsystic186fa3rj.kinstacdn.com/wp-content/uploads/2018/09/upload-file-feature-contact-form-300x300.gif" alt="preloader" style="width: 50px;">
             </div>
         </div>
 
@@ -126,12 +126,8 @@
                 axios.get(url)
                 .then((success) => {
                     let data = success.data;
-                    let emails = '';
 
-                    $.each(data, function(index,value){
-                        emails += value + ' \n';
-                    });
-                    alert('E-mail enviado com sucesso para os seguintes e-mails: ' + emails.replace(/,/g,', '));
+                    alert('E-mails enviados com sucesso para os responsáveis');
                     location.reload();
                 })
                 .catch((error) => {
