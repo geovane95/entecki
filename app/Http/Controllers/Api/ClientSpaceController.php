@@ -88,11 +88,21 @@ class  ClientSpaceController extends Controller
                                                 order by co.year desc, co.month desc");//$this->competence->where('status', '=', 1)->orderBy('year')->orderBy('month')->get();
             $constructions = DB::select("select distinct c.id, c.name from constructions c join users_to_constructions uc on uc.construction = c.id join data d on d.construction = c.id" . $where);
 
+            $regionalWhere = '';
+            if ($request->regionals){
+                $regionalWhere = " where re.id in (".$request->regionals.")";
+            }
             $regionals = DB::select("select distinct re.id, re.name
+                                                from regionals re
+                                                    join constructions c on c.regional = re.id
+                                                    join data d on d.construction = c.id" . $regionalWhere);
+
+            $regionalsSWhere = DB::select("select distinct re.id, re.name
                                                 from regionals re
                                                     join constructions c on c.regional = re.id
                                                     join data d on d.construction = c.id");
             $regionals = Arr::pluck($regionals, 'name', 'id');
+            $regionalsSWhere = Arr::pluck($regionalsSWhere, 'name', 'id');
 
             $businesses = DB::select("select distinct bs.id, bs.name
                                                 from businesses bs
@@ -143,7 +153,7 @@ class  ClientSpaceController extends Controller
             };
             $businessesIdPluck = [];
             if (!$request->businesses || $request->businesses == 0) {
-                if (count($regionals) > 0) {
+                if (count($businesses) > 0) {
                     foreach ($businesses as $business => $businessdesc) {
                         array_push($businessesIdPluck, $business);
                     }
@@ -254,7 +264,7 @@ class  ClientSpaceController extends Controller
         if (count($dados) > 0) {
             return view('area-do-cliente.index', [
                 'incc' => $incc,
-                'regionals' => $regionals,
+                'regionals' => $regionalsSWhere,
                 'constructions' => $constructions,
                 'competences' => Arr::pluck($competences, 'description', 'id'),
                 'businesses' => $businesses,
@@ -642,21 +652,6 @@ class  ClientSpaceController extends Controller
                 $regionalsIdPluck = explode(',', $request->regionals);
             };
 
-            $businessesIdPluck = [];
-            if (!$request->businesses || $request->businesses == 0) {
-                if (count($regionals) > 0) {
-                    foreach ($businesses as $business => $businessdesc) {
-                        array_push($businessesIdPluck, $business);
-                    }
-                } else {
-                    return view('area-do-cliente.erro', [
-                        'error' => 'Não é possível acessar esta página pois não foram encontrados dados de meses de referência cadastrados, entre em contato com o administrados.'
-                    ]);
-                }
-            } else {
-                $businessesIdPluck = explode(',', $request->businesses);
-            }
-
             if ($request->competences || $request->competences != 0) {
                 $competenceIdPluck = [$request->competences];
             } else if (!$request->competences) {
@@ -677,7 +672,7 @@ class  ClientSpaceController extends Controller
 
             $dados = [];
 
-            foreach (array_unique($regionals) as $regional => $regionalname) {
+            foreach (array_unique($regionalsIdPluck) as $regional => $regionalname) {
                 $query = DB::table('constructions')
                     ->leftJoin('addresses', 'addresses.id', '=', 'constructions.address')
                     ->leftJoin('locations', 'locations.id', '=', 'addresses.location')
