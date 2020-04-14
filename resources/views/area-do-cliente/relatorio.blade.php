@@ -178,6 +178,14 @@
                                 $auxidobra = 0;
                             @endphp
                             @foreach($dado->reports as $report)
+                                @if($auxidobra != 0 && $auxidobra != $report->construction_id)
+                                    <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
+                                    <tr class="linha-cinza">
+                                        <td colspan="19">
+
+                                        </td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td colspan="2">
                                         <table>
@@ -332,14 +340,6 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @if($auxidobra != $report->construction_id)
-                                    <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                                    <tr class="linha-cinza">
-                                        <td colspan="19">
-
-                                        </td>
-                                    </tr>
-                                @endif
                                 @php($auxidobra = $report->construction_id)
                             @endforeach
                         @endforeach
