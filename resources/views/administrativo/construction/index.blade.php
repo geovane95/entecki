@@ -304,6 +304,7 @@
                         errors = {};
                     }).finally(() => {
                         $('#table_construction').DataTable().ajax.reload();
+                        location.reload();
                     });
 
                 });
@@ -500,8 +501,8 @@
                         }
                         errors = {};
                     }).finally(() => {
-
                         $('#table_construction').DataTable().ajax.reload();
+                        location.reload();
                     });
 
 

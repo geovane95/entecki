@@ -221,7 +221,7 @@ class  ClientSpaceController extends Controller
                     )
                     ->where('competences.id', '=', $competenceIdPluck);
                 $query->whereIn('constructions.id', $constructionsIdPluck);
-                $query->whereIn('constructions.regional', $regionalsIdPluck);
+                $query->whereIn('constructions.regional', $regional);
                 $query->whereIn('constructions.business', $businessesIdPluck);
 
                 $constructionInfos = $query->get();
@@ -727,7 +727,7 @@ class  ClientSpaceController extends Controller
                     )
                     ->where('competences.id', '=', $competenceIdPluck);
                 $query->whereIn('constructions.id', $constructionsIdPluck);
-                $query->whereIn('constructions.regional', $regionalsIdPluck);
+                $query->whereIn('constructions.regional', $regional);
                 $query->whereIn('constructions.business', $businessesIdPluck);
                 $reports = $query->get();
 

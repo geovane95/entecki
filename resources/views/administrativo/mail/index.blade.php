@@ -19,11 +19,6 @@
 
 @section('content')
 
-    <div class="container-fluid">
-        <div style="display:none;" id="preloader" >
-            <img  src="https://bombeirocivilonline.com.br/themes/frontend/fireman/assets/mvs/img/loading7_blue.gif" alt="preloader">
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
     <div class="card">
@@ -88,6 +83,9 @@
         <br />
         <div align="center">
             <button type="button" name="enviar" id="enviar" class="btn btn-success">ENVIAR</button>
+            <div style="display:none;" id="preloader" style="width: 50px;">
+                <img  src="https://mk0supsystic186fa3rj.kinstacdn.com/wp-content/uploads/2018/09/upload-file-feature-contact-form-300x300.gif" alt="preloader">
+            </div>
         </div>
 
     </div>
@@ -123,6 +121,8 @@
                 let url = "{{ route('email.store', ':data') }}";
                 url = url.replace(":data", Object.values(ids));
                 url = url.replace(/,\d+\,\[object Object]/gm,"");
+
+                $("#preloader").show();
                 axios.get(url)
                 .then((success) => {
                     let data = success.data;
@@ -136,6 +136,9 @@
                 })
                 .catch((error) => {
                     alert('Não foi possível realizar o envio do e-mail!')
+                })
+                .finally(() =>{
+                    $("#preloader").hide();
                 });
             });
 
