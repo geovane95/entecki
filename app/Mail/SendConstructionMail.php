@@ -64,8 +64,8 @@ class SendConstructionMail extends Mailable
                 'constructions.contract_regime',
                 'constructions.reporting_regime as report_regime',
                 'constructions.work_number',
-                'construction.responsibles as responsible_name',
-                'construction.cnpj as responsible_cnpj',
+                'constructions.responsible as responsible_name',
+                'constructions.cnpj as responsible_cnpj',
                 'constructions.status as construction_status',
                 'addresses.street',
                 'addresses.number',
@@ -85,6 +85,7 @@ class SendConstructionMail extends Mailable
                 'data.QUALIDADE',
                 'data.SEGORG',
                 'data.MAMBI',
+                'data.DATAEMISSAO',
                 'upload_data.competence'
             )->where([
                 'data.id' => $this->data
@@ -104,7 +105,7 @@ class SendConstructionMail extends Mailable
                 'endereco' => $data[0]->street.", ".$data[0]->number,
                 'regimecontrato' => $data[0]->contract_regime,
                 'regimerelatorio' => $data[0]->report_regime,
-                'dataemissao' => $data[0]->issuance_date,
+                'dataemissao' => $data[0]->DATAEMISSAO,
                 'obran' => $data[0]->work_number,
                 'mesreferencia' => $data[0]->description,
                 'status' => $data[0]->construction_status ? 'Em andamento' : 'Finalizada',
