@@ -174,6 +174,9 @@
 
                                 </th>
                             </tr>
+                            @php
+                                $auxidobra = 0;
+                            @endphp
                             @foreach($dado->reports as $report)
                                 <tr>
                                     <td colspan="2">
@@ -329,7 +332,7 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @if(!$loop->last)
+                                @if($auxidobra != $report->construction_id)
                                     <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
                                     <tr class="linha-cinza">
                                         <td colspan="19">
@@ -337,6 +340,7 @@
                                         </td>
                                     </tr>
                                 @endif
+                                @php($auxidobra = $report->construction_id)
                             @endforeach
                         @endforeach
                         </tbody>
@@ -388,7 +392,7 @@
 
             $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
                 event.preventDefault();
-                $('.miolo .filtro').toggleClass('open')   
+                $('.miolo .filtro').toggleClass('open')
             });
         });
     </script>
