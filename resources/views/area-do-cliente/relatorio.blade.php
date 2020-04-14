@@ -42,6 +42,8 @@
                         </label>
                         <span>
                         INCC (N-1) = {{ $incc }}
+
+                        <a href="#" class="showhide"></a>
                     </span>
                         <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
@@ -380,6 +382,13 @@
                 formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.construction-report', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
+            });
+
+
+
+            $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
+                event.preventDefault();
+                $('.miolo .filtro').toggleClass('open')   
             });
         });
     </script>

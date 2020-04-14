@@ -34,6 +34,9 @@
                         </label>
                         <span>
                         INCC (N-1) = {{ $incc }}
+
+
+                        <a href="#" class="showhide"></a>
                     </span>
                         <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
@@ -416,6 +419,13 @@
                 url = url.replace(':comp_id', comp_id);
 
                 window.location.href = url;
+            });
+
+            
+
+            $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
+                event.preventDefault();
+                $('.miolo .filtro').toggleClass('open')   
             });
         });
     </script>

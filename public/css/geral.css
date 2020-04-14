@@ -522,17 +522,46 @@ header .title-print .h2,
     padding: 5px 0 5px 10px;
     height: 30px;
     margin-top: 15px;
+    margin-right: 10px;
 }
+.miolo .filtro select.obras option:not(:first-child) {
+    display: none;
+}
+/*
 .miolo .filtro select.obras:focus,
 .miolo .filtro select.obras:active{
     height: 120px;
-}
+}*/
 .miolo .filtro select.obras option:first-child{
     font-weight: bold;
     margin-bottom: 5px;
 }
-
-
+.miolo .filtro.open select.obras{
+    height: 90px;
+}
+.miolo .filtro.open select.obras option:not(:first-child) {
+    display: block;
+}
+.miolo .filtro span {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.miolo .filtro span a{
+    color: #002953;
+    font-size: 12px;
+    float: right;
+    cursor: pointer;
+    background: #eee;
+    padding: 5px 8px;
+}
+.miolo .filtro span a:after{
+    content: 'Abrir Filtros +';
+}
+.miolo .filtro.open span a:after{
+    content: 'Esconder Filtros -';
+}
 .miolo .botoes a.print{
     background-color: #6f7124;
     background-image: url(../images/print.svg);
