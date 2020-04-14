@@ -61,10 +61,14 @@
     body {
     font-family: 'Roboto', sans-serif;
 }
+div#tabeladiv h3,
 .content-header h1 {
     text-transform: uppercase;
     font-weight: bold;
     color: #00205c;
+}
+div#tabeladiv h3{
+    margin-top: 30px;
 }
 .card-header .btn-info,
 .card-header .btn-success,
@@ -74,6 +78,7 @@
     text-transform: uppercase;
     font-weight: 500;
 }
+#table_uploads .btn-info:hover,
 .btn-success:hover,
 .btn-warning:hover,
 .btn-danger:hover,
@@ -82,6 +87,7 @@
 .card-header .btn-success:hover{
     opacity: .9;
 }
+#table_uploads .btn-info,
 .btn-success,
 .btn-danger,
 .btn-warning,
@@ -93,6 +99,23 @@
   color: #fff !important;
     text-transform: uppercase;
     font-weight: 500;
+}
+.table .thead-dark th{
+    background-color:  #00205c !important;
+    border-color: rgba(255,255,255,.2) !important;
+}
+table#table_uploads td{
+    border-color: rgba(255,255,255,1) !important;
+}
+table#table_uploads .even td{
+    border-color: rgba(0,0,0,.05) !important;
+}
+table#table_uploads {
+    border-collapse: collapse;
+}
+
+#table_uploads .btn-info + .btn-info{
+    margin-left: 10px;
 }
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link {
     text-transform: uppercase;
