@@ -8,12 +8,18 @@
                     <h1>
                         ERRO
                     </h1>
-                    <h4>
+                    <h5>
                         <strong>
                             {{ $error }} <br>
                         </strong>
-                        <a href="{{ $error == 'inicio' ? route('client-space.index') : route('client-space.logout') }}">Clique aqui para ser redirecionado.</a>
-                    </h4>
+                    </h5>
+                    <h6>
+                        Você tentar voltar ao inicio <a href="{{ route('client-space.index') }}">clicando aqui</a>
+                        ou
+                        <a href="{{ $error == 'inicio' ? route('client-space.index') : route('client-space.logout') }}">Clique
+                            aqui para ser redirecionado.</a>
+                    </h6>
+
 
                 </div>
             </div>
