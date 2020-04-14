@@ -113,6 +113,7 @@
                                     $('#formModalCompetence').modal('hide');
                                 }, 1000);
                             }
+                            location.reload();
                         }).catch((error) => {
                         let errors = error.response;
                         errors = errors.data.errors;
@@ -124,9 +125,7 @@
                         if (errors.month) {
                             $('#monthError').html(errors.month);
                         }
-                    }).finally(() => {
-                        $('#table_competence').DataTable().ajax.reload();
-                    });
+                    })
 
                 });
             });
@@ -200,7 +199,7 @@
                 let id = $(this).attr('id');
                 let url = "{{ route('competence.destroy', ':id') }}";
                 url = url.replace(':id', id);
-                if (confirm('Você deseja excluir esse mês de referencia?')) {
+                if (confirm('ATENÇÃO: ao deletar este mês de referência todas as obras dentro dele também serão excluidas permanentemente. Você tem certeza que deseja excluir?')) {
                     axios.delete(url)
                         .then(response => {
                             console.log(response.status == 204);
@@ -210,6 +209,8 @@
                             }
                         })
 
+                }else{
+                    alert("Exclusão Cancelada pelo usuário.");
                 }
 
 

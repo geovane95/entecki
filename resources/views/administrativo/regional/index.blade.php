@@ -186,7 +186,7 @@
                 let id = $(this).attr('id');
                 let url = "{{ route('regional.destroy', ':id') }}";
                 url = url.replace(':id', id);
-                if (confirm('Você deseja deletar esse regional?')) {
+                if (confirm('ATENÇÃO: ao deletar este regional todas as obras dentro dele também serão excluidas permanentemente. Você tem certeza que deseja excluir?')) {
 
                     axios.delete(url)
                         .then(response => {
@@ -197,6 +197,8 @@
                             }
                         })
 
+                }else{
+                    alert("Exclusão Cancelada pelo usuário.");
                 }
 
 

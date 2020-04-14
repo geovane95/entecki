@@ -155,15 +155,18 @@
                     let url = `{{route('upload_data.destroy', ':id')}}`;
 
                     url = url.replace(':id', id);
-
-                    axios.delete(url)
-                        .then(response => {
-                            alert('Arquivo deletado com sucesso.')
-                        }).catch((error) => {
-                        alert('Desculpe, não foi possível realizar a exclusão deste arquivo.');
-                    }).finally(() =>{
-                        $('#table_uploads').DataTable().ajax.reload();
-                    });
+                    if (confirm('ATENÇÃO: ao deletar este arquivo todos os dados incluidos no sistema através dele serão excluidas permanentemente. Você tem certeza que deseja excluir?')) {
+                        axios.delete(url)
+                            .then(response => {
+                                alert('Arquivo deletado com sucesso.')
+                            }).catch((error) => {
+                            alert('Desculpe, não foi possível realizar a exclusão deste arquivo.');
+                        }).finally(() => {
+                            $('#table_uploads').DataTable().ajax.reload();
+                        });
+                    }else{
+                        alert("Exclusão Cancelada pelo usuário.");
+                    }
                 }
                 function aprovar(id) {
                     let url = `{{route('upload_data.approve', ':id')}}`;

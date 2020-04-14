@@ -186,7 +186,7 @@
             $('body').on('click', '.delete', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('id');
-                if (confirm('Você deseja deletar essa empresa ?')) {
+                if (confirm('ATENÇÃO: ao deletar esta empresa todas as obras dentro dela também serão excluidas permanentemente. Você tem certeza que deseja excluir?')) {
 
                     axios.delete(`/home/business/${id}`)
                         .then(response => {
@@ -197,6 +197,8 @@
                             }
                         })
 
+                }else{
+                    alert("Exclusão Cancelada pelo usuário.");
                 }
 
 
