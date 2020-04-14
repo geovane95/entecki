@@ -174,18 +174,7 @@
 
                                 </th>
                             </tr>
-                            @php
-                                $auxidobra = 0;
-                            @endphp
                             @foreach($dado->reports as $report)
-                                @if($auxidobra != 0 && $auxidobra != $report->construction_id)
-                                    <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                                    <tr class="linha-cinza">
-                                        <td colspan="19">
-
-                                        </td>
-                                    </tr>
-                                @endif
                                 <tr>
                                     <td colspan="2">
                                         <table>
@@ -340,7 +329,14 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @php($auxidobra = $report->construction_id)
+                                @if(!$loop->last)
+                                    <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
+                                    <tr class="linha-cinza">
+                                        <td colspan="19">
+
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         @endforeach
                         </tbody>
@@ -389,10 +385,11 @@
             });
 
 
-
+            $('.miolo .filtro select').prop('disabled', function(i, v) { return !v; });  
             $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
                 event.preventDefault();
-                $('.miolo .filtro').toggleClass('open')
+                $('.miolo .filtro').toggleClass('open');
+                $('.miolo .filtro select').prop('disabled', function(i, v) { return !v; });   
             });
         });
     </script>
