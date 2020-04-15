@@ -30,7 +30,7 @@ class EmailController extends Controller
                     $where = " where uc.user = " . $user->id;
                 }
 
-                $constructions = DB::select("select * from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
+                $constructions = DB::select("select c.id from constructions c join users_to_constructions uc on uc.construction = c.id" . $where);
 
                 $competences = Competence::get();
 
