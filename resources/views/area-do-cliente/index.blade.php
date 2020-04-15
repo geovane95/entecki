@@ -270,6 +270,14 @@
                                     $auxidobra = 0;
                                 @endphp
                                 @foreach($dado->constructions as $constructiontable)
+                                    @if($auxidobra != 0 && $auxidobra != $constructiontable->construction_id)
+                                        <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
+                                        <tr class="linha-cinza">
+                                            <td colspan="19">
+
+                                            </td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td class="text-left">
                                             {{ $constructiontable->work_number }}
@@ -354,14 +362,6 @@
                                             </a>
                                         </td>
                                     </tr>
-                                    @if($auxidobra != $constructiontable->construction_id)
-                                        <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
-                                        <tr class="linha-cinza">
-                                            <td colspan="19">
-
-                                            </td>
-                                        </tr>
-                                    @endif
                                     @php($auxidobra = $constructiontable->construction_id)
                                 @endforeach
                             @endif
@@ -421,13 +421,13 @@
                 window.location.href = url;
             });
 
-            
 
-            $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });  
+
+            $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });
             $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
                 event.preventDefault();
                 $('.miolo .filtro').toggleClass('open');
-                $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });   
+                $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });
             });
         });
     </script>
