@@ -31,7 +31,7 @@
             <div class="row d-flex">
                 <div class="col-md-4 col-lg-3">
                     <figure>
-                        <img src="{{asset('public/storage/'.$details->thumbnail)}}"
+                        <img src="{{asset('public/images/constructions/'.$details->thumbnail)}}"
                              alt="{{ $details->construction_name }}" title="{{ $details->construction_name }}"/>
                     </figure>
                 </div>
