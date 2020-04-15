@@ -423,11 +423,11 @@
 
             
 
-            $('.miolo .filtro select').prop('disabled', function(i, v) { return !v; });  
+            $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });  
             $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
                 event.preventDefault();
                 $('.miolo .filtro').toggleClass('open');
-                $('.miolo .filtro select').prop('disabled', function(i, v) { return !v; });   
+                $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });   
             });
         });
     </script>
