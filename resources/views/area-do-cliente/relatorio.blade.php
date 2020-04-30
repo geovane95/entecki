@@ -15,8 +15,11 @@
             <div class="row">
                 <div class="col-12">
                     <h1>
-                        DESEMPENHO FÍSICO-FINANCEIRO (DFF)
+                        2.0 - DFF
                     </h1>
+                    <!--<h1>
+                        DESEMPENHO FÍSICO-FINANCEIRO (DFF)
+                    </h1>-->
                     <h2>
                         CONSOLIDADO
                     </h2>
@@ -96,7 +99,7 @@
                     <table border="0" colspan="0" rowspan="0" class="main-table">
                         <thead>
                         <tr>
-                            <th colspan="4">
+                            <th colspan="6">
                                 Dados Gerais
                             </th>
                             <th>
@@ -117,12 +120,16 @@
                         </tr>
 
                         <tr>
-                            <th class="n-obra">
+                            <th class="n-obra" colspan="2">
                                 Nº Obra PDO<br>
                                 /FASE
                             </th>
                             <th>
                                 Empreendimento<br>
+                                Nome
+                            </th>
+                            <th>
+                                Construtora<br>
                                 Nome
                             </th>
                             <th>
@@ -152,7 +159,7 @@
                             </th>
                         </tr>
                         <tr class="linha-branca">
-                            <th colspan="9">
+                            <th colspan="10">
 
                             </th>
                         </tr>
@@ -160,7 +167,7 @@
                         <tbody>
                         @foreach($dados as $dado)
                             <tr class="list">
-                                <th colspan="2" class="text-left">
+                                <th colspan="4" class="text-left">
                                     {{ $dado->name }}
                                 </th>
 
@@ -181,28 +188,27 @@
                                 @if($auxidobra != 0 && $auxidobra != $report->construction_id)
                                     <!--QUANDO MUDA O CÓDIGO DO NÚMERO DA OBRA INSERE ESSA LINHA CINZA PARA DIVIDIR -->
                                     <tr class="linha-cinza">
-                                        <td colspan="19">
+                                        <td colspan="11">
 
                                         </td>
                                     </tr>
                                 @endif
                                 <tr>
-                                    <td colspan="2">
-                                        <table>
-                                            <tr>
-                                                <td class="text-left">
-                                                    {{ $report->work_number }}
-                                                </td>
-                                                <td class="text-left">
-                                                    {{ $report->FASE }}
-                                                </td>
-                                                <td class="text-left">
-                                                    <a href="{{ route('client-space.construction-detail', [$report->construction_id, $report->competence_id]) }}">
-                                                        {{ $report->construction_name }}
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <td class="text-left">
+                                        {{ $report->work_number }}
+                                    </td>
+                                    <td class="text-left">
+                                        {{ $report->FASE }}
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="{{ route('client-space.construction-detail', [$report->construction_id, $report->competence_id]) }}">
+                                            {{ $report->construction_name }}
+                                        </a>
+                                    </td>
+                                    <td class="text-left">
+                                        <a href="{{ route('client-space.construction-detail', [$report->construction_id, $report->competence_id]) }}">
+                                            {{ $report->responsible_name }}
+                                        </a>
                                     </td>
                                     <td class="text-right">
                                         {{ number_format($report->AREACONSTRM2, 0, ',', '.') }}
@@ -389,11 +395,15 @@
             });
 
 
-            $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });
-            $(document).delegate('.miolo .filtro span a.showhide', 'click', function(event) {
+            $('.miolo .filtro select.obras').prop('disabled', function (i, v) {
+                return !v;
+            });
+            $(document).delegate('.miolo .filtro span a.showhide', 'click', function (event) {
                 event.preventDefault();
                 $('.miolo .filtro').toggleClass('open');
-                $('.miolo .filtro select.obras').prop('disabled', function(i, v) { return !v; });
+                $('.miolo .filtro select.obras').prop('disabled', function (i, v) {
+                    return !v;
+                });
             });
         });
     </script>

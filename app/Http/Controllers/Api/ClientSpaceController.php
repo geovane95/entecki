@@ -250,7 +250,13 @@ class  ClientSpaceController extends Controller
                     $regionalobj->CORPRRATUAL = $constructionInfos->reduce(function ($carry, $item) {
                         return $carry + $item->CORPRRATUAL;
                     });
-                    $regionalobj->CORRPRATUALFAROL = "amarelo";
+                    $regionalobj->CORRPRATUALFAROL = "OK";
+                    if(in_array('amarelo',Arr::pluck($constructionInfos,'CORRPRATUALFAROL'))){
+                        $regionalobj->CORRPRATUALFAROL = 'AL';
+                    }
+                    if(in_array('vermelho',Arr::pluck($constructionInfos,'CORRPRATUALFAROL'))){
+                        $regionalobj->CORRPRATUALFAROL = 'WA';
+                    }
                     $regionalobj->CORRPRATUALVLR = number_format(floatval(($constructionInfos->reduce(function ($carry, $item) {
                             return floatval($carry) + floatval($item->CORRPRATUALVLR);
                         })) / count($constructionInfos)), 2, ',', '.');
@@ -262,6 +268,7 @@ class  ClientSpaceController extends Controller
             dd($e);
         }
         if (count($dados) > 0) {
+            //dd($dados);
             return view('area-do-cliente.index', [
                 'incc' => $incc,
                 'regionals' => $regionalsSWhere,

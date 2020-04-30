@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-12">
                     <h1>
-                        RELATÓRIO DE PERFORMANCE DE ENGENHARIA (RPE)
+                        1.0 - RPE
                     </h1>
                     <h2>
                         INDICADORES DE OBRA
@@ -257,7 +257,7 @@
                                     </th>
                                     <!--  GEOVANE, CONFERIR MUDANCAS inseri a classe text-center -->
                                     <th class="text-center">
-                                            <span class="leg {{ $dado->CORRPRATUALFAROL }}">
+                                            <span class="leg {{ $cores[strtoupper($dado->CORRPRATUALFAROL)]['FAROL'] }}">
 
                                             </span>
                                         {{ $dado->CORRPRATUALVLR }}
@@ -301,28 +301,28 @@
                                             ({{ number_format($constructiontable->CORPRRATUAL, 0, ',', '.') }})
                                         </td>
                                         <td>
-                                            <span class="leg {{ $constructiontable->CORRPRATUALFAROL }}">
+                                            <span class="leg {{ $cores[strtoupper($constructiontable->CORRPRATUALFAROL)]['FAROL'] }}">
 
                                             </span>
                                             {{ $constructiontable->CORRPRATUALVLR }}
                                         </td>
                                         <td class="text-right">
-                                            {{ $constructiontable->FXDPRRATUAL }}
+                                            {{ number_format($constructiontable->FXDPRRATUAL, 0, ',', '.') }}
                                         </td>
                                         <td>
-                                            <span class="leg {{ $constructiontable->FXDRPRATUALFAROL }}">
+                                            <span class="leg {{ $cores[strtoupper($constructiontable->FXDRPRATUALFAROL)]['FAROL'] }}">
 
                                             </span>
                                             {{ $constructiontable->FXDRPRATUALVLR }}%
                                         </td>
                                         <td>
-                                        <span class="leg {{$constructiontable->FPRPRFAROL }}">
+                                        <span class="leg {{ $cores[strtoupper($constructiontable->FPRPRFAROL)]['FAROL'] }}">
 
                                         </span>
                                             {{ $constructiontable->FPRPR }}%
                                         </td>
                                         <td>
-                                        <span class="leg {{$constructiontable->POTEROBRARPMESFAROL }}">
+                                        <span class="leg {{ $cores[strtoupper($constructiontable->POTEROBRARPMESFAROL)]['FAROL'] }}">
 
                                         </span>
                                             {{ $constructiontable->POTEROBRARPMES }}
@@ -331,12 +331,12 @@
                                             {{ $constructiontable->POECOPR }}
                                         </td>
                                         <td>
-                                        <span class="leg {{$constructiontable->IDQFAROL }}">
+                                        <span class="leg {{ $cores[strtoupper($constructiontable->IDQFAROL)]['FAROL'] }}">
 
                                         </span>
                                         </td>
                                         <td>
-                                        <span class="leg {{$constructiontable->IDSFAROL }}">
+                                        <span class="leg {{ $cores[strtoupper($constructiontable->IDSFAROL)]['FAROL'] }}">
 
                                         </span>
                                         </td>

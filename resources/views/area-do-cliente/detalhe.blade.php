@@ -14,8 +14,11 @@
             <div class="row">
                 <div class="col-md-9">
                     <h1>
-                        PAINEL DE DESEMPENHO DA OBRA (PDO)
+                        3.0 - PDO
                     </h1>
+                    <!--<h1>
+                        PAINEL DE DESEMPENHO DA OBRA (PDO)
+                    </h1>-->
 
                 </div>
                 <div class="col-md-3 d-flex flex-column justify-content-between align-items-end">
@@ -52,13 +55,15 @@
                                 Documentos
                             </a>
                             @if($picture)
-                                <a href="{{ route('client-space.pictures-download', $picture->id) }}" target="_blank" class="pic">
+                                <a href="{{ route('client-space.pictures-download', $picture->id) }}" target="_blank"
+                                   class="pic">
                                     <i></i>
                                     Fotos
                                 </a>
                             @endif
                             @if($report)
-                                <a href="{{ route('client-space.report-download', $report->id) }}" target="_blank" class="rel">
+                                <a href="{{ route('client-space.report-download', $report->id) }}" target="_blank"
+                                   class="rel">
                                     <i></i>
                                     Relatório
                                 </a>
@@ -78,7 +83,8 @@
                                     <strong>RAZÃO SOCIAL:</strong> {{ $details->responsible_name }}
                                 </li>
                                 <li>
-                                    <strong>CNPJ DA SPE:</strong> {{ $details->responsible_cnpj }}
+                                    <strong>CNPJ DA
+                                        SPE:</strong> {{ substr($details->responsible_cnpj,0,2).".".substr($details->responsible_cnpj,2,3).".".substr($details->responsible_cnpj,5,3)."/".substr($details->responsible_cnpj,8,4)."-".substr($details->responsible_cnpj,12,2) }}
                                 </li>
                                 <li>
                                     <strong>ENDEREÇO:</strong> {{ $details->street.", ".$details->number }}
@@ -216,7 +222,7 @@
                                 {{ number_format($details->AREATERRENO,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                (Proj.Pref.)
+                                <!--(Proj.Pref.)-->{{ "R$ " . number_format($details->ACOFPROJCUSTO/$details->AREATERRENO,2,',','.') . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -227,7 +233,7 @@
                                 {{ number_format($details->AREACONSTRUIDA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                (Proj.Pref.)
+                                <!--(Proj.Pref.)-->{{ "R$ " . number_format($details->ACOFPROJCUSTO/$details->AREACONSTRUIDA,2,',','.') . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -238,7 +244,7 @@
                                 {{ number_format($details->AREAPRIVATIVA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                (Col.23)
+                                <!--(Col.23)-->{{ "R$ " . number_format($details->ACOFPROJCUSTO/$details->AREAPRIVATIVA,2,',','.') . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -249,7 +255,7 @@
                                 {{ number_format($details->AREAEQUIVNB,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                (Col.18)
+                                <!--(Col.18)-->{{ "R$ " . number_format($details->ACOFPROJCUSTO/$details->AREAEQUIVNB,2,',','.') . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -260,7 +266,7 @@
                                 {{ number_format($details->AREADEGARGAGEM,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                (Proj.Pref.)
+                                <!--(Proj.Pref.)-->{{ "R$ " . number_format($details->ACOFPROJCUSTO/$details->AREADEGARGAGEM,2,',','.') . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -271,7 +277,7 @@
                                 {{ number_format($details->EFECIEPROJ,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                Relação AP/ AC
+                                <!--Relação AP/ AC-->{{ "R$ " . number_format($details->ACOFPROJCUSTO/$details->EFECIEPROJ,2,',','.')}}
                             </td>
                         </tr>
                         </tbody>
@@ -561,7 +567,7 @@
                                 ACOMPANHAMENTO FINANCEIRO
                             </th>
                             <th class="text-right" colspan="2">
-                                INCC (N-1) IN: 750,18
+                                INCC (N-1) IN: {{ $details->ACOFINCCIN }}
                             </th>
                             <th colspan="2">
                                 CUSTO/M2 (PROJETADO)
@@ -624,7 +630,7 @@
                                 {{ number_format($details->ACOFPROJCUSTO,0,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ $details->ACOFVARORCREV }}
+                                {{ number_format($details->ACOFVARORCREV,0,',','.') }}
                             </td>
                             <td rowspan="2" class="text-center">
                                 {{ $details->ACOFVARORCREVVALOR }}%<br>
@@ -661,7 +667,7 @@
                                 {{ number_format($details->ACOFPROJCUSTOINCC,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ $details->ACOFVARORCREVINCC }}
+                                {{ number_format($details->ACOFVARORCREVINCC,2,',','.') }}
                             </td>
                             <td class="text-right">
                                 {{ number_format($details->CUSTOM2PROJCONSTINCC,2,',','.') }}
@@ -685,104 +691,22 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @for($i = 0;  $i < count(explode(',', $details->flameitens)); $i++)
                         <tr>
                             <td class="text-right">
-                                Projetos Exec.
+                                {{ explode(',', $details->flameitens)[$i] }}
                             </td>
                             <td>
                                 <div class="barra">
-                                    <div class="percent" style="width: {{ $details->PROJEXEC }}%;">
+                                    <div class="percent" style="width: {{ explode(',', $details->flamevalores)[$i] }}%;">
                                             <span>
-                                                 {{ $details->PROJEXEC }}%
+                                                 {{ explode(',', $details->flamevalores)[$i] }}%
                                             </span>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="text-right">
-                                Fundação Torre
-                            </td>
-                            <td>
-                                <div class="barra">
-                                    <div class="percent" style="width: {{ $details->FUNDACAOTORRE }}%;">
-                                            <span>
-                                                 {{ $details->FUNDACAOTORRE }}%
-                                            </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                Estrutura Torre
-                            </td>
-                            <td>
-                                <div class="barra">
-                                    <div class="percent" style="width: {{ $details->ESTRUTURATORRE }}%;">
-                                            <span>
-                                                 {{ $details->ESTRUTURATORRE }}%
-                                            </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                Instalações
-                            </td>
-                            <td>
-                                <div class="barra">
-                                    <div class="percent" style="width: {{ $details->INSTALACOES }}%;">
-                                            <span>
-                                                 {{ $details->INSTALACOES }}%
-                                            </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                Acabamento
-                            </td>
-                            <td>
-                                <div class="barra">
-                                    <div class="percent" style="width: {{ $details->ACABAMENTO }}%;">
-                                            <span>
-                                                 {{ $details->ACABAMENTO }}%
-                                            </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                Revest. Fachada
-                            </td>
-                            <td>
-                                <div class="barra">
-                                    <div class="percent" style="width: {{ $details->REVFACHADA }}%;">
-                                            <span>
-                                                 {{ $details->REVFACHADA }}%
-                                            </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                AE/ Paisagismo
-                            </td>
-                            <td>
-                                <div class="barra">
-                                    <div class="percent" style="width: {{ $details->AEPAISAGISMO }}%;">
-                                            <span>
-                                                 {{ $details->AEPAISAGISMO }}%
-                                            </span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        @endfor
                         </tbody>
                     </table>
                 </div>
@@ -873,7 +797,7 @@
                                             }
                                         }, {
                                             type: 'scatter',
-                                            name: 'Período - Fís. (PREV)',
+                                            name: 'Período - Fís. (REAL)',
                                             data: [{{ $details->flameperiodofissubprev }}],
                                             color: '#182857',
                                             marker: {
@@ -886,6 +810,7 @@
                                             type: 'scatter',
                                             name: 'Período - Fís. (PROJ)',
                                             data: [{{ $details->flameperiodofisproj }}],
+                                            startColumn: "{{ substr_count($details->flameperiodofisproj,',0')}}",
                                             color: '#e07438 ',
                                             marker: {
                                                 radius: 4
@@ -1742,8 +1667,7 @@
                         <tbody>
                         <tr class="tot">
                             <td class="text-left">
-                                <strong>DATAS MARCO: </strong> {!! str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->datasmarco))) !!} <br>
-                                <strong>ADICIONAIS CRITÉRIOS PRÉMIOS E MULTAS: </strong>{!! str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->adiccritpremulta))) !!}
+                                {!! str_replace(']','</strong>',str_replace('[','<strong>',str_replace('|','<br/>',$details->fatosrelevantes))) !!}
                             </td>
                         </tr>
                         </tbody>

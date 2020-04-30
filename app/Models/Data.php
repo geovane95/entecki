@@ -120,13 +120,8 @@ class Data extends Model
         'CUSTOM2PROJPRIVA',
         'CUSTOM2PROJCONSTINCC',
         'CUSTOM2PROJPRIVAINCC',
-        'PROJEXEC',
-        'FUNDACAOTORRE',
-        'ESTRUTURATORRE',
-        'INSTALACOES',
-        'ACABAMENTO',
-        'REVFACHADA',
-        'AEPAISAGISMO',
+        'flameitens',
+        'flamevalores',
         'flamemeses',
         'flameperiodofisprev',
         'flameperiodofisprevmesatual',
@@ -187,8 +182,7 @@ class Data extends Model
         'prevpremultaincorrs',
         'prevpremultaconstincc',
         'prevpremultaincorincc',
-        'datasmarco',
-        'adiccritpremulta',
+        'fatosrelevantes',
         'email_sended_at'
 
     ];

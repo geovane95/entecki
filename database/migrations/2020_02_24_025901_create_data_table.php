@@ -82,8 +82,10 @@ class CreateDataTable extends Migration
             $table->string('ORCCONTRATUAL',40)->nullable();
             $table->double('CUSTORASOOBRA',12,2)->nullable();
             $table->double('TAXAADM',12,2)->nullable();
+            $table->double('TAXAADMP',12,2)->nullable();
             $table->double('CUSTORASOTAXA',12,2)->nullable();
             $table->double('MANUTENCAO',12,2)->nullable();
+            $table->double('MANUTENCAOP',12,2)->nullable();
             $table->double('CUSTOSDIVERSOS',12,2)->nullable();
             $table->integer('ORCCONTRATUALINCC')->nullable();
             $table->integer('CUSTORASOOBRAINCC')->nullable();
@@ -134,13 +136,8 @@ class CreateDataTable extends Migration
             $table->string('CUSTOM2PROJPRIVA',40)->nullable();
             $table->string('CUSTOM2PROJCONSTINCC',40)->nullable();
             $table->string('CUSTOM2PROJPRIVAINCC',40)->nullable();
-            $table->integer('PROJEXEC')->nullable();
-            $table->integer('FUNDACAOTORRE')->nullable();
-            $table->integer('ESTRUTURATORRE')->nullable();
-            $table->integer('INSTALACOES')->nullable();
-            $table->integer('ACABAMENTO')->nullable();
-            $table->integer('REVFACHADA')->nullable();
-            $table->integer('AEPAISAGISMO')->nullable();
+            $table->string('flameitens')->nullable();
+            $table->string('flamevalores')->nullable();
             $table->timestamp('email_sended_at')->nullable();
             $table->string('flamemeses')->nullable();
             $table->string('flameperiodofisprev')->nullable();
@@ -202,8 +199,7 @@ class CreateDataTable extends Migration
             $table->string('prevpremultaincorrs')->nullable();
             $table->string('prevpremultaconstincc')->nullable();
             $table->string('prevpremultaincorincc')->nullable();
-            $table->text('datasmarco')->nullable();
-            $table->text('adiccritpremulta')->nullable();
+            $table->text('fatosrelevantes')->nullable();
             $table->timestamps();
         });
         DB::statement('ALTER TABLE data CHANGE CORRPRATUALVLR CORRPRATUALVLR decimal(12,2) signed');

@@ -89,8 +89,10 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     'ORCCONTRATUAL' => $row['orccontratual'],
                     'CUSTORASOOBRA' => $row['custorasoobra'],
                     'TAXAADM' => $row['taxaadm'],
+                    'TAXAADMP' => $row['taxaadmp'],
                     'CUSTORASOTAXA' => $row['custorasotaxa'],
                     'MANUTENCAO' => $row['manutencao'],
+                    'MANUTENCAOP' => $row['manutencaop'],
                     'CUSTOSDIVERSOS' => $row['custosdiversos'],
                     'ORCCONTRATUALINCC' => $row['orccontratualincc'],
                     'CUSTORASOOBRAINCC' => $row['custorasoobraincc'],
@@ -141,13 +143,8 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     'CUSTOM2PROJPRIVA' => $row['custom2projpriva'],
                     'CUSTOM2PROJCONSTINCC' => $row['custom2projconstincc'],
                     'CUSTOM2PROJPRIVAINCC' => $row['custom2projprivaincc'],
-                    'PROJEXEC' => $row['projexec'],
-                    'FUNDACAOTORRE' => $row['fundacaotorre'],
-                    'ESTRUTURATORRE' => $row['estruturatorre'],
-                    'INSTALACOES' => $row['instalacoes'],
-                    'ACABAMENTO' => $row['acabamento'],
-                    'REVFACHADA' => $row['revfachada'],
-                    'AEPAISAGISMO' => $row['aepaisagismo'],
+                    'flameitens' => $row['flameitens'],
+                    'flamevalores' => $row['flamevalores'],
                     'flamemeses' => $row['flamemeses'],
                     'flameperiodofisprev' => $row['flameperiodofisprev'],
                     'flameperiodofisprevmesatual' => $row['flameperiodofisprevmesatual'],
@@ -208,8 +205,7 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     'prevpremultaincorrs' => $row['prevpremultaincorrs'],
                     'prevpremultaconstincc' => $row['prevpremultaconstincc'],
                     'prevpremultaincorincc' => $row['prevpremultaincorincc'],
-                    'datasmarco' => $row['datasmarco'],
-                    'adiccritpremulta' => $row['adiccritpremulta']
+                    'fatosrelevantes' => $row['fatosrelevantes']
                 ];
                 try {
                     if ($aprov) {
