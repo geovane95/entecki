@@ -396,7 +396,7 @@
                         </tr>
                         <tr>
                             <td class="text-left">
-                                Taxa Adm.-10,00%
+                                Taxa Adm.-{{ number_format($details->TAXAADMP,2,',','.') }}%
                             </td>
                             <td class="text-right">
                                 R$ {{ number_format($details->TAXAADM,2,',','.') }}
@@ -418,7 +418,7 @@
                         </tr>
                         <tr>
                             <td class="text-left">
-                                Manutenção-1,50%
+                                Manutenção-{{ number_format($details->MANUTENCAOP,2,',','.') }}%
                             </td>
                             <td class="text-right">
                                 R$ {{ number_format($details->MANUTENCAO,2,',','.') }}
