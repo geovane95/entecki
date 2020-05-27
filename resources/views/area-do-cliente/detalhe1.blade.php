@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-9">
-                    <!--<h1>
-                        3.0 - PDO
-                    </h1>-->
                     <h1>
-                        PAINEL DE DESEMPENHO DA OBRA (PDO)
+                        3.0 - PDO
                     </h1>
+                    <!--<h1>
+                        PAINEL DE DESEMPENHO DA OBRA (PDO)
+                    </h1>-->
 
                 </div>
                 <div class="col-md-3 d-flex flex-column justify-content-between align-items-end">
@@ -737,37 +737,15 @@
                                         title: {
                                             text: ''
                                         },
-                                        yAxis: [{
-                                            min:0,
-                                            max:100,
+                                        yAxis: {
                                             title: {
-                                                text: 'Acumulado'
+                                                enabled: false
                                             }
-                                        }, { 
-                                            title: {
-                                              text: 'Periodo'
-                                            },
-                                            opposite: true
-
-                                          }],
+                                        },
                                         series: [{
                                             type: 'column',
                                             name: 'Período - Fís. PREV ',
-                                            yAxis: 1,
                                             data: [{{ $details->flameperiodofisprev }}],
-                                            color: {
-                                                linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                                stops: [
-                                                    [0, '#002953'],
-                                                    [1, '#6c85af']
-                                                ]
-                                            }
-                                        }, {
-                                            type: 'column',
-                                            name: 'Período - Fís. PREV - Mês Atual',
-                                            yAxis: 1,
-                                            data: [{{ $details->flameperiodofisprevmesatual }}],
-                                            class: 'atual',
                                             color: {
                                                 linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                                 stops: [
@@ -776,20 +754,30 @@
                                                 ]
                                             }
                                         }, {
+                                            type: 'column',
+                                            name: 'Período - Fís. PREV - Mês Atual',
+                                            data: [{{ $details->flameperiodofisprevmesatual }}],
+                                            class: 'atual',
+                                            color: {
+                                                linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                                stops: [
+                                                    [0, '#002953'],
+                                                    [1, '#6c85af']
+                                                ]
+                                            }
+                                        }, {
                                             type: 'spline',
                                             name: 'Acum - Fís. REAL',
-                                            yAxis: 0,
                                             data: [{{ $details->flameacumulofisreal }}],
-                                            lineColor: '#ae9c20',
+                                            lineColor: '#434343',
                                             marker: {
                                                 lineWidth: 2,
-                                                lineColor: '#ae9c20',
+                                                lineColor: '#434343',
                                                 fillColor: 'white'
                                             }
                                         }, {
                                             type: 'spline',
                                             name: 'Acum - Fís. (PREV)',
-                                            yAxis: 0,
                                             data: [{{ $details->flameacumulofisprev }}],
                                             lineColor: '#182857',
                                             marker: {
@@ -800,7 +788,6 @@
                                         }, {
                                             type: 'spline',
                                             name: 'Acum - Fís. (PROJ)',
-                                            yAxis: 0,
                                             data: [{{ $details->flameacumulofisproj }}],
                                             lineColor: '#e07438',
                                             marker: {
@@ -811,7 +798,6 @@
                                         }, {
                                             type: 'scatter',
                                             name: 'Período - Fís. (REAL)',
-                                            yAxis: 1,
                                             data: [{{ $details->flameperiodofissubprev }}],
                                             color: '#182857',
                                             marker: {
@@ -823,7 +809,6 @@
                                         }, {
                                             type: 'scatter',
                                             name: 'Período - Fís. (PROJ)',
-                                            yAxis: 1,
                                             data: [{{ $details->flameperiodofisproj }}],
                                             startColumn: "{{ substr_count($details->flameperiodofisproj,',0')}}",
                                             color: '#e07438 ',
@@ -867,38 +852,16 @@
                                         },
                                         title: {
                                             text: ''
-                                        }
-                                        yAxis: [{
-                                            min:0,
-                                            max:100,
+                                        },
+                                        yAxis: {
                                             title: {
-                                                text: 'Acumulado'
+                                                enabled: false
                                             }
-                                        }, { 
-                                            title: {
-                                              text: 'Periodo'
-                                            },
-                                            opposite: true
-
-                                          }],
+                                        },
                                         series: [{
                                             type: 'column',
                                             name: 'Período - Fís. PREV',
-                                            yAxis: 1,
                                             data: [{{ $details->dfperiodofisprev }}],
-                                            color: {
-                                                linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
-                                                stops: [
-                                                    [0, '#6f7124'],
-                                                    [1, '#ae9c20']
-                                                ]
-                                            }
-                                        }, {
-                                            type: 'column',
-                                            name: 'Período - Fís. PREV - Mês Atual',
-                                            yAxis: 1,
-                                            data: [{{ $details->dfperiodofisprevmesatual }}],
-                                            class: 'atual',
                                             color: {
                                                 linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                                 stops: [
@@ -907,9 +870,20 @@
                                                 ]
                                             }
                                         }, {
+                                            type: 'column',
+                                            name: 'Período - Fís. PREV - Mês Atual',
+                                            data: [{{ $details->dfperiodofisprevmesatual }}],
+                                            class: 'atual',
+                                            color: {
+                                                linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+                                                stops: [
+                                                    [0, '#6f7124'],
+                                                    [1, '#ae9c20']
+                                                ]
+                                            }
+                                        }, {
                                             type: 'spline',
                                             name: 'Acum - Fís. REAL',
-                                            yAxis: 0,
                                             data: [{{ $details->dfacumulofisreal }}],
                                             lineColor: '#182857',
                                             marker: {
@@ -920,7 +894,6 @@
                                         }, {
                                             type: 'spline',
                                             name: 'Acum - Fís. (PREV)',
-                                            yAxis: 0,
                                             data: [{{ $details->dfacumulofisprev }}],
                                             lineColor: '#a9994b',
                                             marker: {
@@ -931,7 +904,6 @@
                                         }, {
                                             type: 'spline',
                                             name: 'Acum - Fís. (PROJ)',
-                                            yAxis: 0,
                                             data: [{{ $details->dfacumulofisproj }}],
                                             lineColor: '#e07438',
                                             marker: {
@@ -942,7 +914,6 @@
                                         }, {
                                             type: 'scatter',
                                             name: 'Período - Fís. (PREV)',
-                                            yAxis: 1,
                                             data: [{{ $details->dfperiodofissubprev }}],
                                             color: '#a9994b',
                                             marker: {
@@ -954,7 +925,6 @@
                                         }, {
                                             type: 'scatter',
                                             name: 'Período - Fís. (PROJ)',
-                                            yAxis: 1,
                                             data: [{{ $details->dfperiodofisproj }}],
                                             color: '#e07438',
                                             marker: {
@@ -1022,7 +992,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="barra c3">
+                                <div class="barra">
                                     <div class="percent" style="width: {{ $details->atprevfisobra }}%;">
                                             <span>
                                                  {{ $details->atprevfisobra }}%
@@ -1059,7 +1029,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="barra c3">
+                                <div class="barra">
                                     <div class="percent" style="width: {{ $details->atrealfisobra }}%;">
                                             <span>
                                                  {{ $details->atrealfisobra }}%
@@ -1098,7 +1068,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="barra c3">
+                                <div class="barra">
                                     <div class="percent" style="width: {{ $details->atprevfisbanco }}%;">
                                             <span>
                                                  {{ $details->atprevfisbanco }}%
@@ -1135,7 +1105,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="barra c3">
+                                <div class="barra">
                                     <div class="percent" style="width: {{ $details->atrealfisbanco }}%;">
                                             <span>
                                                  {{ $details->atrealfisbanco }}%
@@ -1174,7 +1144,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="barra c3">
+                                <div class="barra">
                                     <div class="percent" style="width: {{ $details->atprevfinbanco }}%;">
                                             <span>
                                                  {{ $details->atprevfinbanco }}%
@@ -1211,7 +1181,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="barra c3">
+                                <div class="barra">
                                     <div class="percent" style="width: {{ $details->atrealfinbanco }}%;">
                                             <span>
                                                  {{ $details->atrealfinbanco }}%
@@ -1301,8 +1271,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#b0b6b9'],
-                                                [1, '#b9bfc2']
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
                                             ]
                                         }
 
@@ -1312,8 +1282,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#1c3156'],
-                                                [1, '#405372']
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
                                             ]
                                         }
 
@@ -1354,8 +1324,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#b0b6b9'],
-                                                [1, '#b9bfc2']
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
                                             ]
                                         }
 
@@ -1365,8 +1335,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#1c3156'],
-                                                [1, '#405372']
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
                                             ]
                                         }
 
@@ -1407,8 +1377,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#b0b6b9'],
-                                                [1, '#b9bfc2']
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
                                             ]
                                         }
 
@@ -1418,8 +1388,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#1c3156'],
-                                                [1, '#405372']
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
                                             ]
                                         }
 
@@ -1460,8 +1430,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#b0b6b9'],
-                                                [1, '#b9bfc2']
+                                                [0, '#002953'],
+                                                [1, '#6c85af']
                                             ]
                                         }
 
@@ -1471,8 +1441,8 @@
                                         color: {
                                             linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                             stops: [
-                                                [0, '#1c3156'],
-                                                [1, '#405372']
+                                                [0, '#6f7124'],
+                                                [1, '#ae9c20']
                                             ]
                                         }
 
@@ -1548,8 +1518,8 @@
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
-                                                [0, '#b0b6b9'],
-                                                [1, '#b9bfc2']
+                                            [0, '#002953'],
+                                            [1, '#6c85af']
                                         ]
                                     }
 
@@ -1559,8 +1529,8 @@
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
-                                                [0, '#1c3156'],
-                                                [1, '#405372']
+                                            [0, '#6f7124'],
+                                            [1, '#ae9c20']
                                         ]
                                     }
 
@@ -1600,8 +1570,8 @@
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
-                                                [0, '#b0b6b9'],
-                                                [1, '#b9bfc2']
+                                            [0, '#002953'],
+                                            [1, '#6c85af']
                                         ]
                                     }
 
@@ -1611,8 +1581,8 @@
                                     color: {
                                         linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
                                         stops: [
-                                                [0, '#1c3156'],
-                                                [1, '#405372']
+                                            [0, '#6f7124'],
+                                            [1, '#ae9c20']
                                         ]
                                     }
 

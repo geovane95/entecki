@@ -809,41 +809,6 @@ td{
     background: rgb(111,113,36);
     background: linear-gradient(90deg, rgba(111,113,36,1) 0%, rgba(174,156,32,1) 100%);
 }
-.miolo table tbody td table.grafico tr td:nth-child(2) .barra .percent{
-    background: linear-gradient(90deg, rgba(0,41,83,1) 0%, rgba(0,41,83,.8) 100%) !important;
-}
-
-.miolo table tbody td:nth-child(7) table.grafico tr td:last-child .barra .percent{
-    background: linear-gradient(90deg, rgba(174,156,32,1) 0%, rgba(174,156,32,.8) 100%) !important;
-
-}
-.miolo table tbody td:nth-child(8) table.grafico tr td:last-child .barra .percent{
-    background: linear-gradient(90deg, rgba(98,113,36,1) 0%, rgba(98,113,36,.8) 100%) !important;
-    
-}
-.miolo table tbody td:nth-child(9) table.grafico tr td:last-child .barra .percent{
-    background: linear-gradient(90deg, rgba(173,182,185,1) 0%, rgba(173,182,185,.8) 100%) !important;
-    
-}
-.miolo.detalhe table.info.barras-percent.multiple .barra.c1 .percent{
-    background: linear-gradient(90deg, rgba(173,182,185,1) 0%, rgba(173,182,185,.8) 100%) !important;
-}
-
-.miolo.detalhe table.info.barras-percent.multiple .barra.c2 .percent{
-    background: linear-gradient(90deg, rgba(0,41,83,1) 0%, rgba(0,41,83,.8) 100%) !important;
-}
-
-.miolo.detalhe table.info.barras-percent.multiple .barra.c3 .percent{
-    background: linear-gradient(90deg, rgba(174,156,32,1) 0%, rgba(174,156,32,.8) 100%) !important;
-}
-
-
-
-
-
-
-
-
 
 
 .miolo.detalhe table.info.barras-percent .barra .percent span,
