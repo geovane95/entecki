@@ -206,6 +206,7 @@ class  ClientSpaceController extends Controller
                         'data.FASE',
                         'data.AREACONSTRM2',
                         'data.NUNITQTD',
+                        'data.ACOFINCCIN',
                         'data.CORPRRATUAL',
                         'data.CORRPRATUALFAROL',
                         'data.CORRPRATUALVLR',
@@ -251,10 +252,10 @@ class  ClientSpaceController extends Controller
                         return $carry + $item->CORPRRATUAL;
                     });
                     $regionalobj->CORRPRATUALFAROL = "OK";
-                    if(in_array('amarelo',Arr::pluck($constructionInfos,'CORRPRATUALFAROL'))){
+                    if(in_array('AL',Arr::pluck($constructionInfos,'CORRPRATUALFAROL'))){
                         $regionalobj->CORRPRATUALFAROL = 'AL';
                     }
-                    if(in_array('vermelho',Arr::pluck($constructionInfos,'CORRPRATUALFAROL'))){
+                    if(in_array('WA',Arr::pluck($constructionInfos,'CORRPRATUALFAROL'))){
                         $regionalobj->CORRPRATUALFAROL = 'WA';
                     }
                     $regionalobj->CORRPRATUALVLR = number_format(floatval(($constructionInfos->reduce(function ($carry, $item) {
@@ -262,6 +263,7 @@ class  ClientSpaceController extends Controller
                         })) / count($constructionInfos)), 2, ',', '.');
                     $regionalobj->constructions = $constructionInfos;
                     array_push($dados, $regionalobj);
+                    $incc = max(Arr::pluck($constructionInfos,'ACOFINCCIN'));
                 }
             }
         } catch (Exception $e) {
@@ -736,6 +738,7 @@ class  ClientSpaceController extends Controller
                         'data.FASE',
                         'data.AREACONSTRM2',
                         'data.NUNITQTD',
+                        'data.ACOFINCCIN',
                         'data.FBP',
                         'data.FBR',
                         'data.FBD',
@@ -765,6 +768,8 @@ class  ClientSpaceController extends Controller
                     $regionalobj->name = $regionalname;
 
                     $regionalobj->reports = $reports;
+
+                    $incc = max(Arr::pluck($reports,'ACOFINCCIN'));
 
                     array_push($dados, $regionalobj);
                 }
