@@ -277,7 +277,7 @@
                                 {{ number_format($details->EFECIEPROJ,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                Relação AP/AC{{-- "R$ " . number_format($details->ACOFPROJCUSTO/$details->EFECIEPROJ,2,',','.')--}}
+                                <!--Relação AP/ AC-->{{ $details->eficgaragem }}
                             </td>
                         </tr>
                         </tbody>

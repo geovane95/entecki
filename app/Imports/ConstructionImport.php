@@ -205,7 +205,8 @@ class ConstructionImport implements ToCollection, WithHeadingRow
                     'prevpremultaincorrs' => $row['prevpremultaincorrs'],
                     'prevpremultaconstincc' => $row['prevpremultaconstincc'],
                     'prevpremultaincorincc' => $row['prevpremultaincorincc'],
-                    'fatosrelevantes' => $row['fatosrelevantes']
+                    'fatosrelevantes' => $row['fatosrelevantes'],
+                    'eficgaragem' => $row['eficgaragem']
                 ];
                 try {
                     if ($aprov) {

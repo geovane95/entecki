@@ -185,6 +185,7 @@ class Data extends Model
         'prevpremultaconstincc',
         'prevpremultaincorincc',
         'fatosrelevantes',
+        'eficgaragem',
         'email_sended_at'
 
     ];

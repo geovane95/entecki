@@ -200,6 +200,7 @@ class CreateDataTable extends Migration
             $table->string('prevpremultaconstincc')->nullable();
             $table->string('prevpremultaincorincc')->nullable();
             $table->text('fatosrelevantes')->nullable();
+            $table->string('eficgaragem')->nullable();
             $table->timestamps();
         });
         DB::statement('ALTER TABLE data CHANGE CORRPRATUALVLR CORRPRATUALVLR decimal(12,2) signed');
