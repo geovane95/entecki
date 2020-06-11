@@ -84,7 +84,7 @@
                         <a href="javascript:window.print()" class="print">
 
                         </a>
-                        <a href="{{ route('client-space.construction-report') }}" class="btn-relatorio">
+                        <a href="{{ route('client-space.index') }}" class="btn-relatorio">
                             RELATÓRIO DE<br>
                             PERFORMANCE DE<br>
                             ENGENHARIA (RPE)
@@ -207,7 +207,7 @@
                                     </td>
                                     <td class="text-left">
                                         <a href="{{ route('client-space.construction-detail', [$report->construction_id, $report->competence_id]) }}">
-                                            {{ $report->responsible_name }}
+                                            {{ $report->company }}
                                         </a>
                                     </td>
                                     <td class="text-right">

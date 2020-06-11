@@ -867,7 +867,7 @@
                                         },
                                         title: {
                                             text: ''
-                                        }
+                                        },
                                         yAxis: [{
                                             min:0,
                                             max:100,
@@ -883,7 +883,7 @@
                                           }],
                                         series: [{
                                             type: 'column',
-                                            name: 'Período - Fís. PREV',
+                                            name: 'Período - Fin. PREV',
                                             yAxis: 1,
                                             data: [{{ $details->dfperiodofisprev }}],
                                             color: {
@@ -895,7 +895,7 @@
                                             }
                                         }, {
                                             type: 'column',
-                                            name: 'Período - Fís. PREV - Mês Atual',
+                                            name: 'Período - Fin. PREV - Mês Atual',
                                             yAxis: 1,
                                             data: [{{ $details->dfperiodofisprevmesatual }}],
                                             class: 'atual',
@@ -908,7 +908,7 @@
                                             }
                                         }, {
                                             type: 'spline',
-                                            name: 'Acum - Fís. REAL',
+                                            name: 'Acum - Fin. REAL',
                                             yAxis: 0,
                                             data: [{{ $details->dfacumulofisreal }}],
                                             lineColor: '#182857',
@@ -919,7 +919,7 @@
                                             }
                                         }, {
                                             type: 'spline',
-                                            name: 'Acum - Fís. (PREV)',
+                                            name: 'Acum - Fin. (PREV)',
                                             yAxis: 0,
                                             data: [{{ $details->dfacumulofisprev }}],
                                             lineColor: '#a9994b',
@@ -930,7 +930,7 @@
                                             }
                                         }, {
                                             type: 'spline',
-                                            name: 'Acum - Fís. (PROJ)',
+                                            name: 'Acum - Fin. (PROJ)',
                                             yAxis: 0,
                                             data: [{{ $details->dfacumulofisproj }}],
                                             lineColor: '#e07438',
@@ -941,7 +941,7 @@
                                             }
                                         }, {
                                             type: 'scatter',
-                                            name: 'Período - Fís. (PREV)',
+                                            name: 'Período - Fin. (REAL)',
                                             yAxis: 1,
                                             data: [{{ $details->dfperiodofissubprev }}],
                                             color: '#a9994b',
@@ -953,7 +953,7 @@
                                             }
                                         }, {
                                             type: 'scatter',
-                                            name: 'Período - Fís. (PROJ)',
+                                            name: 'Período - Fin. (PROJ)',
                                             yAxis: 1,
                                             data: [{{ $details->dfperiodofisproj }}],
                                             color: '#e07438',
@@ -1042,7 +1042,7 @@
                             </td>
                             <td>
                                 <div class="barra c1">
-                                    <div class="percent" style="width: {{ $details->aarealfisobra }}%;">
+                                    <div class="percent" style=" width: {{ $details->aarealfisobra }}%;">
                                             <span>
                                                  {{ $details->aarealfisobra }}%
                                             </span>
