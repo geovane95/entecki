@@ -165,17 +165,31 @@
                         </tr>
                         </thead>
                         <tbody>
+
+                        <tr class="list fullList">
+                            <th colspan="4" class="text-left">
+                                Obras
+                            </th>
+                            <th class="text-right">
+                                {{ number_format($somageral->AREACONSTRM2, 0, ',', '.') }}
+                            </th>
+                            <th class="text-right">
+                                {{ number_format($somageral->NUNITQTD, 0, ',', ' ') }}
+                            </th>
+                            <th colspan="5">
+
+                            </th>
+                        </tr>
                         @foreach($dados as $dado)
                             <tr class="list">
                                 <th colspan="4" class="text-left">
                                     {{ $dado->name }}
                                 </th>
-
                                 <th class="text-right">
-                                    137.956
+                                    {{ number_format($dado->AREACONSTRM2, 0, ',', '.') }}
                                 </th>
                                 <th class="text-right">
-                                    2.146
+                                    {{ number_format($dado->NUNITQTD, 0, ',', ' ') }}
                                 </th>
                                 <th colspan="5">
 

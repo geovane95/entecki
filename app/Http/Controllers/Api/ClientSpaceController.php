@@ -264,6 +264,26 @@ class  ClientSpaceController extends Controller
                     $regionalobj->constructions = $constructionInfos;
                     array_push($dados, $regionalobj);
                     $incc = max(Arr::pluck($constructionInfos,'ACOFINCCIN'));
+                    $somageral = new Regional();
+                    $somageral->AREACONSTRM2 = array_reduce($dados, function ($carry,$item){
+                        return $carry + $item->AREACONSTRM2;
+                    });
+                    $somageral->NUNITQTD = array_reduce($dados, function ($carry, $item) {
+                        return $carry + $item->NUNITQTD;
+                    });
+                    $somageral->CORPRRATUAL = array_reduce($dados, function ($carry, $item) {
+                        return $carry + $item->CORPRRATUAL;
+                    });
+                    $somageral->CORRPRATUALFAROL = "OK";
+                    if(in_array('AL',Arr::pluck($dados,'CORRPRATUALFAROL'))){
+                        $somageral->CORRPRATUALFAROL = 'AL';
+                    }
+                    if(in_array('WA',Arr::pluck($dados,'CORRPRATUALFAROL'))){
+                        $somageral->CORRPRATUALFAROL = 'WA';
+                    }
+                    $somageral->CORRPRATUALVLR = number_format(floatval((array_reduce($dados, function ($carry, $item) {
+                            return floatval($carry) + floatval($item->CORRPRATUALVLR);
+                        })) / count($dados)), 2, ',', '.');
                 }
             }
         } catch (Exception $e) {
@@ -274,6 +294,7 @@ class  ClientSpaceController extends Controller
             return view('area-do-cliente.index', [
                 'incc' => $incc,
                 'regionals' => $regionalsSWhere,
+                'somageral' => $somageral,
                 'constructions' => $constructions,
                 'competences' => Arr::pluck($competences, 'description', 'id'),
                 'businesses' => $businesses,
@@ -767,11 +788,26 @@ class  ClientSpaceController extends Controller
                     $regionalobj->id = $regional;
                     $regionalobj->name = $regionalname;
 
+                    $regionalobj->AREACONSTRM2 = $reports->reduce(function ($carry, $item) {
+                        return $carry + $item->AREACONSTRM2;
+                    });
+                    $regionalobj->NUNITQTD = $reports->reduce(function ($carry, $item) {
+                        return $carry + $item->NUNITQTD;
+                    });
+
                     $regionalobj->reports = $reports;
 
                     $incc = max(Arr::pluck($reports,'ACOFINCCIN'));
 
                     array_push($dados, $regionalobj);
+
+                    $somageral = new Regional();
+                    $somageral->AREACONSTRM2 = array_reduce($dados, function ($carry,$item){
+                        return $carry + $item->AREACONSTRM2;
+                    });
+                    $somageral->NUNITQTD = array_reduce($dados, function ($carry, $item) {
+                        return $carry + $item->NUNITQTD;
+                    });
                 }
             }
         } catch (Exception $e) {
@@ -782,6 +818,7 @@ class  ClientSpaceController extends Controller
                 'competences' => Arr::pluck($competences, 'description', 'id'),
                 'constructions' => $constructions,
                 'regionals' => $regionalsSWhere,
+                'somageral' => $somageral,
                 'businesses' => $businesses,
                 'dados' => $dados,
                 'constructionsselected' => $constructionsIdPluck,

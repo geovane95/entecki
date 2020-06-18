@@ -241,6 +241,32 @@
 
                             </th>
                         </tr>
+                        <tr class="list fullList">
+                            <th colspan="3" class="text-left">
+                                Obras
+                            </th>
+
+                            <th class="text-right">
+                                {{ number_format($somageral->AREACONSTRM2, 0, ',', '.') }}
+                            </th>
+                            <th class="text-right">
+                                {{ number_format($somageral->NUNITQTD, 0, ',', '.') }}
+                            </th>
+
+                            <th class="text-right">
+                                ({{ number_format($somageral->CORPRRATUAL, 0, ',', '.') }})
+                            </th>
+                            <!--  GEOVANE, CONFERIR MUDANCAS inseri a classe text-center -->
+                            <th class="text-center">
+                                            <span class="leg {{ $cores[strtoupper($somageral->CORRPRATUALFAROL)]['FAROL'] }}">
+
+                                            </span>
+                                {{ $somageral->CORRPRATUALVLR }}
+                            </th>
+                            <th colspan="14">
+
+                            </th>
+                        </tr>
                         @foreach($dados as $dado)
                             @if(count($dado->constructions) > 0)
                                 <tr class="list">

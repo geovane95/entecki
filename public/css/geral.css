@@ -699,6 +699,9 @@ td{
     padding:8px 5px;
     color: #fff;
 }
+.miolo table tr.list.fullList th {
+    background: #ae9d1f;
+}
 .miolo table tbody td{
     border:1px solid #dddad4;
     padding:5px;
@@ -836,7 +839,10 @@ td{
 .miolo.detalhe table.info.barras-percent.multiple .barra.c3 .percent{
     background: linear-gradient(90deg, rgba(174,156,32,1) 0%, rgba(174,156,32,.8) 100%) !important;
 }
-
+.miolo.detalhe table.info.barras-percent.multiple .barra.c2 {
+    width: 750px;
+    margin-right: -500px;
+}
 
 
 
