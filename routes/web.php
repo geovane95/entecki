@@ -47,7 +47,7 @@ Route::group(['namespace'=>'Api','middleware'=>['permission','auth'],'prefix'=>'
     Route::get('construction/client','ConstructionController@clientIndex')->name('clientIndex');
     Route::get('construction/{id}/user','ConstructionController@users')->name('client.construction.list');
     Route::get('construction/{id}/user/add/{user}','ConstructionController@addUser')->name('client.construction.add');
-    Route::put('construction/thumbnail/{id}','ConstructionController@updateThumbnail')->name('construction.updateThumbnail');
+    Route::post('construction/thumbnail/{id}','ConstructionController@updateThumbnail')->name('construction.updateThumbnail');
     Route::get('construction/{id}/user/remove/{user}','ConstructionController@removeUser')->name('client.construction.remove');
 
 });

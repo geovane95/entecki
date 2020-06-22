@@ -53,7 +53,7 @@
     </div>
     <hr/>
     @include('administrativo.construction.modal')
-    @include('administrativo.construction.modalThumbnail')
+    @include('administrativo.construction.modalthumbnail')
     @include('administrativo.state.modal')
     @include('administrativo.city.modal')
     @include('administrativo.business.modal')
@@ -593,6 +593,7 @@
 
             $('body').on('click', '.thumbnail', function (e) {
                 let id = $(this).attr('id');
+                console.log(id);
 
                 $('#formModalConstructionThumbnail').modal('show');
                 $('#modal-constructionthumbnail-title').append('Editar Foto da Obra');
@@ -612,7 +613,7 @@
 
                     let route = `{{route('construction.updateThumbnail',':id')}}`;
 
-                    axios.put(route.replace(':id',id),dataForm, {
+                    axios.post(route.replace(':id',id),dataForm, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
@@ -632,11 +633,11 @@
                                 }, 1000);
                             }
                         }).catch((error) => {
-
-                    }).finally(() => {
-                        $('#table_construction').DataTable().ajax.reload();
-                        location.reload();
-                    });
+                            console.log(error);
+                        }).finally(() => {
+                            $('#table_construction').DataTable().ajax.reload();
+                            location.reload();
+                        });
 
 
                 });

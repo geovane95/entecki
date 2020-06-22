@@ -1,6 +1,5 @@
 <form action="" method="post" id="construction_thumbnail_form" class="form-horizontal" enctype="multipart/form-data">
     @csrf
-    @method("put")
     <div class="form-group">
         <label for="thumbnail">Foto do Empreendimento</label>
         <input type="file" name="thumbnail" id="thumbnail" class="form-control"/>

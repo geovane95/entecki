@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\State;
 use App\Models\Address;
 use App\Models\Location;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Models\Business;
@@ -78,7 +79,7 @@ class ConstructionController extends Controller
                 ->addColumn('picture', function ($data) {
                     $strThumbnail = '';
                     if ($data->thumbnail) {
-                        $strThumbnail = '<img src="' . asset('images/constructions/' . $data->thumbnail) . '" class="thumbnail" style="width: 50px;"/>';
+                        $strThumbnail = '<img src="' . url('storage/',$data->thumbnail) . '" class="thumbnail" style="width: 50px;" id="'.$data->id.'"/>';
                     } else {
                         $strThumbnail = "<button type='button'
                         name='thumbnail' id='{$data->id}'
@@ -467,7 +468,7 @@ class ConstructionController extends Controller
         return response()->json($users);
     }
 
-    public function updateThumbnail(ConstructionRequest $request, $id)
+    public function updateThumbnail(Request $request, $id)
     {
         $construction = $this->construction->find($id);
 
@@ -488,11 +489,10 @@ class ConstructionController extends Controller
             $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile);
 
             $construction->thumbnail = $thumbnail;
-        }
-
-        if (!$construction->save())
+            $construction->save();
+            return response()->json(['success' => true], 201);
+        }else {
             return response()->json(['error' => 'Fail to update Contruction'], 500);
-
-        return response()->json(['success' => true], 201);
+        }
     }
 }

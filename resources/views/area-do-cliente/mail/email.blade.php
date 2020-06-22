@@ -237,7 +237,7 @@ Email on Acid - http://www.emailonacid.com/blog/details/C18/doctype_-_the_black_
 								<table width="640" cellpadding="0" cellspacing="0" border="0" align="center">
 									<tr>
 										<td width="158" height="184">
-											<img class="image_fix" src="{{ url($foto) }}" alt="{{ $obra }}" title="{{ $obra }}" width="158" height="184" />
+											<img class="image_fix" src="{{ url('storage/',$foto) }}" alt="{{ $obra }}" title="{{ $obra }}" width="158" height="184" />
 										</td>
 
 										<td width="10">
