@@ -79,7 +79,7 @@ class ConstructionController extends Controller
                 ->addColumn('picture', function ($data) {
                     $strThumbnail = '';
                     if ($data->thumbnail) {
-                        $strThumbnail = '<img src="' . url('storage/',$data->thumbnail) . '" class="thumbnail" style="width: 50px;" id="'.$data->id.'"/>';
+                        $strThumbnail = '<img src="' . str_replace('%','/',url('storage',$data->thumbnail)) . '" class="thumbnail" style="width: 50px;" id="'.$data->id.'"/>';
                     } else {
                         $strThumbnail = "<button type='button'
                         name='thumbnail' id='{$data->id}'
