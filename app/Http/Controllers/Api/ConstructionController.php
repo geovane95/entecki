@@ -75,6 +75,17 @@ class ConstructionController extends Controller
                     $sta = $data->status == 1 ? 'Ativo' : 'Inativo';
                     return $sta;
                 })
+                ->addColumn('picture', function ($data) {
+                    $strThumbnail = '';
+                    if ($data->thumbnail) {
+                        $strThumbnail = '<img src="' . asset('images/constructions/' . $data->thumbnail) . '" class="thumbnail" style="width: 50px;"/>';
+                    } else {
+                        $strThumbnail = "<button type='button'
+                        name='thumbnail' id='{$data->id}'
+                        class='thumbnail  btn btn-danger btn-sm ml-2'>Inserir Foto</button>";
+                    }
+                    return $strThumbnail;
+                })
                 ->addColumn('users-name', function ($data) {
                     $users = DB::table('constructions')
                         ->join('users_to_constructions', 'users_to_constructions.construction', '=', 'constructions.id')
@@ -112,11 +123,11 @@ class ConstructionController extends Controller
                     class='delete  btn btn-danger btn-sm ml-2'>Deletar</button>";
 
                     $button .= "<a
-                    name='cliente'
-                    class='cliente btn btn-warning btn-sm ml-2' id='{$data->id}'>Usuários</a>";
+                    name='cliente' id='{$data->id}'
+                    class='cliente btn btn-warning btn-sm ml-2'>Usuários</a>";
 
                     return $button;
-                })->rawColumns(['action'])
+                })->rawColumns(['action', 'picture'])
                 ->make(true);
         }
 
@@ -155,7 +166,7 @@ class ConstructionController extends Controller
         $address = Address::create($dataAddress);
 
         if ($address) {
-            $thumbnail = false;
+            /*$thumbnail = false;
             if ($request->hasFile('thumbnail') && $request->file('thumbnail')->isValid()) {
                 // Define um aleatório para o arquivo baseado no timestamps atual
                 $name = uniqid(date('HisYmd'));
@@ -167,16 +178,16 @@ class ConstructionController extends Controller
                 $nameFile = "{$name}.{$extension}";
                 // Faz o upload:
                 $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile);
-            }
+            }*/
 
             $formCpnj = $request->cnpj;
-            $formCpnj = str_replace('.','',str_replace('/','',str_replace('-','',$formCpnj)));
+            $formCpnj = str_replace('.', '', str_replace('/', '', str_replace('-', '', $formCpnj)));
             $datForm = [
                 'name' => $request->name,
-                'thumbnail' => $thumbnail,
+                //'thumbnail' => $thumbnail,
                 'company' => $request->company,
-                'responsible'=>$request->responsible,
-                'cnpj'=>$formCpnj,
+                'responsible' => $request->responsible,
+                'cnpj' => $formCpnj,
                 'business' => $request->business,
                 'regional' => $request->regional,
                 'address' => $address->id,
@@ -204,7 +215,7 @@ class ConstructionController extends Controller
      */
     public function show($id)
     {
-        $construction = $this->construction->with(['business','regionals', 'address'])->find($id);
+        $construction = $this->construction->with(['business', 'regionals', 'address'])->find($id);
         $address = $this->address->find($construction->address);
         $location = $this->location->find($address->location);
         $city = $this->city->find($location->city);
@@ -273,7 +284,7 @@ class ConstructionController extends Controller
             if ($address->update($dataAddress)) {
 
                 $formCpnj = $request->cnpj;
-                $formCpnj = str_replace('.','',str_replace('/','',str_replace('-','',$formCpnj)));
+                $formCpnj = str_replace('.', '', str_replace('/', '', str_replace('-', '', $formCpnj)));
                 $datForm = [
                     'name' => $request->name,
                     'company' => $request->company,
@@ -337,13 +348,13 @@ class ConstructionController extends Controller
                 $data->delete();
             }
 
-            $userstoconstructions = DB::table('users_to_constructions')->where("construction","=",$construction->id)->get();
+            $userstoconstructions = DB::table('users_to_constructions')->where("construction", "=", $construction->id)->get();
 
             foreach ($userstoconstructions as $uc) {
                 DB::delete("delete from users_to_constructions where id = " . $uc->id);
             }
 
-            $uploads = DB::table('upload_data')->where("construction","=",$construction->id)->get();
+            $uploads = DB::table('upload_data')->where("construction", "=", $construction->id)->get();
 
             foreach ($uploads as $upload) {
                 DB::delete("delete from upload_data where id = " . $upload->id);
@@ -454,5 +465,34 @@ class ConstructionController extends Controller
             ->get();
 
         return response()->json($users);
+    }
+
+    public function updateThumbnail(ConstructionRequest $request, $id)
+    {
+        $construction = $this->construction->find($id);
+
+        if (!$construction)
+            return response()->json(['error' => 'Fail to find Contruction'], 500);
+
+        $thumbnail = false;
+        if ($request->hasFile('thumbnail') && $request->file('thumbnail')->isValid()) {
+            // Define um aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+
+            // Recupera a extensão do arquivo
+            $extension = $request->thumbnail->extension();
+
+            // Define finalmente o nome
+            $nameFile = "{$name}.{$extension}";
+            // Faz o upload:
+            $thumbnail = $request->thumbnail->storeAs('constructions', $nameFile);
+
+            $construction->thumbnail = $thumbnail;
+        }
+
+        if (!$construction->save())
+            return response()->json(['error' => 'Fail to update Contruction'], 500);
+
+        return response()->json(['success' => true], 201);
     }
 }

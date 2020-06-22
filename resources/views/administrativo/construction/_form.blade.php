@@ -10,10 +10,10 @@
         <input type="text" class="form-control" name="company" id="company" value="{{ old('business') }}">
         <span id="companyError" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <!--<div class="form-group">
         <label for="thumbnail">Foto do Empreendimento</label>
         <input type="file" name="thumbnail" id="thumbnail" class="form-control"/>
-    </div>
+    </div>-->
     <div class="form-group">
         <label for="responsible">Razão Social</label>
         <input type="text" class="form-control" name="responsible" id="responsible" value="{{ old('responsible') }}">

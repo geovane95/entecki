@@ -40,6 +40,7 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Construtora</th>
+                    <th>Foto</th>
                     <th>Empresa</th>
                     <th>Regional</th>
                     <th>Usuários</th>
@@ -52,6 +53,7 @@
     </div>
     <hr/>
     @include('administrativo.construction.modal')
+    @include('administrativo.construction.modalThumbnail')
     @include('administrativo.state.modal')
     @include('administrativo.city.modal')
     @include('administrativo.business.modal')
@@ -114,6 +116,7 @@
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'company', name: 'company'},
+                    {data: 'picture', name: 'picture'},
                     {data: 'business-name', name: 'business'},
                     {data: 'regional-name', name: 'regional'},
                     {data: 'users-name', name: 'users-name'},
@@ -222,6 +225,7 @@
                 $('#construction_form').on('submit', function (e) {
                     e.preventDefault();
 
+                    /*
                     let formElement = document.querySelector('#construction_form');
                     let dataForm = new FormData(formElement);
                     var imagefile = document.querySelector('#thumbnail');
@@ -232,6 +236,8 @@
                             'Content-Type': 'multipart/form-data'
                         }
                     })
+                    */
+                    axios.post(`{{route('construction.store')}}`, $('#construction_form').serialize())
                         .then((response) => {
                             if (response.data.success) {
                                 $('#construction_form_result').html(
@@ -584,6 +590,59 @@
 
                     })
             }
+
+            $('body').on('click', '.thumbnail', function (e) {
+                let id = $(this).attr('id');
+
+                $('#formModalConstructionThumbnail').modal('show');
+                $('#modal-constructionthumbnail-title').append('Editar Foto da Obra');
+                $('#action_constructionthumbnail_button').val("Salvar");
+                $('#action_constructionthumbnail_button').addClass('btn-primary');
+
+                //enviando os dados
+
+                $('#construction_thumbnail_form').on('submit', function (e) {
+                    e.preventDefault();
+
+                    clearError();
+                    let formElement = document.querySelector('#construction_thumbnail_form');
+                    let dataForm = new FormData(formElement);
+                    var imagefile = document.querySelector('#thumbnail');
+                    dataForm.append("image", imagefile.files[0]);
+
+                    let route = `{{route('construction.updateThumbnail',':id')}}`;
+
+                    axios.put(route.replace(':id',id),dataForm, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then((response) => {
+                            console.log(response.data.success);
+                            if (response.data.success) {
+                                $('#construction_form_result').html(
+                                    `<div class="alert alert-success">
+                                        <p>Sucesso ao Atualizar a Foto da Obra!</p>
+                                    </div>`
+                                );
+
+                                setTimeout(() => {
+                                    clear();
+                                    triggerForm();
+                                    $('#formModalConstructionThumbnail').modal('hide');
+                                }, 1000);
+                            }
+                        }).catch((error) => {
+
+                    }).finally(() => {
+                        $('#table_construction').DataTable().ajax.reload();
+                        location.reload();
+                    });
+
+
+                });
+
+
+            });
         });
 
         function mascaraMutuario(o) {
