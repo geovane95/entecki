@@ -121,7 +121,7 @@
 
                         <tr>
                             <th class="n-obra" colspan="2">
-                                Nº Obra PDO<br>
+                                Nº Obra<br>
                                 /FASE
                             </th>
                             <th>
@@ -148,12 +148,12 @@
                                 (%) - NO ACUMULADO
                             </th>
                             <th>
-                                DESEMPENHO BANCO<br>
+                                DESEMPENHO OBRA<br>
                                 Previsto (P) x Realizado (R)<br>
                                 (%) - NO ACUMULADO
                             </th>
                             <th>
-                                DESEMPENHO BANCO<br>
+                                DESEMPENHO OBRA<br>
                                 Previsto (P) x Realizado (R)<br>
                                 (%) - NO ACUMULADO
                             </th>

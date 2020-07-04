@@ -144,7 +144,7 @@
 
                         <tr>
                             <th class="n-obra" rowspan="2" colspan="2">
-                                Nº Obra PDO<br>
+                                Nº Obra<br>
                                 /FASE
                             </th>
                             <th rowspan="2">
@@ -223,7 +223,7 @@
                             </th>
                             <th>
                                 [1 - R/P]<br/>
-                                Δ R$ (Atual)
+                                Δ%<!-- R$ (Atual)-->
                             </th>
                             <th>
                                 [P-R]<br>
@@ -231,7 +231,7 @@
                             </th>
                             <th>
                                 [1 - R/P]<br>
-                                Δ R$ (Atual)
+                                Δ%<!-- R$ (Atual)-->
                             </th>
                         </tr>
                         </thead>

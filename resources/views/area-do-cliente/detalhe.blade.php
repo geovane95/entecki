@@ -718,7 +718,7 @@
                         <thead>
                         <tr>
                             <th class="text-left" colspan="2">
-                                FÍSICO LOCAL ACUMULADO MACRO ETAPAS
+                                DESEMPENHO FÍSICO<!--FÍSICO LOCAL ACUMULADO MACRO ETAPAS-->
                             </th>
                         </tr>
                         </thead>
@@ -1237,7 +1237,7 @@
                         <thead>
                         <tr>
                             <th class="text-left">
-                                FLUXO FINANCEIRO OBRA
+                                FLUXO FINANCEIRO OBRA / VISÃO TRIMESTRAL - R$
                             </th>
                         </tr>
                         </thead>
