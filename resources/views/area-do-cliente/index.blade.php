@@ -40,6 +40,7 @@
 
 
                         <a href="#" class="showhide"></a>
+                        <button type="button" onclick="filtrar()">Filtrar</button>
                     </span>
                         <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
@@ -403,12 +404,23 @@
         </div>
     </section>
     <script>
+        function filtrar() {
+            let formData = "";
+            formData += "competences=" + $("#competences").val();
+            formData += "&regionals=" + $("#regionals").val();
+            formData += "&constructions=" + $("#constructions").val();
+            formData += "&businesses=" + $("#businesses").val();
+            let url = "{{route('client-space.index', ':formData')}}";
+            window.location.href = url.replace(':formData', formData);
+        }
         $(document).ready(function () {
-            $("#competences").change(function () {
+
+            /*$("#competences").change(function () {
                 let formData = "";
                 formData += "competences=" + $("#competences").val();
                 formData += "&regionals=" + $("#regionals").val();
                 formData += "&constructions=" + $("#constructions").val();
+                formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.index', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
             });
@@ -438,7 +450,7 @@
                 formData += "&businesses=" + $("#businesses").val();
                 let url = "{{route('client-space.index', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
-            });
+            });*/
             $(".doc").click(function () {
                 let id = $(this).attr('id');
                 let comp_id = $(this).attr('data-id');
