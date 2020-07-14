@@ -77,6 +77,8 @@
                                 </option>
                             @endforeach
                         </select>
+
+                        <button type="button" onclick="filtrar()">Filtrar</button>
                     </form>
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-between align-items-end">
@@ -371,7 +373,17 @@
         </div>
     </section>
     <script>
+        function filtrar(){
+            let formData = "";
+            formData += "competences=" + $("#competences").val();
+            formData += "&regionals=" + $("#regionals").val();
+            formData += "&constructions=" + $("#constructions").val();
+            formData += "&businesses=" + $("#businesses").val();
+            let url = "{{route('client-space.construction-report', ':formData')}}";
+            window.location.href = url.replace(':formData', formData);
+        }
         $(document).ready(function () {
+            /*
             $("#competences").change(function () {
                 let formData = "";
                 formData += "competences=" + $("#competences").val();
@@ -407,7 +419,7 @@
                 let url = "{{route('client-space.construction-report', ':formData')}}";
                 window.location.href = url.replace(':formData', formData);
             });
-
+*/
 
             $('.miolo .filtro select.obras').prop('disabled', function (i, v) {
                 return !v;

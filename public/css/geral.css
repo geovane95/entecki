@@ -822,11 +822,11 @@ td{
 }
 .miolo table tbody td:nth-child(8) table.grafico tr td:last-child .barra .percent{
     background: linear-gradient(90deg, rgba(98,113,36,1) 0%, rgba(98,113,36,.8) 100%) !important;
-    
+
 }
 .miolo table tbody td:nth-child(9) table.grafico tr td:last-child .barra .percent{
     background: linear-gradient(90deg, rgba(173,182,185,1) 0%, rgba(173,182,185,.8) 100%) !important;
-    
+
 }
 .miolo.detalhe table.info.barras-percent.multiple .barra.c1 .percent{
     background: linear-gradient(90deg, rgba(173,182,185,1) 0%, rgba(173,182,185,.8) 100%) !important;
@@ -1443,4 +1443,23 @@ text, text * {
     font-weight: bold;
     color: #ae9c20;
     font-size: 14px !important;
+}
+.miolo .filtro button {
+    background: #002953 !important;
+    border: 0;
+    color: #fff !important;
+    box-shadow: none !important;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 15px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1;
+    margin-left: 15px;
+    text-transform: uppercase;
+    cursor:pointer;
+}
+.miolo .filtro button:hover{
+    background:#6f7124 !important;
 }

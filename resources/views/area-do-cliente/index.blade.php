@@ -40,7 +40,6 @@
 
 
                         <a href="#" class="showhide"></a>
-                        <button type="button" onclick="filtrar()">Filtrar</button>
                     </span>
                         <select class="obras regionals" multiple id="regionals" name="regionals">
                             <option value="0">SELECIONE UM REGIONAL PARA VISUALIZAÇÃO</option>
@@ -71,6 +70,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        <button type="button" onclick="filtrar()">Filtrar</button>
                     </form>
                 </div>
                 <div class="col-md-6 d-flex flex-column justify-content-between align-items-end">
