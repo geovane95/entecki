@@ -1456,10 +1456,14 @@ text, text * {
     text-decoration: none;
     text-align: center;
     line-height: 1;
-    margin-left: 15px;
     text-transform: uppercase;
     cursor:pointer;
+    margin-right: 10px;
+    width: 100px;
+    margin-top: 15px;
+    margin-left: calc(100% - 110px);
 }
 .miolo .filtro button:hover{
     background:#6f7124 !important;
 }
+
