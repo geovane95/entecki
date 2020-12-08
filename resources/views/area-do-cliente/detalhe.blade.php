@@ -222,7 +222,7 @@
                                 {{ number_format($details->AREATERRENO,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Proj.Pref.)-->{{ "R$ " . number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREATERRENO,2,',','.') . " p/m²"}}
+                                <!--(Proj.Pref.)-->{{ "R$ " . $details->AREATERRENO > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREATERRENO,2,',','.') : "0,00" . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -233,7 +233,7 @@
                                 {{ number_format($details->AREACONSTRUIDA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Proj.Pref.)-->{{ "R$ " . number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREACONSTRUIDA,2,',','.') . " p/m²"}}
+                                <!--(Proj.Pref.)-->{{ "R$ " . $details->AREACONSTRUIDA > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREACONSTRUIDA,2,',','.') : $details->AREACONSTRUIDA . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -244,7 +244,7 @@
                                 {{ number_format($details->AREAPRIVATIVA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Col.23)-->{{ "R$ " . number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAPRIVATIVA,2,',','.') . " p/m²"}}
+                                <!--(Col.23)-->{{ "R$ " . $details->AREAPRIVATIVA > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAPRIVATIVA,2,',','.') : $details->AREAPRIVATIVA . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -255,7 +255,7 @@
                                 {{ number_format($details->AREAEQUIVNB,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Col.18)-->{{ "R$ " . number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAEQUIVNB,2,',','.') . " p/m²"}}
+                                <!--(Col.18)-->{{ "R$ " . $details->AREAEQUIVNB ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAEQUIVNB,2,',','.') : "0,00" . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
@@ -266,7 +266,7 @@
                                 {{ number_format($details->AREADEGARGAGEM,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Proj.Pref.)-->{{ "R$ " . number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREADEGARGAGEM,2,',','.') . " p/m²"}}
+                                <!--(Proj.Pref.)-->{{ "R$ " . $details->AREADEGARGAGEM > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREADEGARGAGEM,2,',','.') : '0,00' . " p/m²"}}
                             </td>
                         </tr>
                         <tr>
