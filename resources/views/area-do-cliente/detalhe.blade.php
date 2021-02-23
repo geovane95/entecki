@@ -222,7 +222,7 @@
                                 {{ number_format($details->AREATERRENO,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Proj.Pref.)-->{{ "R$ " . $details->AREATERRENO > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREATERRENO,2,',','.') : "0,00" . " p/m²"}}
+                                <!--(Proj.Pref.)-->R$ {{ floatval($details->AREATERRENO) > 0.0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREATERRENO,2,',','.') : "0,00" }} p/m²
                             </td>
                         </tr>
                         <tr>
@@ -233,7 +233,7 @@
                                 {{ number_format($details->AREACONSTRUIDA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Proj.Pref.)-->{{ "R$ " . $details->AREACONSTRUIDA > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREACONSTRUIDA,2,',','.') : $details->AREACONSTRUIDA . " p/m²"}}
+                                <!--(Proj.Pref.)-->R$ {{ floatval($details->AREACONSTRUIDA) > 0.0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREACONSTRUIDA,2,',','.') : $details->AREACONSTRUIDA}} p/m²
                             </td>
                         </tr>
                         <tr>
@@ -244,7 +244,7 @@
                                 {{ number_format($details->AREAPRIVATIVA,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Col.23)-->{{ "R$ " . $details->AREAPRIVATIVA > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAPRIVATIVA,2,',','.') : $details->AREAPRIVATIVA . " p/m²"}}
+                                <!--(Col.23)-->R$ {{ floatval($details->AREAPRIVATIVA) > 0.0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAPRIVATIVA,2,',','.') : $details->AREAPRIVATIVA }} p/m²
                             </td>
                         </tr>
                         <tr>
@@ -255,7 +255,7 @@
                                 {{ number_format($details->AREAEQUIVNB,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Col.18)-->{{ "R$ " . $details->AREAEQUIVNB ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAEQUIVNB,2,',','.') : "0,00" . " p/m²"}}
+                                <!--(Col.18)-->R$ {{ floatval($details->AREAEQUIVNB) > 0.0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREAEQUIVNB,2,',','.') : "0,00" }} p/m²
                             </td>
                         </tr>
                         <tr>
@@ -266,7 +266,7 @@
                                 {{ number_format($details->AREADEGARGAGEM,2,',','.') }} m²
                             </td>
                             <td class="text-right">
-                                <!--(Proj.Pref.)-->{{ "R$ " . $details->AREADEGARGAGEM > 0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREADEGARGAGEM,2,',','.') : '0,00' . " p/m²"}}
+                                <!--(Proj.Pref.)-->R$ {{ floatval($details->AREADEGARGAGEM) > 0.0 ? number_format(($details->ACOFPROJCUSTOINCC*$details->ACOFINCCIN)/$details->AREADEGARGAGEM,2,',','.') : '0,00' }} p/m²
                             </td>
                         </tr>
                         <tr>
@@ -277,7 +277,7 @@
                                 {{ number_format($details->EFECIEPROJ,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                <!--Relação AP/ AC-->{{ $details->eficgaragem }}
+                                <!--Relação AP/ AC-->{{ $details->eficgaragem  }}
                             </td>
                         </tr>
                         </tbody>
@@ -362,7 +362,7 @@
                                 Data Vistoria: {{ $details->DATAVISTORIA }}
                             </td>
                             <td class="text-center">
-                                Valor Financiamento.: {{ number_format($details->VALORFINANCIAMENTO,2,',','.') }}
+                                Valor Financiamento.: {{ number_format($details->VALORFINANCIAMENTO,2,',','.') }} R$ Io
                             </td>
                         </tr>
                         </tbody>
@@ -377,7 +377,7 @@
                                 ORC. CONTRATUAL - {{ $details->ORCCONTRATUAL }}
                             </th>
                             <th class="text-right">
-                                {{ $details->ORCCONTRATUALINCC }}
+                                {{ number_format($details->ORCCONTRATUALINCC,3,',','.') }} INCC
                             </th>
                         </tr>
                         </thead>
@@ -391,7 +391,7 @@
                                 R$ {{ number_format($details->CUSTORASOOBRA,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ number_format($details->CUSTORASOOBRAINCC,0,',','.') }} INCC
+                                {{ number_format($details->CUSTORASOOBRAINCC,3,',','.') }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -402,7 +402,7 @@
                                 R$ {{ number_format($details->TAXAADM,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ number_format($details->TAXAADMINCC,0,',','.') }} INCC
+                                {{ number_format($details->TAXAADMINCC,3,',','.') }} INCC
                             </td>
                         </tr>
                         <tr class="tot">
@@ -413,7 +413,7 @@
                                 R$ {{ number_format($details->CUSTORASOTAXA,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ number_format($details->CUSTORASOTAXAINCC,0,',','.') }} INCC
+                                {{ number_format($details->CUSTORASOTAXAINCC,3,',','.') }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -424,7 +424,7 @@
                                 R$ {{ number_format($details->MANUTENCAO,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ number_format($details->MANUTENCAOINCC,0,',','.') }} INCC
+                                {{ number_format($details->MANUTENCAOINCC,3,',','.') }} INCC
                             </td>
                         </tr>
                         <tr>
@@ -435,7 +435,7 @@
                                 R$ {{ number_format($details->CUSTOSDIVERSOS,2,',','.') }}
                             </td>
                             <td class="text-right">
-                                {{ number_format($details->CUSTOSDIVERSOSINCC,0,',','.') }} INCC
+                                {{ number_format($details->CUSTOSDIVERSOSINCC,3,',','.') }} INCC
                             </td>
                         </tr>
                         </tbody>
